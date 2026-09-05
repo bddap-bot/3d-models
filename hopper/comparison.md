@@ -29,3 +29,39 @@ Four lanes delivered (codex, fable, opus, kimi). Kimi's own renders are matplotl
 - **opus**: same measurement-first stance with the largest sample counts, plus an exported seed-volume solid and a modelled cage for fit; no slicer. Most explicit about what it did NOT prove (tangency-seam samples, brim-full tray, no beak model). Spent the most time, most of it on the print-orientation/part-split problem.
 
 Ranking by verification rigour: fable ≈ opus > kimi > codex. By time: codex ≪ kimi ≈ fable < opus. Codex's 7-minute design is the one most likely to need a redesign after the first print (supports, unmeasured walls); fable's is the one that sliced clean support-free with measured walls; kimi's needs a tray or bin cut before it assembles at all.
+
+## Hands-on
+
+From a scaled demo print of the fable lane. Report (verbatim):
+
+> ok, think is see how fables submission is supposed to ffit together, the lid holds the two halves together. still, it barely holds together.
+> the butt join doesn't force alignment
+> the bottom parts don't actuallly attach to the hopper, just expected to be held there by the bottom of the cage door i suppose.
+> the perch is directly under the edge of the feeder bowl
+> the perch points down, only usable by inverse-gravity conures
+> 
+> please add my roast to the contest analysis
+
+What the geometry does on each point, measured on the committed STLs in `fable/out/` ([hands-on/measure.py](hands-on/measure.py) → [measure.json](hands-on/measure.json); renders by [hands-on/render.py](hands-on/render.py) from [hands-on.scad](hands-on/hands-on.scad), which imports those STLs; drawing convention: X across the door, Y into the cage, Z up, outlet at Z = 0).
+
+**1. What holds the halves together, and the seam's play.** The seam is a bare plane: body_R ends at X = 0 and body_L starts there, its mating face is 917 mm² of coplanar triangles, and no feature of either half crosses X = 0. Two parts bridge it: the lid and the bracket. The lid's outer headboard blocks sit 0.3 mm off the body's outer end faces (body 67.4, lid block 67.7), and the bracket's window edge sits 0.3 mm off the groove floor (64.9 vs 65.2), so each half can move 0.3 mm outward before either touches (shifting body_L −0.3 in X intersects nothing; −0.4 hits both), a seam gap of 0.6 mm. The lid plate (Z 117–119.4) rides in a 114.3–122.4 slot, so the halves can also shear 0.9 mm vertically against each other. Off the cage the bracket drops away (point 2), leaving the lid alone. **Stands.** Nothing keys the seam; the lid is the clamp, with 0.3 mm per side of slop.
+
+| plan slab Z 118–121 | right corner, same slab | right corner, slab Z 0–3 |
+|---|---|---|
+| ![seam](hands-on/seam.png) | ![lid block off the body's end face](hands-on/seam_corner.png) | ![bracket window edge in the groove](hands-on/window_corner.png) |
+
+**2. What retains the bracket and tray.** The bracket's window edge sits in the body's end-wall groove, and the groove is open at both ends: sliding the bracket down 0.5, 2, 6 or 12 mm intersects nothing on the body halves or the lid (0 mm³ at every step); sliding it up 0.6 mm hits the body (the window sill meets the back wall's bottom edge). So the grooves lock the bracket in X and Y and let it fall freely in Z. Its plate starts at Y = 0.3, on the cage side of the bar plane, so a bar under the door cannot carry it either; whatever holds it up is not in the model. The tray is the one captive part: it sits on the shelf behind the 7 mm ridge (sliding it 1 mm toward the cage hits the ridge, 472 mm³), and lifting it over the ridge hits the body (73 mm³ per half at 3 mm, 164 mm³ per half at 7 mm), so with the body in place the tray cannot come out; it leaves with the bracket. The lid slides outward 1, 5 or 20 mm through nothing, so off the cage the assembly is the lid's friction. **Stands.** REPORT.md's grooves locate the bracket but carry no weight; the bracket and tray hang on nothing in the model, and the assembly off the cage is held together by nothing but friction.
+
+| section at X = 66, through the groove | bracket and tray lowered 12 mm |
+|---|---|
+| ![bracket in the groove](hands-on/groove.png) | ![bracket lowered 12 mm, still in the groove, touching nothing](hands-on/groove_dropped.png) |
+
+**3. Perch versus the tray lip.** Circle fit through the 94 rim vertices of the perch cylinder: axis at Y = 106.05, Z = −25.0, radius 8.0. Tray front wall outer face Y = 103.8, lip tip Y = 95.8, lip top Z = 20 (section at X = 30). The perch axis is 2.25 mm in front of the tray's front wall and 10.25 mm in front of the lip's tip, 45 mm below the lip top; the perch's top is 37 mm below the lip top, and 5.75 mm of its 16 mm diameter lies under the tray's footprint. **Stands.** The perch is under the front edge of the tray, not in front of it.
+
+![side section at X = 30: red lines mark the lip tip and lip top, black lines the tray's front face and the perch top, the red dot the perch axis](hands-on/perch_section.png)
+
+**4. Perch axis direction.** Principal axis of the same rim vertices: (1, 0, 0), 0.0° from horizontal, spanning X = −82.7 to 82.7, the bracket's full width. In the assembly the perch is a horizontal rod along the cage wall. In the bracket's print orientation (on its X end, REPORT.md) the same rod is vertical, and by point 2 nothing in the model holds the loose bracket in any other attitude, so a bracket that is not on a cage stands on that end with the perch pointing up or down. **Does not stand for the assembled geometry; stands for the part as printed.**
+
+| perch axis in the assembly (red) | bracket in its print orientation |
+|---|---|
+| ![perch axis in the assembly](hands-on/perch_axis.png) | ![bracket standing on its print end](hands-on/bracket_print.png) |
