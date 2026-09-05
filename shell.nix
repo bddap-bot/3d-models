@@ -6,4 +6,8 @@ let
 in
 pkgs.mkShell {
   packages = with pkgs; [ openscad xvfb-run imagemagick python3 ];
+  LD_LIBRARY_PATH = "${pkgs.mesa}/lib";
+  LIBGL_DRIVERS_PATH = "${pkgs.mesa}/lib/dri";
+  LIBGL_ALWAYS_SOFTWARE = "1";
+  __GLX_VENDOR_LIBRARY_NAME = "mesa";
 }
