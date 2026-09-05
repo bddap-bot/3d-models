@@ -12,6 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 NAME = re.compile(r"[A-Za-z0-9_]+")
 REL_TOL = 1e-6
+ABS_TOL = 1e-3
 
 
 def fail(manifest, msg):
@@ -37,8 +38,9 @@ def load(manifest):
     if not isinstance(data, dict) or set(data) != {"source", "parts"}:
         fail(manifest, 'must be an object with exactly the keys "source" and "parts"')
     source = manifest.parent / str(data["source"])
-    if not (isinstance(data["source"], str) and source.suffix == ".scad" and source.is_file() and manifest.parent.resolve() in source.resolve().parents):
-        fail(manifest, f'"source" must be a .scad under the manifest directory, got {data["source"]!r}')
+    inside = manifest.parent.resolve() in source.resolve().parents and "out" not in source.resolve().relative_to(manifest.parent.resolve()).parts
+    if not (isinstance(data["source"], str) and source.suffix == ".scad" and source.is_file() and inside):
+        fail(manifest, f'"source" must be a .scad under the manifest directory and outside out/, got {data["source"]!r}')
     parts = data["parts"]
     if not isinstance(parts, dict) or not parts:
         fail(manifest, '"parts" must be a non-empty object keyed by part name')
@@ -63,18 +65,23 @@ def geometry(stl):
         if line.lstrip().startswith("vertex"):
             tri.append(tuple(map(float, line.split()[1:4])))
     volume = area = 0.0
+    moment = [0.0, 0.0, 0.0]
     for i in range(0, len(tri), 3):
         (ax, ay, az), (bx, by, bz), (cx, cy, cz) = tri[i : i + 3]
         nx, ny, nz = (by - ay) * (cz - az) - (bz - az) * (cy - ay), (bz - az) * (cx - ax) - (bx - ax) * (cz - az), (bx - ax) * (cy - ay) - (by - ay) * (cx - ax)
         area += math.sqrt(nx * nx + ny * ny + nz * nz) / 2
-        volume += (ax * (by * cz - bz * cy) + ay * (bz * cx - bx * cz) + az * (bx * cy - by * cx)) / 6
+        v = (ax * (by * cz - bz * cy) + ay * (bz * cx - bx * cz) + az * (bx * cy - by * cx)) / 6
+        volume += v
+        for k, s in enumerate((ax + bx + cx, ay + by + cy, az + bz + cz)):
+            moment[k] += v * s / 4
     bbox = [f(v[k] for v in tri) for f in (min, max) for k in range(3)] if tri else [0.0] * 6
-    return {"volume": volume, "area": area, "bbox": bbox}
+    centroid = [m / volume for m in moment] if volume else [0.0] * 3
+    return {"volume": volume, "area": area, "bbox": bbox, "centroid": centroid}
 
 
 def same(a, b):
-    close = lambda x, y: math.isclose(x, y, rel_tol=REL_TOL, abs_tol=REL_TOL)
-    return close(a["volume"], b["volume"]) and close(a["area"], b["area"]) and all(map(close, a["bbox"], b["bbox"]))
+    close = lambda x, y: math.isclose(x, y, rel_tol=REL_TOL, abs_tol=ABS_TOL)
+    return close(a["volume"], b["volume"]) and close(a["area"], b["area"]) and all(map(close, a["bbox"] + a["centroid"], b["bbox"] + b["centroid"]))
 
 
 def build(manifest):
@@ -89,7 +96,7 @@ def build(manifest):
             fresh = Path(tmp) / stl.name
             openscad(source, fresh, f'-Dpart="{name}"')
             g = geometry(fresh)
-            if not g["area"]:
+            if not g["area"] > 0:
                 fail(manifest, f"part {name!r} exported no geometry")
             for other, og in seen.items():
                 if same(g, og):
