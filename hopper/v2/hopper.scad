@@ -11,6 +11,8 @@ door_w   = 140;
 door_h   = 170;
 overlap  = 15;
 clr      = 0.3;
+seam_clr = 0.2;
+seam_lap = 6;
 lid_t    = 2.4;
 plate_t  = 3;
 groove_d = 2.5;
@@ -57,22 +59,23 @@ module prof_outer()    polygon([[y_back0-th_y,0],[y_front+t,0],[y_front+t,z_roof
 module yz(x0,x1) translate([x0,0,0]) rotate([90,0,90]) linear_extrude(height=x1-x0) children();
 module outer_prism() yz(0,x_out) prof_outer();
 
-module under_back_wall() translate([0,y_back0-th_y,0]) rotate([-ang,0,0]) translate([-200,-150,-400]) cube([400,300,400]);
+module outside_back_wall() { a=[y_back0-th_y,0]; b=[y_backT-th_y-run*t/H,z_roof]; polygon([a+3*(a-b), b-3*(a-b), [-300,4*z_roof], [-300,-3*z_roof]]); }
+module under_back_wall() yz(-200,200) outside_back_wall();
 
-module body_half() {
+module body() {
   difference() {
     union() {
       difference() {
-        outer_prism();
-        yz(-2,hw) prof_interior();
-        translate([-2, y_lid0-5, z_lidbot-clr]) cube([hw+2, y_lip0-y_lid0+5, 50]);
+        yz(-x_out,x_out) prof_outer();
+        yz(-hw,hw) prof_interior();
+        translate([-hw-1, y_lid0-5, z_lidbot-clr]) cube([W_in+2, y_lip0-y_lid0+5, 50]);
       }
       intersection() {
-        translate([0,y_fl0,z_fl0]) cube([x_out, plate_t, 60-z_fl0]);
+        translate([-x_out,y_fl0,z_fl0]) cube([2*x_out, plate_t, 60-z_fl0]);
         under_back_wall();
       }
-      translate([0,y_lip0,z_ledge]) cube([x_out, t, z_roof-z_ledge]);
-      intersection() {
+      translate([-x_out,y_lip0,z_ledge]) cube([2*x_out, t, z_roof-z_ledge]);
+      for (s=[-1,1]) mirror([s<0?1:0,0,0]) intersection() {
         union() {
           translate([hw-4,y_ledge0-3,z_ledge]) cube([4+t, y_lip0-y_ledge0+3, t]);
           translate([hw-4,y_ledge0-3,H]) cube([4+t, y_lip0-y_ledge0+3, t]);
@@ -81,7 +84,24 @@ module body_half() {
         outer_prism();
       }
     }
-    translate([x_out-groove_d, y_plate0-clr, -1]) cube([groove_d+1, plate_t+2*clr, z_roof+2]);
+    for (s=[-1,1]) mirror([s<0?1:0,0,0]) translate([x_out-groove_d, y_plate0-clr, -1]) cube([groove_d+1, plate_t+2*clr, z_roof+2]);
+  }
+}
+
+module seam_lap(g) {
+  difference() { offset(delta=1) prof_outer(); offset(delta=t/2+g) prof_interior(); }
+  translate([y_lip0-1, z_ledge-1]) square([1+t/2-g, z_roof-z_ledge+2]);
+  intersection() { translate([y_fl0-1, z_fl0-1]) square([plate_t+1, 61-z_fl0]); outside_back_wall(); }
+}
+
+module body_half(tongue) intersection() {
+  body();
+  difference() {
+    union() {
+      yz(seam_clr/2, x_out+1) square(1000, center=true);
+      if (tongue) yz(-seam_lap, seam_clr/2) seam_lap(seam_clr);
+    }
+    if (!tongue) yz(seam_clr/2-1, seam_lap+seam_clr) seam_lap(0);
   }
 }
 
@@ -133,17 +153,18 @@ module tray() {
 }
 
 module assembly() {
-  color("SteelBlue") body_half();
-  color("SteelBlue") mirror([1,0,0]) body_half();
+  color("SteelBlue") body_half(true);
+  color("SteelBlue") mirror([1,0,0]) body_half(false);
   color("Orange") lid();
   color("SeaGreen") bracket();
   color("Gold") tray();
 }
 
-if (part=="body_R") body_half();
-if (part=="body_L") mirror([1,0,0]) body_half();
+if (part=="body_R") body_half(true);
+if (part=="body_L") mirror([1,0,0]) body_half(false);
 if (part=="lid") lid();
 if (part=="bracket") bracket();
 if (part=="tray") tray();
 if (part=="assembly") assembly();
+if (part=="seam") intersection() { union() { translate([5,0,0]) body_half(true); translate([-5,0,0]) mirror([1,0,0]) body_half(false); } translate([-25,-200,50]) cube([50,400,10]); }
 if (part=="section") intersection() { assembly(); translate([-400,-200,-200]) cube([400,400,400]); }

@@ -1,0 +1,40 @@
+== body_R
+89 => Calculating overhanging perimeters
+88 => Generating skirt and brim
+90 => Exporting G-code to print_body_R.gcode
+Slicing result exported to print_body_R.gcode
+; filament used [g] = 108.24
+; total filament used [g] = 108.24
+; total filament used for wipe tower [g] = 0.00
+== body_L
+89 => Calculating overhanging perimeters
+88 => Generating skirt and brim
+90 => Exporting G-code to print_body_L.gcode
+Slicing result exported to print_body_L.gcode
+; filament used [g] = 100.36
+; total filament used [g] = 100.36
+; total filament used for wipe tower [g] = 0.00
+== lid
+89 => Calculating overhanging perimeters
+88 => Generating skirt and brim
+90 => Exporting G-code to print_lid.gcode
+Slicing result exported to print_lid.gcode
+; filament used [g] = 51.09
+; total filament used [g] = 51.09
+; total filament used for wipe tower [g] = 0.00
+== bracket
+89 => Calculating overhanging perimeters
+88 => Generating skirt and brim
+90 => Exporting G-code to print_bracket.gcode
+Slicing result exported to print_bracket.gcode
+; filament used [g] = 111.76
+; total filament used [g] = 111.76
+; total filament used for wipe tower [g] = 0.00
+== tray
+89 => Calculating overhanging perimeters
+88 => Generating skirt and brim
+90 => Exporting G-code to print_tray.gcode
+Slicing result exported to print_tray.gcode
+; filament used [g] = 70.42
+; total filament used [g] = 70.42
+; total filament used for wipe tower [g] = 0.00

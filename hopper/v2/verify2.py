@@ -1,10 +1,15 @@
-import json, numpy as np, trimesh
-from trimesh import proximity
+import json, re, numpy as np, trimesh
+import shapely
+from shapely.ops import unary_union
+from scipy.ndimage import distance_transform_cdt
+scad = open("hopper.scad").read()
+param = lambda k: float(re.search(rf"^{k}\s*=\s*([0-9.]+);", scad, re.M).group(1))
+seam_clr, seam_lap = param("seam_clr"), param("seam_lap")
 out = {}
 parts = ["body_R","body_L","lid","bracket","tray"]
 meshes = {}
 for p in parts:
-    m = trimesh.load(f"{p}.stl", process=True); m.merge_vertices(); meshes[p] = m
+    m = trimesh.load(f"out/{p}.stl", process=True); m.merge_vertices(); meshes[p] = m
     ext = m.bounding_box.extents
     r = {"watertight": bool(m.is_watertight), "winding_consistent": bool(m.is_winding_consistent),
          "euler": int(m.euler_number), "volume_mm3": round(float(m.volume),1),
@@ -12,8 +17,6 @@ for p in parts:
     from thick import thickness
     pts, th = thickness(m)
     thin = th < 2.39
-    # a ray fired from a point within 0.6 mm of a convex edge hits the neighbouring face immediately; those are edge artifacts, not walls
-    from trimesh.proximity import ProximityQuery
     edges = m.face_adjacency_edges
     conv = m.face_adjacency_convex
     sharp = edges[conv & (m.face_adjacency_angles > np.radians(30))]
@@ -35,7 +38,40 @@ for p in parts:
         r["thin_sample_points"] = [[round(float(v),1) for v in q] for q in pts[real_thin][:8]]
     out[p] = r
 
-body = trimesh.util.concatenate([meshes["body_R"], meshes["body_L"]])
+R, L = meshes["body_R"], meshes["body_L"]
+def box(m, lo, hi):
+    for ax in range(3):
+        e = np.eye(3)[ax]
+        m = m.slice_plane(lo, e, cap=True).slice_plane(hi, -e, cap=True)
+    return m
+def seam_gap(origin, normal, lo, hi, px=0.01):
+    normal = np.array(normal, float)
+    T = np.eye(4); T[:3,:3] = [[1,0,0], np.cross(normal, [1,0,0]), normal]; T[:3,3] = -T[:3,:3] @ origin
+    polys = []
+    for m in (R, L):
+        s = box(m, lo, hi).section(plane_origin=origin, plane_normal=normal)
+        polys += list(s.to_2D(to_2D=T)[0].polygons_full)
+    u = unary_union(polys)
+    b = u.bounds
+    X, Y = np.meshgrid(np.arange(b[0]+px/2, b[2], px), np.arange(b[1]+px/2, b[3], px))
+    solid = shapely.contains_xy(u, X.ravel(), Y.ravel()).reshape(X.shape)
+    return 2*px*distance_transform_cdt(~solid, metric="chessboard").max()
+wall = np.array([0., y_backT := -48, 120]) - [0, 5, 0]
+xw = [-seam_lap-2, 2]
+cuts = {"front_wall_z60": ([0,0,60],[0,0,1],[xw[0],50,-100],[xw[1],60,300]),
+        "back_wall_z60": ([0,-21.5,60],wall/np.linalg.norm(wall),[xw[0],-30,-100],[xw[1],-15,300]),
+        "roof_y20": ([0,20,0],[0,1,0],[xw[0],-100,110],[xw[1],100,300]),
+        "lip_z118": ([0,0,118],[0,0,1],[xw[0],-6,-100],[xw[1],-2,300]),
+        "flange_z-20": ([0,0,-20],[0,0,1],[xw[0],-7,-100],[xw[1],-1,300])}
+gap = {k: round(float(seam_gap(*c)), 3) for k, c in cuts.items()}
+xr = R.section(plane_origin=[0,0,60], plane_normal=[0,0,1]).vertices[:,0]
+xl = L.section(plane_origin=[0,0,60], plane_normal=[0,0,1]).vertices[:,0]
+out["seam"] = {"clearance_mm": seam_clr, "lap_mm": seam_lap,
+    "widest_square_in_seam_void_mm_by_section": gap, "raster_px_mm": 0.01,
+    "butt_gap_mm_at_z60": round(float(xr[xr > -1].min() - xl.max()),3), "lap_overlap_mm_at_z60": round(float(xl.max() - xr.min()),3)}
+assert max(gap.values()) <= seam_clr + 0.02, f"seam void wider than seam_clr={seam_clr}: widest square by section {gap} mm"
+assert xl.max() - xr.min() >= seam_lap - seam_clr, f"lap overlap {xl.max()-xr.min():.3f} mm below seam_lap-seam_clr"
+body = trimesh.util.concatenate([R, L])
 sec = body.section(plane_origin=[0,0,0.5], plane_normal=[0,0,1])
 v = sec.vertices; ys = v[(np.abs(v[:,0]) < 60),1]
 out["slot_width_mm_at_z0.5"] = round(float(ys[ys>30].min() - ys[(ys>0)&(ys<30)].max()), 2)
@@ -79,6 +115,7 @@ for i in range(len(names)):
         inter = meshes[names[i]].intersection(meshes[names[j]], engine="manifold")
         clash[f"{names[i]}∩{names[j]}"] = round(float(inter.volume),3) if inter is not None and len(inter.faces) else 0.0
 out["assembly_pairwise_intersection_volume_mm3"] = clash
+assert max(clash.values()) == 0.0, f"assembly clash {clash}"
 for p in names:
     m = meshes[p]; c = m.triangles_center; nn = m.face_normals
     out[p]["internal_faces"] = int((m.contains(c+nn*0.2) & m.contains(c-nn*0.2)).sum())

@@ -1,0 +1,379 @@
+{
+ "body_R": {
+  "watertight": true,
+  "winding_consistent": true,
+  "euler": 2,
+  "volume_mm3": 89365.8,
+  "extents_mm": [
+   73.4,
+   109.08,
+   161.2
+  ],
+  "max_extent_ok_175": true,
+  "thickness_ray_mm": {
+   "n": 8000,
+   "min_all": 0.06,
+   "below_2.4_all": 296,
+   "below_2.4_farther_than_1mm_from_any_convex_edge": 210,
+   "min_away_from_edges": 1.0,
+   "median": 2.4
+  },
+  "thin_sample_points": [
+   [
+    -1.7,
+    56.4,
+    94.0
+   ],
+   [
+    -3.0,
+    34.2,
+    121.4
+   ],
+   [
+    -3.5,
+    57.4,
+    29.4
+   ],
+   [
+    67.4,
+    -47.0,
+    119.2
+   ],
+   [
+    -2.2,
+    1.7,
+    121.4
+   ],
+   [
+    -3.6,
+    28.1,
+    121.4
+   ],
+   [
+    -2.7,
+    57.4,
+    114.3
+   ],
+   [
+    -0.5,
+    23.5,
+    122.4
+   ]
+  ],
+  "internal_faces": 0
+ },
+ "body_L": {
+  "watertight": true,
+  "winding_consistent": true,
+  "euler": 2,
+  "volume_mm3": 83147.6,
+  "extents_mm": [
+   67.3,
+   109.08,
+   161.2
+  ],
+  "max_extent_ok_175": true,
+  "thickness_ray_mm": {
+   "n": 8000,
+   "min_all": 0.15,
+   "below_2.4_all": 363,
+   "below_2.4_farther_than_1mm_from_any_convex_edge": 269,
+   "min_away_from_edges": 1.2,
+   "median": 2.4
+  },
+  "thin_sample_points": [
+   [
+    -1.9,
+    -17.8,
+    51.5
+   ],
+   [
+    -4.7,
+    0.6,
+    7.0
+   ],
+   [
+    -1.9,
+    56.2,
+    27.3
+   ],
+   [
+    -2.2,
+    -28.0,
+    71.8
+   ],
+   [
+    -4.2,
+    -21.1,
+    56.2
+   ],
+   [
+    -3.2,
+    18.3,
+    121.2
+   ],
+   [
+    -3.2,
+    1.0,
+    6.1
+   ],
+   [
+    -4.5,
+    2.6,
+    2.4
+   ]
+  ],
+  "internal_faces": 0
+ },
+ "lid": {
+  "watertight": true,
+  "winding_consistent": true,
+  "euler": 2,
+  "volume_mm3": 60562.3,
+  "extents_mm": [
+   165.4,
+   52.18,
+   44.2
+  ],
+  "max_extent_ok_175": true,
+  "thickness_ray_mm": {
+   "n": 8000,
+   "min_all": 2.4,
+   "below_2.4_all": 0,
+   "below_2.4_farther_than_1mm_from_any_convex_edge": 0,
+   "min_away_from_edges": 2.4,
+   "median": 6.4
+  },
+  "internal_faces": 0
+ },
+ "bracket": {
+  "watertight": true,
+  "winding_consistent": true,
+  "euler": 2,
+  "volume_mm3": 110322.3,
+  "extents_mm": [
+   165.4,
+   113.75,
+   59.0
+  ],
+  "max_extent_ok_175": true,
+  "thickness_ray_mm": {
+   "n": 8000,
+   "min_all": 0.07,
+   "below_2.4_all": 42,
+   "below_2.4_farther_than_1mm_from_any_convex_edge": 4,
+   "min_away_from_edges": 1.07,
+   "median": 3.0
+  },
+  "thin_sample_points": [
+   [
+    72.3,
+    74.8,
+    -9.9
+   ],
+   [
+    -72.3,
+    5.8,
+    -10.0
+   ],
+   [
+    72.3,
+    42.8,
+    -9.9
+   ],
+   [
+    -72.3,
+    78.3,
+    -10.0
+   ]
+  ],
+  "internal_faces": 0
+ },
+ "tray": {
+  "watertight": true,
+  "winding_consistent": true,
+  "euler": 2,
+  "volume_mm3": 64709.1,
+  "extents_mm": [
+   144.0,
+   100.0,
+   30.0
+  ],
+  "max_extent_ok_175": true,
+  "thickness_ray_mm": {
+   "n": 8000,
+   "min_all": 0.06,
+   "below_2.4_all": 13,
+   "below_2.4_farther_than_1mm_from_any_convex_edge": 10,
+   "min_away_from_edges": 2.33,
+   "median": 2.4
+  },
+  "thin_sample_points": [
+   [
+    -72.0,
+    9.5,
+    -3.4
+   ],
+   [
+    -71.3,
+    100.5,
+    -2.8
+   ],
+   [
+    71.2,
+    100.7,
+    4.8
+   ],
+   [
+    -69.6,
+    9.8,
+    -1.7
+   ],
+   [
+    69.6,
+    97.8,
+    6.1
+   ],
+   [
+    -68.7,
+    103.0,
+    -1.3
+   ],
+   [
+    -71.3,
+    100.4,
+    8.0
+   ],
+   [
+    71.2,
+    100.6,
+    8.0
+   ]
+  ],
+  "internal_faces": 0
+ },
+ "seam": {
+  "clearance_mm": 0.2,
+  "lap_mm": 6.0,
+  "widest_square_in_seam_void_mm_by_section": {
+   "front_wall_z60": 0.2,
+   "back_wall_z60": 0.2,
+   "roof_y20": 0.2,
+   "lip_z118": 0.2,
+   "flange_z-20": 0.2
+  },
+  "raster_px_mm": 0.01,
+  "butt_gap_mm_at_z60": 0.2,
+  "lap_overlap_mm_at_z60": 5.9
+ },
+ "slot_width_mm_at_z0.5": 50.22,
+ "cavity_depth_mm_at_z50": 72.08,
+ "interior_upward_facing_faces__angle_from_horizontal__area_mm2": {
+  "66.2 deg": 17206.8
+ },
+ "through_section_in_bar_plane_y[-2.5,0]": {
+  "w": 134.8,
+  "h": 117.02,
+  "z_range": [
+   5.38,
+   122.4
+  ],
+  "fits_140x170": true
+ },
+ "cavity_boolean": {
+  "prism_bounds": [
+   [
+    -67.4,
+    -49.1,
+    0.0
+   ],
+   [
+    67.4,
+    57.4,
+    116.7
+   ]
+  ],
+  "cavity_volume_L": 1.145,
+  "cavity_watertight": true
+ },
+ "capacity_analytic_L": 1.147,
+ "assembly_pairwise_intersection_volume_mm3": {
+  "body_R∩body_L": 0.0,
+  "body_R∩lid": 0.0,
+  "body_R∩bracket": 0.0,
+  "body_R∩tray": 0.0,
+  "body_L∩lid": 0.0,
+  "body_L∩bracket": 0.0,
+  "body_L∩tray": 0.0,
+  "lid∩bracket": 0.0,
+  "lid∩tray": 0.0,
+  "bracket∩tray": 0.0
+ },
+ "print_orientation": {
+  "body_R": {
+   "print_extents_mm": [
+    161.2,
+    109.08,
+    73.4
+   ],
+   "height_mm": 73.4,
+   "downward_faces_off_bed_area_mm2_by_overhang": {
+    "flat ceiling (bridge)": 434.2
+   },
+   "first_layer_outline_length_mm": 751.1
+  },
+  "body_L": {
+   "print_extents_mm": [
+    161.2,
+    109.08,
+    67.3
+   ],
+   "height_mm": 67.3,
+   "downward_faces_off_bed_area_mm2_by_overhang": {
+    "flat ceiling (bridge)": 434.2
+   },
+   "first_layer_outline_length_mm": 751.1
+  },
+  "lid": {
+   "print_extents_mm": [
+    165.4,
+    52.18,
+    44.2
+   ],
+   "height_mm": 44.2,
+   "downward_faces_off_bed_area_mm2_by_overhang": {
+    "flat ceiling (bridge)": 417.3
+   },
+   "first_layer_outline_length_mm": 443.4
+  },
+  "bracket": {
+   "print_extents_mm": [
+    59.0,
+    113.75,
+    165.4
+   ],
+   "height_mm": 165.4,
+   "downward_faces_off_bed_area_mm2_by_overhang": {
+    "30-45 deg from vertical-down": 177.2,
+    "60-75 deg from vertical-down": 7.2,
+    "0-15 deg from vertical-down": 2.9,
+    "45-60 deg from vertical-down": 74.2,
+    "flat ceiling (bridge)": 133.2
+   },
+   "first_layer_outline_length_mm": 391.1
+  },
+  "tray": {
+   "print_extents_mm": [
+    144.0,
+    100.0,
+    30.0
+   ],
+   "height_mm": 30.0,
+   "downward_faces_off_bed_area_mm2_by_overhang": {
+    "30-45 deg from vertical-down": 1055.0,
+    "45-60 deg from vertical-down": 859.4
+   },
+   "first_layer_outline_length_mm": 476.6
+  }
+ }
+}
