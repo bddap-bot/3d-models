@@ -1,0 +1,11 @@
+{
+  "source": "hopper.scad",
+  "parts": {
+    "assembly": [65, 0, 35],
+    "body_R": [60, 0, 35],
+    "body_L": [60, 0, 35],
+    "lid": [60, 0, 35],
+    "bracket": [60, 0, 35],
+    "tray": [60, 0, 35]
+  }
+}
