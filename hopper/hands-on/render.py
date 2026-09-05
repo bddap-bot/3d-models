@@ -13,6 +13,7 @@ VIEWS = {
     "groove": ("groove", 0, ["--camera=66,30,25,90,0,90,560", "--projection=o"]),
     "groove_dropped": ("groove", 12, ["--camera=66,30,25,90,0,90,560", "--projection=o"]),
     "perch_section": ("perch_section", 0, ["--camera=30,60,0,90,0,90,320", "--projection=o"]),
+    "opus_perch": ("opus_perch", 0, ["--camera=0,10,40,90,0,90,260", "--projection=o"]),
     "perch_axis": ("perch_axis", 0, ["--camera=0,0,0,70,0,140,0", "--viewall", "--autocenter"]),
     "bracket_print": ("bracket_print", 0, ["--camera=0,0,0,65,0,35,0", "--viewall", "--autocenter"]),
 }

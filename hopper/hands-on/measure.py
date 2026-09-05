@@ -7,11 +7,11 @@ from pathlib import Path
 import numpy as np
 import trimesh
 
-OUT = Path(__file__).resolve().parent.parent / "fable" / "out"
+LANES = Path(__file__).resolve().parent.parent
 
 
-def load(name):
-    m = trimesh.load(OUT / f"{name}.stl", force="mesh")
+def load(name, lane="fable"):
+    m = trimesh.load(LANES / lane / "out" / f"{name}.stl", force="mesh")
     m.merge_vertices()
     return m
 
@@ -60,22 +60,27 @@ r["tray_shifted"] = {f"z+{dz}": {n: overlap(m, tray, (0, 0, dz)) for n, m in [("
 for dy in [1, -1]:
     r["tray_shifted"][f"y{dy:+}"] = {n: overlap(m, tray, (0, dy, 0)) for n, m in [("body_R", body_R), ("bracket", bracket)]}
 
-n = bracket.face_normals
-cyl = np.isclose(n[:, 0], 0, atol=1e-6) & ~np.isclose(n[:, 1], 0, atol=1e-6) & ~np.isclose(n[:, 2], 0, atol=1e-6)
-rim = bracket.vertices[np.unique(bracket.faces[cyl])]
-A = np.c_[2 * rim[:, 1], 2 * rim[:, 2], np.ones(len(rim))]
-yc, zc, _ = np.linalg.lstsq(A, rim[:, 1] ** 2 + rim[:, 2] ** 2, rcond=None)[0]
-rad = float(np.linalg.norm(rim[:, 1:] - [yc, zc], axis=1).max())
-axis = np.linalg.eigh(np.cov(rim.T))[1][:, -1]
-r["perch"] = {
-    "axis_y": round(float(yc), 3),
-    "axis_z": round(float(zc), 3),
-    "radius": round(rad, 3),
-    "axis_dir_xyz": [round(abs(float(x)), 4) for x in axis],
-    "axis_angle_from_horizontal_deg": round(float(np.degrees(np.arcsin(abs(axis[2])))), 3),
-    "x_span": [round(float(rim[:, 0].min()), 3), round(float(rim[:, 0].max()), 3)],
-    "rim_vertices": int(len(rim)),
-}
+def perch_fit(m, y_max=1e9):
+    n = m.face_normals
+    cyl = np.isclose(n[:, 0], 0, atol=1e-6) & ~np.isclose(n[:, 1], 0, atol=1e-6) & ~np.isclose(n[:, 2], 0, atol=1e-6)
+    rim = m.vertices[np.unique(m.faces[cyl])]
+    rim = rim[rim[:, 1] <= y_max]
+    A = np.c_[2 * rim[:, 1], 2 * rim[:, 2], np.ones(len(rim))]
+    yc, zc, _ = np.linalg.lstsq(A, rim[:, 1] ** 2 + rim[:, 2] ** 2, rcond=None)[0]
+    axis = np.linalg.eigh(np.cov(rim.T))[1][:, -1]
+    return {
+        "axis_y": round(float(yc), 3),
+        "axis_z": round(float(zc), 3),
+        "radius": round(float(np.linalg.norm(rim[:, 1:] - [yc, zc], axis=1).max()), 3),
+        "axis_dir_xyz": [round(abs(float(x)), 4) for x in axis],
+        "axis_angle_from_horizontal_deg": round(float(np.degrees(np.arcsin(abs(axis[2])))), 3),
+        "x_span": [round(float(rim[:, 0].min()), 3), round(float(rim[:, 0].max()), 3)],
+        "rim_vertices": int(len(rim)),
+    }
+
+
+r["perch"] = perch_fit(bracket)
+rad = r["perch"]["radius"]
 front = probe(tray, [29, 90, -20], [31, 120, 40])
 lip = probe(tray, [29, 90, 15], [31, 101, 40])
 r["tray_front_x30"] = {"outer_face_y": front[1][1], "lip_tip_y": lip[0][1], "lip_top_z": front[1][2]}
@@ -86,6 +91,21 @@ r["perch_vs_lip"] = {
     "axis_below_lip_top": round(f["lip_top_z"] - p["axis_z"], 3),
     "perch_top_below_lip_top": round(f["lip_top_z"] - (p["axis_z"] + rad), 3),
     "perch_diameter_under_tray_footprint": round(f["outer_face_y"] - (p["axis_y"] - rad), 3),
+}
+o_tray, o_perch = load("tray", "opus"), load("perch", "opus")
+op = perch_fit(o_perch, -30)
+end = probe(o_tray, [-10, -60, 0], [10, -20, 80])
+lip = probe(o_tray, [-10, -60, 50], [10, -25, 80])
+ot = {"cage_end_face_y": end[0][1], "lip_tip_y": lip[1][1], "bottom_z": end[0][2], "rim_top_z": end[1][2]}
+r["opus"] = {
+    "perch": op,
+    "tray_x0": ot,
+    "perch_vs_tray": {
+        "axis_inside_cage_end_face": round(ot["cage_end_face_y"] - op["axis_y"], 3),
+        "perch_diameter_under_tray_footprint": round(op["axis_y"] + op["radius"] - ot["cage_end_face_y"], 3),
+        "clear_air_perch_top_to_tray_bottom": round(ot["bottom_z"] - (op["axis_z"] + op["radius"]), 3),
+        "perch_top_below_rim_top": round(ot["rim_top_z"] - (op["axis_z"] + op["radius"]), 3),
+    },
 }
 json.dump(r, sys.stdout, indent=1)
 print()

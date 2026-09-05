@@ -32,6 +32,8 @@ Ranking by verification rigour: fable ≈ opus > kimi > codex. By time: codex �
 
 ## Hands-on
 
+### fable
+
 Report (verbatim):
 
 > ok, think is see how fables submission is supposed to ffit together, the lid holds the two halves together. still, it barely holds together.
@@ -65,3 +67,15 @@ What the geometry does on each point, measured on the committed STLs in `fable/o
 | perch axis in the assembly (red) | bracket in its print orientation |
 |---|---|
 | ![perch axis in the assembly](hands-on/perch_axis.png) | ![bracket standing on its print end](hands-on/bracket_print.png) |
+
+### opus
+
+Report (verbatim):
+
+> Opus's perch is directly under the feeder, not ergonomic for birdies. For the opus print, the hopper broke before I had a chance to try fitting it together. It has a split design like fable's so my hopes weren't so high to begin.
+> Perch was directly underneath the feeder tray. Since birds bods occupy space this is not the ideal egonomics-wise.
+> My bird did love this submission. The tiny version was easy to tear apart, lots of fun.
+
+Measured on the committed STLs in `opus/out/` (the `opus` block of [measure.json](hands-on/measure.json); opus coordinates: X across the door, Y negative into the cage, Z up from the door sill). Circle fit through the 80 cage-side rim vertices of the perch bar: axis at Y = −30.0, Z = 12.0, radius 11.0, along X. Tray at X = 0: cage-side end face Y = −38.0, bottom Z = 26.0, rim top Z = 57.4. The perch axis is 8 mm inside the tray's end face, so 19 mm of the bar's 22 mm diameter lies under the tray; 3.0 mm of air separates the bar's top from the tray's bottom, and the bar's top is 34.4 mm below the rim. **Stands.** The perch is under the tray, not in front of it, with a 3 mm gap to its underside (REPORT.md's 14 mm is not what the STL measures). The break and the tearing apart are print observations at 23 % scale that the geometry cannot confirm or deny.
+
+![opus side section at X = 0: red line the tray's cage-side end face, black lines the tray bottom and the perch top](hands-on/opus_perch.png)

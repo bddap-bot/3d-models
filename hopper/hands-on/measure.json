@@ -285,5 +285,35 @@
   "axis_below_lip_top": 45.001,
   "perch_top_below_lip_top": 37.0,
   "perch_diameter_under_tray_footprint": 5.751
+ },
+ "opus": {
+  "perch": {
+   "axis_y": -30.0,
+   "axis_z": 12.0,
+   "radius": 10.99,
+   "axis_dir_xyz": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "axis_angle_from_horizontal_deg": 0.0,
+   "x_span": [
+    -58.0,
+    58.0
+   ],
+   "rim_vertices": 80
+  },
+  "tray_x0": {
+   "cage_end_face_y": -37.992,
+   "lip_tip_y": -28.018,
+   "bottom_z": 26.009,
+   "rim_top_z": 57.392
+  },
+  "perch_vs_tray": {
+   "axis_inside_cage_end_face": -7.992,
+   "perch_diameter_under_tray_footprint": 18.982,
+   "clear_air_perch_top_to_tray_bottom": 3.019,
+   "perch_top_below_rim_top": 34.402
+  }
  }
 }
