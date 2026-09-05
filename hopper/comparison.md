@@ -1,30 +1,31 @@
 # Comparison
 
-Three lanes delivered (codex, fable, opus). The kimi lane is pending; its column is added when it lands.
+Four lanes delivered (codex, fable, opus, kimi). Kimi's own renders are matplotlib mesh plots (its sandbox had no OpenGL); the kimi panel in the montage is its `hopper.scad` rendered with OpenSCAD like the others, by `montage.sh`.
 
 **Nobody chose FreeCAD, screenshots, or a GUI.** Every model went OpenSCAD source → STL → a Python mesh check, and rendered with OpenSCAD under xvfb or with matplotlib. A prescribed FreeCAD-by-screenshot loop, tried earlier, was strictly worse than what each model reached on its own.
 
 | | codex (gpt-5.6-sol) | fable 5.1 | opus 5 | kimi-k3 |
 |---|---|---|---|---|
-| wall | 7 min | 31 min | 75 min | pending |
-| parts | 3 (body, lid, tray+perch) | 5 (2 mirror body halves, lid, bracket, tray) | 6 (mount plate, 2 shells, lid, tray, perch) | |
-| tools | OpenSCAD, trimesh, PrusaSlicer 2.9.4, Xvfb | OpenSCAD, trimesh+manifold3d, PrusaSlicer | OpenSCAD, trimesh+manifold3d, xvfb/llvmpipe | |
-| watertight | 3/3 (trimesh) | 5/5 + Euler 2, 0 internal faces | 6/6 (+ mount Euler −2 explained: 2 holes) | |
-| capacity | 1.04 L (analytic polygon×width) | 1.145 L (boolean cavity, matches analytic 1.147) | 1.065 L (seed-column solid exported and measured) | |
-| slot | 130×54 | 50.2 (section at z=0.5) | 118×70 (sections at 3 heights) | |
-| wall angle | 75.4° (from source dims) | 66.2° (every upward interior face measured) | 65° (min over every downward cavity normal) | |
-| wall ≥2.4 | **by arithmetic only** (nominal 3.0, oblique 2.83 computed by hand, not from mesh) | inward ray-march 8000 samples/part; sub-2.4 hits itemised (acute cuts, 1.2 mm rails) | 60k-sample ray-march; caveat: 6% of tray, ~1% of shell samples <2.4 at tangency seams, not all inspected | |
-| fit 140×170 / 12 mm bars | flange exactly 140×170, dimensional | bar-plane section 134.8×117; every bearing ≥1 bar pitch | plate 156×162 overlaps 8 mm/side; hooks 7 mm between bars; modelled cage render | |
-| assembly clash | not checked | 10 pairwise booleans, all 0 mm³ | pairwise, pass | |
-| printability | PrusaSlicer dry-run: sliced, **long-bridge warnings → recommends supports** | PrusaSlicer dry-run, supports OFF, all 5 clean; per-part overhang audit | no slicer; overhang % per part (≤0.6%, tray 4.3%) | |
-| layer lines along flow | body upright (claimed) | halves printed end-wall-down | shells split on midplane, side-wall-down (also zero-overhang walls) | |
-| self-caught defects | none reported | back wall 1.6 mm mid-run, 3 clashes, U-arm ceiling redesign | orientation/split problem (35 min), 7 CGAL-manifold fixes | |
-| stated gaps | no physical print/flow; supports needed; wall by calc not mesh | square-cut body/lid edges, no lid detent, butt seam | tray runs brim-full (0.6 mm discharge gap), no slicer, perch load unanalysed | |
+| wall | 7 min | 31 min | 75 min | 30 min |
+| parts | 3 (body, lid, tray+perch) | 5 (2 mirror body halves, lid, bracket, tray) | 6 (mount plate, 2 shells, lid, tray, perch) | 3 (body = door plate + bin + bar clips, lid, tray+perch) |
+| tools | OpenSCAD, trimesh, PrusaSlicer 2.9.4, Xvfb | OpenSCAD, trimesh+manifold3d, PrusaSlicer | OpenSCAD, trimesh+manifold3d, xvfb/llvmpipe | OpenSCAD, trimesh+numpy, matplotlib (no GL in its sandbox) |
+| watertight | 3/3 (trimesh) | 5/5 + Euler 2, 0 internal faces | 6/6 (+ mount Euler −2 explained: 2 holes) | 4/4 (body, lid, tray, cavity solid; trimesh, Euler −2 body/tray from rail and ledge channels) |
+| capacity | 1.04 L (analytic polygon×width) | 1.145 L (boolean cavity, matches analytic 1.147) | 1.065 L (seed-column solid exported and measured) | 1.030 L (cavity solid exported and measured: 132×60×130 box) |
+| slot | 130×54 | 50.2 (section at z=0.5) | 118×70 (sections at 3 heights) | 132×60, the whole open bottom of the bin (section at cavity floor) |
+| wall angle | 75.4° (from source dims) | 66.2° (every upward interior face measured) | 65° (min over every downward cavity normal) | 90° (8 cavity faces all vertical; a straight chute, the wedge limit — 3 sloped variants abandoned as unable to hold 1 L) |
+| wall ≥2.4 | **by arithmetic only** (nominal 3.0, oblique 2.83 computed by hand, not from mesh) | inward ray-march 8000 samples/part; sub-2.4 hits itemised (acute cuts, 1.2 mm rails) | 60k-sample ray-march; caveat: 6% of tray, ~1% of shell samples <2.4 at tangency seams, not all inspected | 9 point ray probes, one per wall, all 3.0–5.0; a 60k-sample ray-march of the STLs finds 2.0 mm at the clip webs, lid rails, lid grip ridge and tray-tab web (2 mm in the source), 0.6–0.8% of samples per part |
+| fit 140×170 / 12 mm bars | flange exactly 140×170, dimensional | bar-plane section 134.8×117; every bearing ≥1 bar pitch | plate 156×162 overlaps 8 mm/side; hooks 7 mm between bars; modelled cage render | plate 138×168 (1 mm clearance); 6 clips assume vertical Ø3 bars at X −6 and 144 — stated unverified against a real cage |
+| assembly clash | not checked | 10 pairwise booleans, all 0 mm³ | pairwise, pass | not checked; pairwise booleans on the shipped transforms: tray side walls run 8 mm into the bin's outer wall (144 mm³, the tray cannot slide in as modelled), lid sits 1 mm into its sill (384 mm³) |
+| printability | PrusaSlicer dry-run: sliced, **long-bridge warnings → recommends supports** | PrusaSlicer dry-run, supports OFF, all 5 clean; per-part overhang audit | no slicer; overhang % per part (≤0.6%, tray 4.3%) | no slicer; per-face down-facing area in the print orientation: body needs one 7,500 mm² support region under the bin's outer wall, tray 930 mm² under the perch, lid none |
+| layer lines along flow | body upright (claimed) | halves printed end-wall-down | shells split on midplane, side-wall-down (also zero-overhang walls) | body printed on its side (part X vertical), walls vertical so every flow wall is a layer plane |
+| self-caught defects | none reported | back wall 1.6 mm mid-run, 3 clashes, U-arm ceiling redesign | orientation/split problem (35 min), 7 CGAL-manifold fixes | non-manifold tangent unions (added 1 mm overlaps), tangent perch cylinder, lid drawn flat in the first render |
+| stated gaps | no physical print/flow; supports needed; wall by calc not mesh | square-cut body/lid edges, no lid detent, butt seam | tray runs brim-full (0.6 mm discharge gap), no slicer, perch load unanalysed | no slicer; cage-bar fit unverified; open-bottom bin drains into the cage when the tray is out; tray/bin interference not found |
 
 ## How each checked its work
 
 - **codex**: one `validate.py` (trimesh watertight + bbox) plus arithmetic from the source parameters for capacity, slot, angle, walls; then a real PrusaSlicer dry-run per part. Cheapest and fastest, but the wall-thickness and angle "checks" are restatements of the inputs, not measurements of the output. The slicer run was the one check that actually pushed back (bridges), and it reported that honestly.
 - **fable**: every requirement measured on the final STL, not the source: ray-march thickness with an edge-proximity filter, boolean cavity volume vs analytic, sections for slot and bar-plane fit, interior-face angle census, pairwise assembly booleans, overhang audit in the shipped print orientation, then a supports-off slicer run. Iterated: the checks found a 1.6 mm wall and three clashes and it fixed them.
+- **kimi**: verify_mesh.py (trimesh watertight, bbox, volume, Euler) and verify2.py: nine single-ray thickness probes at hand-picked points, cavity-solid volume for capacity, cavity face normals for the wall angle, vertex extents for fit, and per-face down-facing area for supports. Measures the STL, but only where it chose to look: one probe per wall misses the 2 mm clip webs and rails, and no assembly check means the tray-into-bin interference shipped. It did catch and fix non-manifold unions. Honest about the no-slicer, no-cage-fit gaps; the 90° "wedge" reads the spec's 60° minimum as satisfied by vertical walls.
 - **opus**: same measurement-first stance with the largest sample counts, plus an exported seed-volume solid and a modelled cage for fit; no slicer. Most explicit about what it did NOT prove (tangency-seam samples, brim-full tray, no beak model). Spent the most time, most of it on the print-orientation/part-split problem.
 
-Ranking by verification rigour: fable ≈ opus > codex. By time: codex ≪ fable < opus. Codex's 7-minute design is the one most likely to need a redesign after the first print (supports, unmeasured walls); fable's is the one that sliced clean support-free with measured walls.
+Ranking by verification rigour: fable ≈ opus > kimi > codex. By time: codex ≪ kimi ≈ fable < opus. Codex's 7-minute design is the one most likely to need a redesign after the first print (supports, unmeasured walls); fable's is the one that sliced clean support-free with measured walls; kimi's needs a tray or bin cut before it assembles at all.
