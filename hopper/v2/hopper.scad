@@ -38,7 +38,10 @@ y_fl1    = -bar_d;
 y_lip0   = y_fl1 - t;
 z_lidbot = H - 3;
 z_ledge  = z_lidbot - clr - t;
-y_lid0   = y_backT - th_y - run*t/H - 3;
+p_back0  = [y_back0-th_y, 0];
+p_backT  = [y_backT-th_y-run*t/H, z_roof];
+y_lid0   = p_backT[0] - 3;
+z_fl1    = 60;
 y_ledge0 = y_backT - th_y;
 y_plate0 = clr;
 y_plate1 = clr + plate_t;
@@ -55,12 +58,10 @@ perch_z  = -25;
 echo(wall_angle_deg=ang, slot_width=y_front-y_back0, through_w=2*x_out, through_h=z_roof, door_z0=z_door0);
 
 module prof_interior() polygon([[y_back0,0],[y_front,0],[y_front,H],[y_backT,H]]);
-module prof_outer()    polygon([[y_back0-th_y,0],[y_front+t,0],[y_front+t,z_roof],[y_backT-th_y-run*t/H,z_roof]]);
+module prof_outer()    polygon([p_back0,[y_front+t,0],[y_front+t,z_roof],p_backT]);
 module yz(x0,x1) translate([x0,0,0]) rotate([90,0,90]) linear_extrude(height=x1-x0) children();
-module outer_prism() yz(0,x_out) prof_outer();
 
-module outside_back_wall() { a=[y_back0-th_y,0]; b=[y_backT-th_y-run*t/H,z_roof]; polygon([a+3*(a-b), b-3*(a-b), [-300,4*z_roof], [-300,-3*z_roof]]); }
-module under_back_wall() yz(-200,200) outside_back_wall();
+module outside_back_wall() polygon([p_back0+3*(p_back0-p_backT), p_backT-3*(p_back0-p_backT), [-300,4*z_roof], [-300,-3*z_roof]]);
 
 module body() {
   difference() {
@@ -68,11 +69,11 @@ module body() {
       difference() {
         yz(-x_out,x_out) prof_outer();
         yz(-hw,hw) prof_interior();
-        translate([-hw-1, y_lid0-5, z_lidbot-clr]) cube([W_in+2, y_lip0-y_lid0+5, 50]);
+        translate([-hw, y_lid0-5, z_lidbot-clr]) cube([W_in, y_lip0-y_lid0+5, 50]);
       }
       intersection() {
-        translate([-x_out,y_fl0,z_fl0]) cube([2*x_out, plate_t, 60-z_fl0]);
-        under_back_wall();
+        translate([-x_out,y_fl0,z_fl0]) cube([2*x_out, plate_t, z_fl1-z_fl0]);
+        yz(-200,200) outside_back_wall();
       }
       translate([-x_out,y_lip0,z_ledge]) cube([2*x_out, t, z_roof-z_ledge]);
       for (s=[-1,1]) mirror([s<0?1:0,0,0]) intersection() {
@@ -81,7 +82,7 @@ module body() {
           translate([hw-4,y_ledge0-3,H]) cube([4+t, y_lip0-y_ledge0+3, t]);
           translate([hw-3,y_plate0-clr-t,0]) cube([3+t, plate_t+2*clr+2*t, z_roof]);
         }
-        outer_prism();
+        yz(0,x_out) prof_outer();
       }
     }
     for (s=[-1,1]) mirror([s<0?1:0,0,0]) translate([x_out-groove_d, y_plate0-clr, -1]) cube([groove_d+1, plate_t+2*clr, z_roof+2]);
@@ -91,7 +92,7 @@ module body() {
 module seam_lap(g) {
   difference() { offset(delta=1) prof_outer(); offset(delta=t/2+g) prof_interior(); }
   translate([y_lip0-1, z_ledge-1]) square([1+t/2-g, z_roof-z_ledge+2]);
-  intersection() { translate([y_fl0-1, z_fl0-1]) square([plate_t+1, 61-z_fl0]); outside_back_wall(); }
+  intersection() { translate([y_fl0-1, z_fl0-1]) square([plate_t+1, z_fl1-z_fl0+2]); outside_back_wall(); }
 }
 
 module body_half(tongue) intersection() {
@@ -104,6 +105,9 @@ module body_half(tongue) intersection() {
     if (!tongue) yz(seam_clr/2-1, seam_lap+seam_clr) seam_lap(0);
   }
 }
+
+module body_R() body_half(true);
+module body_L() mirror([1,0,0]) body_half(false);
 
 module lid() {
   z_hb1 = z_door1 + overlap;
@@ -153,18 +157,18 @@ module tray() {
 }
 
 module assembly() {
-  color("SteelBlue") body_half(true);
-  color("SteelBlue") mirror([1,0,0]) body_half(false);
+  color("SteelBlue") body_R();
+  color("SteelBlue") body_L();
   color("Orange") lid();
   color("SeaGreen") bracket();
   color("Gold") tray();
 }
 
-if (part=="body_R") body_half(true);
-if (part=="body_L") mirror([1,0,0]) body_half(false);
+if (part=="body_R") body_R();
+if (part=="body_L") body_L();
 if (part=="lid") lid();
 if (part=="bracket") bracket();
 if (part=="tray") tray();
 if (part=="assembly") assembly();
-if (part=="seam") intersection() { union() { translate([5,0,0]) body_half(true); translate([-5,0,0]) mirror([1,0,0]) body_half(false); } translate([-25,-200,50]) cube([50,400,10]); }
+if (part=="seam") intersection() { union() { translate([5,0,0]) body_R(); translate([-5,0,0]) body_L(); } translate([-25,-200,50]) cube([50,400,10]); }
 if (part=="section") intersection() { assembly(); translate([-400,-200,-200]) cube([400,400,400]); }
