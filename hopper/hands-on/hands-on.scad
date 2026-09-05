@@ -23,10 +23,10 @@ module perch_axis(x0, len) color("Red") translate([x0, 106.05, -25]) rotate([0, 
 
 if (view == "seam_corner") {
   assembly();
-  mark([67.4, -8.9, 121.5], [67.7, -2.5, 122], "Red");
+  mark([67.4, -8.9, 118], [67.7, -2.5, 121.2], "Red");
 } else if (view == "window_corner") {
   assembly();
-  mark([64.9, 0.3, 3.5], [65.2, 3.3, 4], "Red");
+  mark([64.9, 0.3, 0], [65.2, 3.3, 3.2], "Red");
 } else if (view == "perch_section") {
   assembly();
   mark([-0.25, 95.55, -34], [0.25, 96.05, 20], "Red");

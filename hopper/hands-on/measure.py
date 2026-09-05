@@ -51,13 +51,14 @@ r["body_flange_probe"] = probe(body_R, [0, -10, -30], [60, 0, -5])
 r["ridge_probe"] = probe(bracket, [-10, 104, -10], [10, 108, 0])
 r["body_L_shifted"] = {
     f"{k}{v:+}": {n: overlap(m, body_L, s) for n, m in [("lid", lid), ("bracket", bracket), ("tray", tray)]}
-    for k, v, s in [("x", -0.3, (-0.3, 0, 0)), ("x", -0.4, (-0.4, 0, 0)), ("y", 0.3, (0, 0.3, 0)), ("y", 0.4, (0, 0.4, 0)), ("y", -0.3, (0, -0.3, 0)), ("y", -0.4, (0, -0.4, 0))]
+    for k, v, s in [("x", -0.3, (-0.3, 0, 0)), ("x", -0.4, (-0.4, 0, 0)), ("y", 0.3, (0, 0.3, 0)), ("y", 0.4, (0, 0.4, 0)), ("y", 0.6, (0, 0.6, 0)), ("y", 1, (0, 1, 0)), ("y", -0.3, (0, -0.3, 0)), ("y", -0.4, (0, -0.4, 0))]
 }
 r["bracket_shifted_z"] = {str(dz): {n: overlap(m, bracket, (0, 0, dz)) for n, m in [("body_R", body_R), ("body_L", body_L), ("lid", lid)]} for dz in [0.4, 0.6, -0.5, -2, -6, -12]}
 r["bracket_bounds"] = np.round(bracket.bounds, 3).tolist()
 r["lid_shifted_minus_y"] = {str(dy): {n: overlap(m, lid, (0, -dy, 0)) for n, m in [("body_R", body_R), ("body_L", body_L), ("bracket", bracket)]} for dy in [1, 5, 20]}
 r["tray_shifted"] = {f"z+{dz}": {n: overlap(m, tray, (0, 0, dz)) for n, m in [("body_R", body_R), ("body_L", body_L), ("bracket", bracket)]} for dz in [3, 7]}
-r["tray_shifted"]["y+1"] = {n: overlap(m, tray, (0, 1, 0)) for n, m in [("body_R", body_R), ("bracket", bracket)]}
+for dy in [1, -1]:
+    r["tray_shifted"][f"y{dy:+}"] = {n: overlap(m, tray, (0, dy, 0)) for n, m in [("body_R", body_R), ("bracket", bracket)]}
 
 n = bracket.face_normals
 cyl = np.isclose(n[:, 0], 0, atol=1e-6) & ~np.isclose(n[:, 1], 0, atol=1e-6) & ~np.isclose(n[:, 2], 0, atol=1e-6)
