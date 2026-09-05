@@ -1,0 +1,12 @@
+{
+  "source": "src/hopper.scad",
+  "parts": {
+    "assembly": { "camera": [65, 0, 35] },
+    "shell_left": {},
+    "shell_right": {},
+    "mount": {},
+    "lid": {},
+    "tray": {},
+    "perch": {}
+  }
+}

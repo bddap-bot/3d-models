@@ -1,6 +1,6 @@
 # Comparison
 
-Four lanes delivered (codex, fable, opus, kimi). Kimi's own renders are matplotlib mesh plots (its sandbox had no OpenGL); the kimi panel in the montage is its `hopper.scad` rendered with OpenSCAD like the others, by `montage.sh`.
+Four lanes delivered (codex, fable, opus, kimi). Kimi's own renders are matplotlib mesh plots (its sandbox had no OpenGL); its `out/` previews are its `hopper.scad` rendered with OpenSCAD like the others.
 
 **Nobody chose FreeCAD, screenshots, or a GUI.** Every model went OpenSCAD source → STL → a Python mesh check, and rendered with OpenSCAD under xvfb or with matplotlib. A prescribed FreeCAD-by-screenshot loop, tried earlier, was strictly worse than what each model reached on its own.
 
