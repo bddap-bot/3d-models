@@ -8,5 +8,5 @@ jobs:
       - uses: cachix/install-nix-action@v31
       - run: ./build
       - run: |
-          git add -A
+          git add -Af .
           git diff --cached --stat --exit-code

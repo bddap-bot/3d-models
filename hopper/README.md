@@ -8,7 +8,7 @@ The same spec was handed to several models with no workflow or tools prescribed.
 |---|---|---|---|
 | ![codex](codex/out/assembly.png) | ![fable](fable/out/assembly.png) | ![opus](opus/out/assembly.png) | ![kimi](kimi/out/assembly.png) |
 
-| lane | model | wall | parts | source | report |
+| lane | model | time | parts | source | report |
 |---|---|---|---|---|---|
 | [codex/](codex) | gpt-5.6-sol | 7 min | 3 | [hopper.scad](codex/hopper.scad) | [REPORT.md](codex/REPORT.md) |
 | [fable/](fable) | claude-fable-5-1 | 31 min | 5 | [hopper.scad](fable/hopper.scad) | [REPORT.md](fable/REPORT.md) |

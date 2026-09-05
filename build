@@ -1,53 +1,52 @@
 #!/usr/bin/env nix-shell
 #!nix-shell shell.nix -i python3
 import json
+import math
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-PREVIEW_RMSE_MAX = 0.005
-DEFAULT_CAMERA = [55, 0, 25]
-NAME = re.compile(r"^[A-Za-z0-9_]+$")
+NAME = re.compile(r"[A-Za-z0-9_]+")
+REL_TOL = 1e-6
 
 
 def fail(manifest, msg):
     sys.exit(f"{manifest.relative_to(ROOT)}: {msg}")
 
 
-def is_number(x):
-    return isinstance(x, (int, float)) and not isinstance(x, bool)
+def unique_keys(pairs):
+    d = dict(pairs)
+    if len(d) != len(pairs):
+        raise ValueError("duplicate key")
+    return d
+
+
+def reject_constant(c):
+    raise ValueError(f"non-finite number {c}")
 
 
 def load(manifest):
     try:
-        data = json.loads(manifest.read_text())
+        data = json.loads(manifest.read_text(), object_pairs_hook=unique_keys, parse_constant=reject_constant)
     except ValueError as e:
         fail(manifest, f"invalid JSON: {e}")
     if not isinstance(data, dict) or set(data) != {"source", "parts"}:
         fail(manifest, 'must be an object with exactly the keys "source" and "parts"')
     source = manifest.parent / str(data["source"])
-    if not isinstance(data["source"], str) or not source.is_file():
-        fail(manifest, f'"source" must name an existing file, got {data["source"]!r}')
+    if not (isinstance(data["source"], str) and source.suffix == ".scad" and source.is_file() and manifest.parent.resolve() in source.resolve().parents):
+        fail(manifest, f'"source" must be a .scad under the manifest directory, got {data["source"]!r}')
     parts = data["parts"]
     if not isinstance(parts, dict) or not parts:
         fail(manifest, '"parts" must be a non-empty object keyed by part name')
-    for name, spec in parts.items():
-        if not NAME.match(name):
+    for name, camera in parts.items():
+        if not NAME.fullmatch(name):
             fail(manifest, f"part name {name!r} must match {NAME.pattern}")
-        if not isinstance(spec, dict) or not set(spec) <= {"define", "camera"}:
-            fail(manifest, f'part {name!r} may only have the keys "define" and "camera"')
-        define = spec.get("define", {"part": name})
-        if not isinstance(define, dict) or not define or not all(
-            isinstance(k, str) and isinstance(v, (str, int, float, bool)) for k, v in define.items()
-        ):
-            fail(manifest, f'part {name!r}: "define" must map variable names to strings, numbers or booleans')
-        camera = spec.get("camera", DEFAULT_CAMERA)
-        if not (isinstance(camera, list) and len(camera) == 3 and all(map(is_number, camera))):
-            fail(manifest, f'part {name!r}: "camera" must be three numbers [rotx, roty, rotz]')
-        parts[name] = (define, camera)
+        if not (isinstance(camera, list) and len(camera) == 3 and all(isinstance(c, (int, float)) and not isinstance(c, bool) for c in camera)):
+            fail(manifest, f"part {name!r} must be a camera [rotx, roty, rotz] in degrees")
     return source, parts
 
 
@@ -58,32 +57,53 @@ def openscad(source, out, *args):
     subprocess.run(cmd, check=True)
 
 
-def rmse(a, b):
-    r = subprocess.run(["magick", "compare", "-metric", "RMSE", str(a), str(b), "null:"], capture_output=True, text=True)
-    m = re.search(r"\(([\d.e+-]+)\)", r.stderr)
-    return float(m.group(1)) if r.returncode in (0, 1) and m else float("inf")
+def geometry(stl):
+    tri = []
+    for line in stl.read_text().splitlines():
+        if line.lstrip().startswith("vertex"):
+            tri.append(tuple(map(float, line.split()[1:4])))
+    volume = area = 0.0
+    for i in range(0, len(tri), 3):
+        (ax, ay, az), (bx, by, bz), (cx, cy, cz) = tri[i : i + 3]
+        nx, ny, nz = (by - ay) * (cz - az) - (bz - az) * (cy - ay), (bz - az) * (cx - ax) - (bx - ax) * (cz - az), (bx - ax) * (cy - ay) - (by - ay) * (cx - ax)
+        area += math.sqrt(nx * nx + ny * ny + nz * nz) / 2
+        volume += (ax * (by * cz - bz * cy) + ay * (bz * cx - bx * cz) + az * (bx * cy - by * cx)) / 6
+    bbox = [f(v[k] for v in tri) for f in (min, max) for k in range(3)] if tri else [0.0] * 6
+    return {"volume": volume, "area": area, "bbox": bbox}
+
+
+def same(a, b):
+    close = lambda x, y: math.isclose(x, y, rel_tol=REL_TOL, abs_tol=REL_TOL)
+    return close(a["volume"], b["volume"]) and close(a["area"], b["area"]) and all(map(close, a["bbox"], b["bbox"]))
 
 
 def build(manifest):
     source, parts = load(manifest)
     out = manifest.parent / "out"
     out.mkdir(exist_ok=True)
-    keep = set()
-    for name, (define, camera) in parts.items():
-        stl, png = out / f"{name}.stl", out / f"{name}.png"
-        keep |= {stl, png}
-        print(stl.relative_to(ROOT), flush=True)
-        openscad(source, stl, *(f"-D{k}={json.dumps(v)}" for k, v in define.items()))
-        with tempfile.TemporaryDirectory() as tmp:
-            scene, fresh = Path(tmp) / "preview.scad", Path(tmp) / png.name
+    keep, seen = set(), {}
+    with tempfile.TemporaryDirectory() as tmp:
+        for name, camera in parts.items():
+            stl, png = out / f"{name}.stl", out / f"{name}.png"
+            keep |= {stl, png}
+            fresh = Path(tmp) / stl.name
+            openscad(source, fresh, f'-Dpart="{name}"')
+            g = geometry(fresh)
+            if not g["area"]:
+                fail(manifest, f"part {name!r} exported no geometry")
+            for other, og in seen.items():
+                if same(g, og):
+                    fail(manifest, f"parts {other!r} and {name!r} export the same geometry")
+            seen[name] = g
+            if not stl.exists() or not same(g, geometry(stl)):
+                print(stl.relative_to(ROOT), json.dumps(g), flush=True)
+                shutil.move(fresh, stl)
+            scene = Path(tmp) / "preview.scad"
             scene.write_text(f"import({json.dumps(str(stl))});\n")
-            openscad(scene, fresh, "--camera=0,0,0,%g,%g,%g,500" % tuple(camera), "--viewall", "--autocenter", "--imgsize=1200,900", "--projection=p")
-            if not png.exists() or rmse(png, fresh) > PREVIEW_RMSE_MAX:
-                print(png.relative_to(ROOT), flush=True)
-                fresh.replace(png)
+            openscad(scene, png, "--camera=0,0,0,%s,500" % ",".join(map(str, camera)), "--viewall", "--autocenter", "--imgsize=1200,900", "--projection=p")
     for stale in out.iterdir():
         if stale not in keep:
-            stale.unlink()
+            shutil.rmtree(stale) if stale.is_dir() else stale.unlink()
 
 
 manifests = sorted(ROOT.rglob("model.json"))

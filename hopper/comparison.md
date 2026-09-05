@@ -6,7 +6,7 @@ Four lanes delivered (codex, fable, opus, kimi). Kimi's own renders are matplotl
 
 | | codex (gpt-5.6-sol) | fable 5.1 | opus 5 | kimi-k3 |
 |---|---|---|---|---|
-| wall | 7 min | 31 min | 75 min | 30 min |
+| time | 7 min | 31 min | 75 min | 30 min |
 | parts | 3 (body, lid, tray+perch) | 5 (2 mirror body halves, lid, bracket, tray) | 6 (mount plate, 2 shells, lid, tray, perch) | 3 (body = door plate + bin + bar clips, lid, tray+perch) |
 | tools | OpenSCAD, trimesh, PrusaSlicer 2.9.4, Xvfb | OpenSCAD, trimesh+manifold3d, PrusaSlicer | OpenSCAD, trimesh+manifold3d, xvfb/llvmpipe | OpenSCAD, trimesh+numpy, matplotlib (no GL in its sandbox) |
 | watertight | 3/3 (trimesh) | 5/5 + Euler 2, 0 internal faces | 6/6 (+ mount Euler −2 explained: 2 holes) | 4/4 (body, lid, tray, cavity solid; trimesh, Euler −2 body/tray from rail and ledge channels) |

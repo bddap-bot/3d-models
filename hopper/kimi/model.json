@@ -1,9 +1,9 @@
 {
   "source": "hopper.scad",
   "parts": {
-    "assembly": { "camera": [65, 0, 215] },
-    "body": {},
-    "lid": {},
-    "tray": {}
+    "assembly": [65, 0, 215],
+    "body": [55, 0, 25],
+    "lid": [55, 0, 25],
+    "tray": [55, 0, 25]
   }
 }
