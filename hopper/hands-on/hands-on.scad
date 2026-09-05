@@ -18,20 +18,25 @@ module assembly() {
   part("bracket", "SeaGreen", 3, -drop);
   part("tray", "Gold", 4, -drop);
 }
-module perch_axis(len) color("Red") translate([-len / 2, 106.05, -25]) rotate([0, 90, 0]) cylinder(d = 2, h = len, $fn = 24);
-module mark_y(y, z0, z1, c) color(c) translate([-0.25, y - 0.25, z0]) cube([0.5, 0.5, z1 - z0]);
-module mark_z(z, y0, y1, c) color(c) translate([-0.25, y0, z - 0.25]) cube([0.5, y1 - y0, 0.5]);
+module mark(lo, hi, c) color(c) translate(lo) cube(hi - lo);
+module perch_axis(x0, len) color("Red") translate([x0, 106.05, -25]) rotate([0, 90, 0]) cylinder(d = 2, h = len, $fn = 24);
 
-if (view == "perch_section") {
+if (view == "seam_corner") {
   assembly();
-  mark_y(95.8, -34, 20, "Red");
-  mark_y(103.8, -34, 20, "Black");
-  mark_z(20, 80, 120, "Red");
-  mark_z(-17, 80, 120, "Black");
-  color("Red") translate([30.5, 106.05, -25]) rotate([0, 90, 0]) cylinder(d = 2, h = 1, $fn = 24);
+  mark([67.4, -8.9, 121.5], [67.7, -2.5, 122], "Red");
+} else if (view == "window_corner") {
+  assembly();
+  mark([64.9, 0.3, 3.5], [65.2, 3.3, 4], "Red");
+} else if (view == "perch_section") {
+  assembly();
+  mark([-0.25, 95.55, -34], [0.25, 96.05, 20], "Red");
+  mark([-0.25, 103.55, -34], [0.25, 104.05, 20], "Black");
+  mark([-0.25, 80, 19.75], [0.25, 120, 20.25], "Red");
+  mark([-0.25, 80, -17.25], [0.25, 120, -16.75], "Black");
+  perch_axis(30.5, 1);
 } else if (view == "perch_axis") {
   assembly();
-  perch_axis(260);
+  perch_axis(-130, 260);
 } else if (view == "bracket_print") {
   rotate([0, -90, 0]) translate([-82.7, 0, 0]) part("bracket", "SeaGreen", 0);
 } else {

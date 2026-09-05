@@ -3,7 +3,6 @@
   "body_R_xmin": 0.0,
   "body_L_xmax": 0.0,
   "seam_plane_face_area_mm2": 917.1,
-  "body_R_minus_x_faces_off_plane": 14,
   "parts_crossing_seam": [
    "lid",
    "bracket",
@@ -62,8 +61,20 @@
    ]
   ]
  },
+ "bracket_tab_in_groove_probe": [
+  [
+   64.9,
+   0.3,
+   -1.0
+  ],
+  [
+   67.4,
+   3.3,
+   5.7
+  ]
+ ],
  "lid_slot_probe": {
-  "body_R": [
+  "lower_ledge": [
    [
     61.0,
     -30.0,
@@ -72,10 +83,22 @@
    [
     64.0,
     -20.0,
+    116.7
+   ]
+  ],
+  "upper_ledge": [
+   [
+    61.0,
+    -30.0,
+    120.0
+   ],
+   [
+    64.0,
+    -20.0,
     122.4
    ]
   ],
-  "lid": [
+  "lid_plate": [
    [
     61.0,
     -30.0,
@@ -88,14 +111,60 @@
    ]
   ]
  },
- "body_L_shifted_minus_x": {
-  "0.3": {
+ "body_flange_probe": [
+  [
+   0.0,
+   -5.5,
+   -30.0
+  ],
+  [
+   60.0,
+   -2.5,
+   -5.0
+  ]
+ ],
+ "ridge_probe": [
+  [
+   -10.0,
+   104.3,
+   -10.0
+  ],
+  [
+   10.0,
+   107.3,
+   -3.0
+  ]
+ ],
+ "body_L_shifted": {
+  "x-0.3": {
    "lid": 0.0,
-   "bracket": 0.0
+   "bracket": 0.0,
+   "tray": 0.0
   },
-  "0.4": {
+  "x-0.4": {
    "lid": 3.456,
-   "bracket": 0.606
+   "bracket": 0.606,
+   "tray": 0.0
+  },
+  "y+0.3": {
+   "lid": 0.0,
+   "bracket": 0.0,
+   "tray": 0.0
+  },
+  "y+0.4": {
+   "lid": 0.0,
+   "bracket": 0.002,
+   "tray": 0.0
+  },
+  "y-0.3": {
+   "lid": 0.0,
+   "bracket": 0.0,
+   "tray": 0.0
+  },
+  "y-0.4": {
+   "lid": 33.738,
+   "bracket": 1.012,
+   "tray": 0.0
   }
  },
  "bracket_shifted_z": {
@@ -160,11 +229,6 @@
   }
  },
  "tray_shifted": {
-  "z+1": {
-   "body_R": 0.131,
-   "body_L": 0.131,
-   "bracket": 0.0
-  },
   "z+3": {
    "body_R": 73.561,
    "body_L": 73.603,
@@ -178,19 +242,12 @@
   "y+1": {
    "body_R": 0.0,
    "bracket": 471.804
-  },
-  "y+1_z+7": {
-   "body_R": 50.497,
-   "bracket": 0.0
   }
  },
  "perch": {
   "axis_y": 106.05,
   "axis_z": -25.001,
-  "radius_min_max": [
-   7.986,
-   8.001
-  ],
+  "radius": 8.001,
   "axis_dir_xyz": [
    1.0,
    0.0,
@@ -206,8 +263,7 @@
  "tray_front_x30": {
   "outer_face_y": 103.8,
   "lip_tip_y": 95.8,
-  "lip_top_z": 20.0,
-  "floor_z": -10.0
+  "lip_top_z": 20.0
  },
  "perch_vs_lip": {
   "axis_forward_of_outer_face": 2.25,
