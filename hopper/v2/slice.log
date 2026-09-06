@@ -27,14 +27,14 @@ Slicing result exported to print_lid.gcode
 88 => Generating skirt and brim
 90 => Exporting G-code to print_bracket.gcode
 Slicing result exported to print_bracket.gcode
-; filament used [g] = 118.31
-; estimated printing time (normal mode) = 9h 4m 35s
-; estimated printing time (silent mode) = 9h 15m 28s
+; filament used [g] = 118.38
+; estimated printing time (normal mode) = 9h 5m 36s
+; estimated printing time (silent mode) = 9h 16m 29s
 == tray
 89 => Calculating overhanging perimeters
 88 => Generating skirt and brim
 90 => Exporting G-code to print_tray.gcode
 Slicing result exported to print_tray.gcode
-; filament used [g] = 70.29
-; estimated printing time (normal mode) = 6h 33m 19s
-; estimated printing time (silent mode) = 6h 35m 26s
+; filament used [g] = 70.64
+; estimated printing time (normal mode) = 6h 34m 45s
+; estimated printing time (silent mode) = 6h 37m 5s

@@ -101,7 +101,7 @@
   "watertight": true,
   "winding_consistent": true,
   "euler": 2,
-  "volume_mm3": 125452.4,
+  "volume_mm3": 125656.6,
   "extents_mm": [
    165.4,
    151.5,
@@ -111,14 +111,19 @@
   "thickness_ray_mm": {
    "n": 8000,
    "min_all": 0.05,
-   "below_2.4_all": 31,
-   "below_2.4_farther_than_1mm_from_any_convex_edge": 3,
+   "below_2.4_all": 30,
+   "below_2.4_farther_than_1mm_from_any_convex_edge": 5,
    "of_those_in_the_seam_lap": 0,
    "min_in_the_seam_lap": null,
-   "min_away_from_edges_outside_the_lap": 1.03,
+   "min_away_from_edges_outside_the_lap": 1.01,
    "median": 3.0
   },
   "thin_sample_points_outside_the_lap": [
+   [
+    72.3,
+    95.1,
+    -9.9
+   ],
    [
     72.3,
     69.3,
@@ -127,6 +132,11 @@
    [
     -72.3,
     65.7,
+    -9.8
+   ],
+   [
+    -72.3,
+    70.0,
     -9.8
    ],
    [
@@ -141,7 +151,7 @@
   "watertight": true,
   "winding_consistent": true,
   "euler": 2,
-  "volume_mm3": 64544.1,
+  "volume_mm3": 65196.3,
   "extents_mm": [
    144.0,
    100.0,
@@ -150,54 +160,54 @@
   "max_extent_ok_175": true,
   "thickness_ray_mm": {
    "n": 8000,
-   "min_all": 0.97,
-   "below_2.4_all": 17,
-   "below_2.4_farther_than_1mm_from_any_convex_edge": 14,
+   "min_all": 0.17,
+   "below_2.4_all": 16,
+   "below_2.4_farther_than_1mm_from_any_convex_edge": 12,
    "of_those_in_the_seam_lap": 0,
    "min_in_the_seam_lap": null,
-   "min_away_from_edges_outside_the_lap": 2.17,
+   "min_away_from_edges_outside_the_lap": 2.33,
    "median": 2.4
   },
   "thin_sample_points_outside_the_lap": [
    [
-    71.1,
-    100.8,
-    8.2
-   ],
-   [
     68.8,
-    103.0,
-    9.4
+    4.6,
+    -4.5
    ],
    [
-    -68.7,
-    4.5,
-    -5.4
+    -72.0,
+    98.1,
+    -1.2
    ],
    [
-    -66.5,
-    103.7,
-    -1.7
+    71.2,
+    100.6,
+    6.8
    ],
    [
-    -68.5,
-    4.4,
-    -3.6
+    68.6,
+    103.1,
+    -2.2
    ],
    [
-    -69.0,
-    102.9,
-    2.8
+    68.5,
+    103.2,
+    7.1
    ],
    [
-    66.5,
-    3.9,
-    -5.1
+    71.3,
+    100.5,
+    1.0
    ],
    [
-    -66.6,
-    102.2,
-    -9.1
+    71.2,
+    100.7,
+    3.4
+   ],
+   [
+    -71.3,
+    100.4,
+    -1.9
    ]
   ],
   "internal_faces": 0
@@ -233,7 +243,7 @@
   "prism_bounds": [
    [
     -65.0,
-    -49.1,
+    -49.2,
     0.0
    ],
    [
@@ -247,7 +257,7 @@
  },
  "capacity_analytic_L": 1.149,
  "interior_upward_facing_faces__angle_from_horizontal__area_mm2": {
-  "66.2 deg": 17360.2
+  "66.2 deg": 17359.4
  },
  "assembly_pairwise_intersection_volume_mm3": {
   "body_R∩body_L": 0.0,
@@ -359,7 +369,7 @@
    ],
    "height_mm": 151.5,
    "downward_faces_off_bed_area_mm2_by_overhang": {
-    "45-60 deg from vertical-down": 3755.2,
+    "45-60 deg from vertical-down": 3826.0,
     "60-75 deg from vertical-down": 692.4,
     "75-90 deg from vertical-down": 692.4,
     "30-45 deg from vertical-down": 284.9
