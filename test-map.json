@@ -1,0 +1,13 @@
+{
+  "rules": [
+    {
+      "paths": [
+        "**"
+      ],
+      "tests": [
+        "./build"
+      ],
+      "why": "the repository build validates every model manifest and its generated artifacts"
+    }
+  ]
+}
