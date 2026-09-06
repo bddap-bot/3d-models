@@ -47,19 +47,27 @@ module stadium(width, depth, height) {
             translate([x, 0, 0]) cylinder(d = depth, h = height);
 }
 
-module body() {
+module disc() {
     difference() {
-        union() {
-            cylinder(d = base_diameter, h = base_thickness);
-            translate([0, 0, base_thickness]) stadium(pad_width, pad_depth, pad_height);
-        }
+        cylinder(d = base_diameter, h = base_thickness);
         for (a = [0 : 15 : 345])
             translate([ring_radius * cos(a), ring_radius * sin(a), base_thickness - socket_depth])
                 cylinder(d1 = socket_tip_diameter, d2 = socket_top_diameter, h = socket_depth + 0.01);
+    }
+}
+
+module bottle_pad() {
+    difference() {
+        translate([0, 0, base_thickness]) stadium(pad_width, pad_depth, pad_height);
         for (x = [-bottle_spacing / 2, bottle_spacing / 2])
             translate([x, 0, base_thickness + pad_height - bottle_well_depth])
                 cylinder(d = bottle_well_diameter, h = bottle_well_depth + 0.02);
     }
+}
+
+module body() union() {
+    disc();
+    bottle_pad();
 }
 
 module number_glyph(value, index) {
@@ -102,7 +110,8 @@ module context_objects() {
 }
 
 module assembly() {
-    color("#D3B7A7") body();
+    color("#D3B7A7") render() disc();
+    color("#D3B7A7") render() bottle_pad();
     color("#0085D5") number_set(0);
     color("#057748") number_set(12);
     if (show_context) context_objects();

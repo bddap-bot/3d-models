@@ -18,7 +18,7 @@ The source evaluates all 24 socket centers with OpenSCAD `assert` statements. Fo
 
 The photograph shows one ring of 24 holes. The apparent second ring in revision 2 was the central pad covering those inner holes. The two syringe tips in the photograph terminate in front ring holes; their tall barrels project inward in perspective. No distinct parking sockets are visible in the pad, so this model adds none.
 
-The outside labels are blue 1–12 for AM and green 1–12 for PM. Bold Liberation Sans glyphs are 6 mm high with a 0.3 mm outline expansion, giving at least 1.2 mm strokes, and are raised 1 mm. `img_top3.png` is an orthographic near-top view rendered at approximately 10 pixels per millimeter across the 126 mm body, with a five-degree elevation solely to expose the shallow pad and well edges.
+The outside labels are blue 1–12 for AM and green 1–12 for PM. Bold Liberation Sans glyphs are 6 mm high with a 0.3 mm outline expansion, giving at least 1.2 mm strokes, and are raised 1 mm. `img_top3b.png` is a straight-down orthographic view rendered at 10 pixels per millimeter across the 126 mm body (0.1 mm per pixel). The shared `render` entry point sends the top, oblique, and loaded views through the same color-preserving `assembly()` scene, and the body keeps the disc and pad differences separate so the top view cannot lose raised detail to coplanar preview ordering.
 
 ## Print plan
 

@@ -1,0 +1,24 @@
+#!/usr/bin/env nix-shell
+#!nix-shell ../shell.nix -i python3
+import subprocess
+import sys
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+VIEWS = {
+    "top": ("img_top3b.png", False, "0,0,10,1,0,0,332.2", "1320,1320"),
+    "oblique": ("img_oblique3b.png", False, "0,0,10,55,0,25,500", "1200,900"),
+    "loaded": ("img_loaded3b.png", True, "0,0,50,65,0,25,500", "1200,900"),
+}
+
+names = sys.argv[1:] or ["top"]
+if any(name not in VIEWS for name in names):
+    sys.exit(f"usage: {Path(sys.argv[0]).name} [{'|'.join(VIEWS)} ...]")
+for name in names:
+    output, context, camera, size = VIEWS[name]
+    command = [
+        "xvfb-run", "-a", "openscad", "-q", "-o", str(HERE / output),
+        '-Dpart="assembly"', f"-Dshow_context={'true' if context else 'false'}",
+        f"--camera={camera}", f"--imgsize={size}", "--projection=o",
+    ]
+    subprocess.run(command + [str(HERE / "med-tracker.scad")], check=True)
