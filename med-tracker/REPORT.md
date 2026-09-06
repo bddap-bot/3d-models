@@ -1,31 +1,29 @@
 # Infant medicine dose dial
 
-Directive (verbatim): "That medication organizer that was printing on rainbows way bigger than I expected. I canceled the print job. Have a worker re-examine The source image and note these are small medication bottles. Should be able to see the brand names. We don't need separate pegs. The syringes pictured are what go in the clock holes."
+Directive (verbatim): "That model has issues. Kill the print job. I'll clear the print bed later for a reprint. In the meantime, many of the holes are covered, they'll need some clearance to fit those syringes. Let's make those holes a little deeper too to be safe. They look shallow."
 
-## Photo scale and geometry
+## Revision 3 geometry
 
-The source photograph identifies 1 fl oz / 30 mL Infants' TYLENOL and Infants' MOTRIN Concentrated Drops bottles. DailyMed's current product records confirm both 30 mL presentations and their enclosed dosing syringes: [TYLENOL NDC 50580-433](https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=2143cc16-86db-4060-96da-5c228ae9207b) and [MOTRIN NDC 50580-198](https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c57f6ded-c0bd-45ae-823a-4c02ce334d98). The [TYLENOL package artwork](https://dailymed.nlm.nih.gov/dailymed/getFile.cfm?setid=2143cc16-86db-4060-96da-5c228ae9207b&type=pdf) includes a side-panel actual-size bottle view. Measuring that scale reference gives approximately 34.5 mm across the cylindrical body and 74 mm to the cap top; those dimensions are used here rather than the much larger revision-1 visual assumption.
+The support-free body is a 126 mm diameter disc with a flat bottom. The ring area is 14 mm thick. Its only socket ring has 24 positions at a 47 mm radius. The central bottle pad is a 77 × 41 mm stadium, 7 mm above the disc, and follows the compact rounded shape visible in the photograph. Its two 35 mm diameter wells are 5 mm deep, have 0.5 mm diametral clearance around the modeled 34.5 mm bottle bodies, and retain a 3 mm outside rim and 2 mm floor.
 
-Measured on the source image at the shared front plane, the dial is about 3.13 bottle-body widths across. Using the 34.5 mm body ruler gives 107.99 mm, rounded to a 108 mm modeled diameter. The same image reading places the two socket rings at about 0.31 and 0.40 dial diameters in radius, represented by 34 and 43 mm radii. The socket mouth is about one quarter of a bottle width, represented by 8.6 mm. The numeral cap height is about 0.17 bottle width, represented by 6 mm.
+The 126 mm diameter is set by the outside numeral band: a 47 mm socket radius, 7 mm barrel radius, 1.5 mm required gap, 3.3 mm radial numeral half-height and outline, and a small outside edge margin. The pad alone would not require a disc this large. The result remains below the 140 mm cap.
 
-The body is a 108 mm diameter × 10 mm disk with a flat bottom. Its raised 76 × 50 × 14 mm platform holds two 35 mm diameter × 5 mm deep bottle wells. A 34.5 mm bottle therefore has 0.5 mm diametral clearance. Overall height is 24 mm, and every surface prints without support.
+## Socket clearance proof
 
-## Syringe sockets and ring reading
+Each blind socket is a 12 mm self-centering cone, 8.6 mm at the disc surface and 4.5 mm at its floor. The 14 mm disc leaves exactly 2 mm of tan below every socket. A 6 mm syringe nose enters the cone while its 14 mm barrel stands above the surface; the context model also includes the 20 mm top flange at 90 mm.
 
-There are no separate markers. The bundled 5 mL oral syringes are the markers and stand tip-down in the selected clock sockets. Each of the 48 blind sockets is an 8 mm deep cone, 8.6 mm at the surface tapering to 4.5 mm at its floor. That range accepts the approximately 4–6 mm nose while the broad mouth guides either approximately 12–14 mm barrel toward center; the blind floor and cone support a syringe upright without depending on a precise press fit.
+The source evaluates all 24 socket centers with OpenSCAD `assert` statements. For each position it computes planar clearance from the 14 mm barrel envelope to the exact stadium footprint, both 34.5 mm bottle envelopes, and the conservative inner edge of the complete numeral band. The minimum is 1.5 mm, occurring at the pad ends and numeral band. The nearest bottle clearance is 4.75 mm. The flange is above the 74 mm bottles and the 1 mm numerals, so it has no vertical intersection with either.
 
-The photograph supports two complete concentric rings of 24 positions. Each ring is numbered 1–12 twice around the day: blue is AM and green is PM. The inner ring provides an independent last-dose position for one medicine and the outer ring for the other, so both bottles can be tracked without resetting or sharing a socket.
+## Photo reading and labels
 
-## Legibility and color
+The photograph shows one ring of 24 holes. The apparent second ring in revision 2 was the central pad covering those inner holes. The two syringe tips in the photograph terminate in front ring holes; their tall barrels project inward in perspective. No distinct parking sockets are visible in the pad, so this model adds none.
 
-The 24 rim labels use 6 mm bold Liberation Sans glyphs with a 0.3 mm outline expansion, producing at least 1.2 mm strokes, and 1 mm raised relief. This is the largest type that keeps two-digit labels inside the 108 mm rim while clearing the outer sockets. `img_top2.png` is rendered at exactly 10 pixels per millimeter: its 1080-pixel body diameter corresponds to the true 108 mm print, allowing legibility to be judged at a known scale rather than by an arbitrary zoom.
-
-Logical extruder 1 is the tan body, logical extruder 2 is blue AM type, and logical extruder 3 is green PM type. They map to AMS slots 2, 1, and 4. All used slots are PLA; slot 3 PETG remains unused.
+The outside labels are blue 1–12 for AM and green 1–12 for PM. Bold Liberation Sans glyphs are 6 mm high with a 0.3 mm outline expansion, giving at least 1.2 mm strokes, and are raised 1 mm. `img_top3.png` is an orthographic near-top view rendered at approximately 10 pixels per millimeter across the 126 mm body, with a five-degree elevation solely to expose the shallow pad and well edges.
 
 ## Print plan
 
-The single support-free A1 mini plate is sliced at 0.20 mm layer height, three walls, and 15% sparse infill. Estimated print time is 2 h 36 m 36 s. Estimated filament is 59.46 g tan, 0.33 g blue, and 0.67 g green, 60.46 g total. The plate contains `T0`, `T1`, and `T2` changes and identifies the three used filaments as PLA in `#D3B7A7`, `#0085D5`, and `#057748`.
+The A1 mini plate uses the 0.20 mm standard profile, three walls, 15% sparse infill, and no supports. Logical extruder 1 is tan PLA, logical extruder 2 is blue PLA, and logical extruder 3 is green PLA; they map to AMS slots 2, 1, and 4. Slot 3 PETG is unused. The slice estimates 2 h 42 m 32 s and 71.91 g tan, 0.33 g blue, and 0.67 g green, 72.91 g total.
 
-## Revision 2 changes and fit risks
+## Changes and fit risks
 
-Revision 2 reduces the body from 158 to 108 mm, removes all four peg solids and peg plate placements, changes the tracking holes into self-centering syringe sockets, reduces and reflows the platform around the small 30 mL bottles, and replaces all three shipped views with newly named revision-2 renders. The open fit risks are the exact bottle molding and label thickness, syringe nose taper, first-layer dimensional expansion, and printer-specific XY compensation. The 0.5 mm diametral well clearance is intentionally modest; test one bottle and one syringe before committing to a long unattended print.
+Revision 3 deletes the obstructed inner ring, replaces the tall rectangular platform with the minimal 7 mm stadium pad, moves the remaining sockets to a clearance-proven radius, deepens them from 8 to 12 mm, thickens the socket floor to 2 mm, and adds new revision-3 renders including six worst-axis syringe envelopes. Open fit risks are package molding and label thickness, syringe nose taper, first-layer expansion, and printer-specific XY compensation. The 0.5 mm diametral bottle clearance is intentionally close; test the exact bottles and syringes before routine use.
