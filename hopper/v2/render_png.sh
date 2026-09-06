@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd "$(dirname "$0")"
-R=(--autocenter --imgsize=1400,1000 --projection=p)
+R=(--autocenter "--imgsize=1400,1000" --projection=p)
 openscad -q -D 'part="assembly"' --camera=0,0,50,65,0,35,470 "${R[@]}" -o img_assembly_front.png hopper.scad
 openscad -q -D 'part="assembly"' --camera=0,0,50,65,0,215,470 "${R[@]}" -o img_assembly_back.png hopper.scad
 openscad -q -D 'part="section"'  --camera=0,40,40,90,0,90,470 --projection=o --autocenter --imgsize=1400,1000 -o img_assembly_section.png hopper.scad
