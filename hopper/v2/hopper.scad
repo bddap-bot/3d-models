@@ -89,7 +89,7 @@ module body() {
   }
 }
 
-module seam_lap(g) {
+module lap(g) {
   difference() { offset(delta=1) prof_outer(); offset(delta=t/2+g) prof_interior(); }
   translate([y_lip0-1, z_ledge-1]) square([1+t/2-g, z_roof-z_ledge+2]);
   intersection() { translate([y_fl0-1, z_fl0-1]) square([plate_t+1, z_fl1-z_fl0+2]); outside_back_wall(); }
@@ -100,9 +100,9 @@ module body_half(tongue) intersection() {
   difference() {
     union() {
       yz(seam_clr/2, x_out+1) square(1000, center=true);
-      if (tongue) yz(-seam_lap, seam_clr/2) seam_lap(seam_clr);
+      if (tongue) yz(-seam_lap, seam_clr/2) lap(seam_clr);
     }
-    if (!tongue) yz(seam_clr/2-1, seam_lap+seam_clr) seam_lap(0);
+    if (!tongue) yz(seam_clr/2-1, seam_lap+seam_clr) lap(0);
   }
 }
 

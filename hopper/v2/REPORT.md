@@ -16,7 +16,7 @@ Directive (verbatim): "it's not realy clear how this fable bird hopper submissio
 
 **Why a lap and not:** a tongue-and-groove (a groove in a 2.4 mm wall leaves 0.6 mm cheeks; the tongue would be under 1 mm anyway); a cover strip (a sixth part, and the seam is still a butt joint under it); a full nesting sleeve (one half's cavity shrinks by a wall thickness, the halves stop being mirror images and the flow section steps at the seam); pins (extra parts, no seal). The lap is the one joint that seals, locates, needs no new part, and in the existing print orientation is nothing but a wall that stops 6 mm short or runs 6 mm long.
 
-**In the source** the joint is one 2D feature, `seam_lap(g)`: the outer half of the body's cross-section (outer profile minus the interior profile offset by `t/2 + g`, plus the lip's outer half and the flange). `body_half(tongue)` intersects the full `body()` with the half-space beyond the seam plane, unions `seam_lap(seam_clr)` over the tongue's length for `body_R`, or subtracts `seam_lap(0)` over the pocket's length for `body_L`. `seam_clr` and `seam_lap` are the only new parameters.
+**In the source** the joint is one 2D feature, `lap(g)`: the outer half of the body's cross-section (outer profile minus the interior profile offset by `t/2 + g`, plus the lip's outer half and the flange). `body_half(tongue)` intersects the full `body()` with the half-space beyond the seam plane, unions `lap(seam_clr)` over the tongue's length for `body_R`, or subtracts `lap(0)` over the pocket's length for `body_L`. `seam_clr` and `seam_lap` are the only new parameters.
 
 **Parts (5):**
 
@@ -35,7 +35,7 @@ Directive (verbatim): "it's not realy clear how this fable bird hopper submissio
 1. Restructured the source so the whole body is one `body()` and a half is `body()` cut by a seam shape, then wrote the lap as a 2D cross-section feature applied over a length in X. A plain minimum-distance check between the halves could not serve as the seam-gap check: at the tongue's root a 0.2 mm step faces down a 6 mm channel, so a ray across the seam reads 6.3 mm there, and the Euclidean closest-point distance reads 0.28 mm at re-entrant corners. The check that measures what matters (can anything wider than the clearance sit anywhere in the void) is the widest square that fits in the seam void, from a 0.01 mm raster of the two halves' sections.
 2. First lap put the flange's outer half on the tongue and its inner half on the pocket side; the wall's tongue then rested on the flange's inner half with zero clearance (manifold reported a 5e-5 mm³ contact). Moved the whole flange to the tongue side.
 3. The pocket cutter's outer boundary coincided with the body's outer face and CGAL left a zero-thickness sheet on `body_L` (one internal face, +1460 mm² of surface). The cutter now extends 1 mm past the outer face.
-4. The flange's rectangle in `seam_lap` swept up into the back wall where the wall crosses the flange's Y range, making the wall's tongue full-thickness for a few mm of height. Bounded it by the wall's outer face, the same half-plane that trims the flange itself.
+4. The flange's rectangle in `lap` swept up into the back wall where the wall crosses the flange's Y range, making the wall's tongue full-thickness for a few mm of height. Bounded it by the wall's outer face, the same half-plane that trims the flange itself.
 5. Section renders of a CSG intersection in preview mode show z-fighting; the seam figure is a full `--render`.
 6. Rewriting the half-body as one full `body()` widened the lid-channel cut from X ∈ [−2, 65] to X ∈ [−66, 66], shaving 1 mm off each end wall above the lid (a 1.4 mm sliver, 22 thin samples on each half). The thickness audit caught it once the lap's own sub-2.4 samples were split out of the count; the cut now ends at the end walls' inner faces.
 7. A butt-gap readout from section vertices (`min x > −lap/2` on one half against `max x` on the other) picked a triangulation crossing on the front wall (−2.9 mm); deleted. The raster seam-void check already measures the butt gap.
@@ -53,13 +53,13 @@ Coordinates: X across the door, Y through it (negative = outside cage, bars at Y
 - Walls: 2.4 mm plates everywhere on the body, lid and tray, except the lap skins (1.0 / 1.2 mm over the 6 mm lap); bracket plate 3.0; lid headboard 4.0 + 2.4; perch Ø16 solid.
 - Tray and perch unchanged from fable.
 
-Files: `hopper.scad` (source; `part=` selects; `part="seam"` is the exploded seam section), `out/` (STL + preview per part, written by the root `./build`), `render_png.sh` + `crop.py` (the `img_*.png` figures), `verify2.py` + `thick.py` (checks; output `verify.json`, plus `print_<part>.stl` in print orientation), `slicer.ini` + `slice.sh` (slicer dry run over `print_*.stl`; output `slice.log` with filament and time per part; the G-code is regenerated locally and not committed).
+Files: `hopper.scad` (source; `part=` selects; `part="seam"` is the exploded seam section), `out/` (STL + preview per part, written by the root `./build`), `render_png.sh` + `crop.py` (the `img_*.png` figures), `verify2.py` + `thick.py` (checks; output `verify.json`, plus `print_<part>.stl` in print orientation, regenerated locally and not committed), `slicer.ini` + `slice.sh` (slicer dry run over `print_*.stl`; output `slice.log` with filament and time per part; the G-code is regenerated locally and not committed).
 
 ## (d) VERIFICATION
 
 Every number below is copied from `verify.json` (`python3 verify2.py > verify.json` on the STLs in `out/`) or `slice.log`. `verify2.py` asserts the seam checks and the clash check and exits non-zero on failure. Sampling: 8000 surface points per part.
 
-**Seam gap vs 0.2 mm clearance:** five sections through the seam, each perpendicular to the wall it cuts (front wall at Z = 60, back wall at Z = 60 in the plane normal to the 66° wall, roof at Y = 20, stop lip at Z = 118, flange at Z = −20), each rasterised at 0.01 mm with both halves in assembly position; the widest axis-aligned square that fits in the void between the halves is **0.20 mm in every section** (asserted ≤ 0.22). Lap overlap (tongue tip to inner-skin end) at Z = 60: 5.9 mm on the back wall and on the front wall (asserted ≥ 5.8). Falsified in a scratch copy of this directory (`sed -i 's|^module body_L() |module body_L() translate([-1,0,0]) |' hopper.scad`, re-export `body_L` into `out/`, `python3 verify2.py`): `body_L` shifted 1 mm away from `body_R` → `AssertionError: seam void wider than seam_clr=0.2: widest square by section {'front_wall_z60': 1.2, 'back_wall_z60': 1.2, 'roof_y20': 1.2, 'lip_z118': 1.2, 'flange_z-20': 1.2} mm`; shifted 1 mm towards it (`translate([1,0,0])`) → `AssertionError: assembly clash {'body_R∩body_L': 683.1…, 'body_L∩lid': 81.2…}`; restored → exit 0 with a byte-identical `verify.json`.
+**Seam gap vs 0.2 mm clearance:** five sections through the seam, each perpendicular to the wall it cuts (front wall at Z = 60, back wall at Z = 60 in the plane normal to the 66° wall, roof at Y = 20, stop lip at Z = 118, flange at Z = −20), each rasterised at 0.01 mm with both halves in assembly position; the widest axis-aligned square that fits in the void between the halves is **0.20 mm in every section** (asserted ≤ 0.22). Lap overlap (tongue tip to inner-skin end) at Z = 60: 5.9 mm on the back wall and on the front wall (asserted ≥ 5.8). Falsified in a scratch copy of this directory (`sed -i 's|^module body_L() |module body_L() translate([-1,0,0]) |' hopper.scad`, re-export `body_L` into `out/`, `python3 verify2.py`): `body_L` shifted 1 mm away from `body_R` → `AssertionError: seam void wider than seam_clr=0.2: widest square by section {'front_wall_z60': 1.2, 'back_wall_z60': 1.2, 'roof_y20': 1.2, 'lip_z118': 1.2, 'flange_z-20': 1.2} mm`; shifted 1 mm towards it (`translate([1,0,0])`) → `AssertionError: assembly clash {'body_R∩body_L': 683.1…, 'body_L∩lid': 81.2…, every other pair 0.0}`; restored → exit 0 with a byte-identical `verify.json`.
 
 ![exploded section through the back wall at Z = 50–60: pocket half left, tongue half right](img_seam.png)
 
@@ -71,13 +71,13 @@ Every number below is copied from `verify.json` (`python3 verify2.py > verify.js
 
 | part | median | samples < 2.4 (all) | < 2.4 and > 1 mm from any convex edge | of those, in the lap (min) | outside the lap (min) | those points |
 |---|---|---|---|---|---|---|
-| body_R | 2.4 | 278 / 8000 | 190 | 187 (1.0, the tongue) | 3 (2.15) | lid-cut top edge of the back wall (acute), flange–wall junction, outlet bottom edge (acute) |
+| body_R | 2.4 | 278 / 8000 | 190 | 187 (1.0, the tongue) | 3 (2.15) | lid-cut top edge of the back wall (acute), the groove cheek at the end wall (2.15), outlet bottom edge (acute) |
 | body_L | 2.4 | 335 / 8000 | 245 | 244 (1.2, the inner skin under the pocket) | 1 (2.32) | back-wall top edge (acute 66° cut) |
 | lid | 6.4 | 0 | 0 | — | 0 (2.4) | — |
 | bracket | 3.0 | 42 | 4 | — | 4 (1.07) | tips of the 1.2 mm tray guide rails |
 | tray | 2.4 | 13 | 10 | — | 10 (2.33) | front corners where the 45° lip underside and the 1.2 mm bottom chamfer meet the r=6 corner arc |
 
-So: outside the lap the halves read as fable's did (acute cut edges and the 1.2 mm guide rails, no wall below 2.4); the lap skins are the stated 1.0 / 1.2 and together with the 0.2 mm gap make up the 2.4 mm wall. They are the one place the design is under the 2.4 mm bird-safety figure, over 6 mm of the seam.
+So: outside the lap the halves read as fable's did (acute cut edges, one 2.15 mm reading on the end-wall groove cheek, the 1.2 mm guide rails); a sample is attributed to the lap by its X alone (X ∈ (−6.7, 0.5)), so that slab of each half is audited only through the lap minimum; the lap skins are the stated 1.0 / 1.2 and together with the 0.2 mm gap make up the 2.4 mm wall. They are the one place the design is under the 2.4 mm bird-safety figure, over 6 mm of the seam.
 
 **Capacity vs 1 L:** cavity boolean 1.145 L (prism Y −49.1…57.4, Z 0…116.7 minus both halves, manifold engine), analytic 1.147 L. Unchanged: the lap lives inside the wall thickness.
 
@@ -89,12 +89,12 @@ So: outside the lap the halves read as fable's did (acute cut edges and the 1.2 
 
 **Assembly clash check:** pairwise manifold booleans of all 10 part pairs in assembly position: every intersection volume **0.0 mm³**, `body_R ∩ body_L` included.
 
-**Printability:** per part, in the shipped print orientation (`print_*.stl`), the area of downward-facing faces off the bed by overhang angle:
+**Printability:** per part, in the print orientation `verify2.py` writes to `print_*.stl`, the area of downward-facing faces off the bed by overhang angle:
 - body halves: only the 434 mm² "flat ceiling" = the roof of the 3.6 mm-wide bracket groove on the bed face (a 3.6 mm bridge); no other overhangs. The lap adds none: the tongue is a 1.0 mm wall rising 6 mm above the rest of body_R (height 73.4 mm), the pocket is body_L's outer skin stopping 6.1 mm below its top, where the 1.2 mm inner skin ends alone (height 67.3 mm). Both halves therefore end in a free thin fin at the top of the print.
 - lid: 417 mm² of ceilings, all bridges ≤ 6.4 mm wide.
 - bracket: 133 mm² flat (rail undersides and stubs), 3 mm² at 0–15°, 177 mm² at 30–45°, 74 mm² at 45–60°, 7 mm² at 60–75°. Height 165.4 mm; needs a brim.
 - tray: only 30–60° overhangs (hull-lip undersides and bottom chamfer).
-- **PrusaSlicer dry run** (`slice.sh`, PETG 250/70 °C, 0.2 mm layers, 3 perimeters, 20% gyroid, supports OFF, bed 180 × 180): all five parts sliced without error or warning; `slice.log` carries filament and time per part (108 g 8h48, 100 g 8h13, 51 g 4h24, 112 g 7h43, 70 g 6h35), hand-written profile, indicative only.
+- **PrusaSlicer dry run** (`slice.sh`, PETG 250/70 °C, 0.2 mm layers, 3 perimeters, 20% gyroid, supports OFF, bed 180 × 180): all five parts sliced without error or warning; `slice.log` carries filament and time per part (108 g 8h49, 100 g 8h13, 51 g 4h24, 112 g 7h43, 70 g 6h35), hand-written profile, indicative only.
 
 **Not verified / known gaps (plain statement):**
 - No physical print, no physical cage; the 0.2 mm lap clearance and the 1.0 mm tongue (two or three PETG perimeters) are untested on an A1 mini. Keeping both lap skins at 2.4 mm would need a boss along the seam, which puts a ridge in the flow path on the cavity side; not done.
