@@ -15,7 +15,7 @@ seam_clr = 0.2;
 seam_lap = 6;
 lid_t    = 2.4;
 plate_t  = 3;
-groove_d = 2.5;
+groove_d = 2.7;
 tray_w   = 144;
 tray_d   = 100;
 tray_h   = 30;
@@ -48,18 +48,34 @@ y_plate1 = clr + plate_t;
 x_win    = x_out - groove_d + clr;
 x_plate  = door_w/2 + overlap - 2.3;
 z_plate0 = -38;
-z_plate1 = 3.5 + (door_w/2 + overlap - 2.3) - (W_in/2 + t - groove_d + clr) + 4;
+finger_w = groove_d - clr;
+slit     = 1.5;
+x_slit   = x_out + slit;
+catch_d  = 1.2;
+catch_clr = 0.3;
+z_catch  = 18;
+z_finger = z_catch + catch_d;
+z_groove = z_finger + catch_clr + 1;
+z_rib    = z_finger + 9;
+z_plate1 = z_finger + 6;
 z_shelf1 = -10;
+lip_h    = 2.5;
 y_tray0  = y_plate1 + 0.5;
-y_shelf1 = y_tray0 + tray_d + 3.5;
-perch_y  = y_shelf1 - 1.25;
-perch_z  = -25;
+y_tray1  = y_tray0 + tray_d;
+y_shelf1 = y_tray1 + 3.5;
+perch_fwd = 40;
+perch_drop = 35;
+perch_y  = y_tray1 + perch_fwd;
+perch_z  = z_shelf1 + tray_h - perch_drop;
+z_arm0   = perch_z - plate_t/2;
 
 echo(wall_angle_deg=ang, slot_width=y_front-y_back0, through_w=2*x_out, through_h=z_roof, door_z0=z_door0);
 
 module prof_interior() polygon([[y_back0,0],[y_front,0],[y_front,H],[y_backT,H]]);
 module prof_outer()    polygon([p_back0,[y_front+t,0],[y_front+t,z_roof],p_backT]);
 module yz(x0,x1) translate([x0,0,0]) rotate([90,0,90]) linear_extrude(height=x1-x0) children();
+module xz(y0,y1) translate([0,y1,0]) rotate([90,0,0]) linear_extrude(height=y1-y0) children();
+module catch(g) offset(r=g) polygon([[x_win,z_catch],[x_win-catch_d,z_catch],[x_win,z_finger]]);
 
 module outside_back_wall() polygon([p_back0+3*(p_back0-p_backT), p_backT-3*(p_back0-p_backT), [-300,4*z_roof], [-300,-3*z_roof]]);
 
@@ -80,12 +96,15 @@ module body() {
         union() {
           translate([hw-4,y_ledge0-3,z_ledge]) cube([4+t, y_lip0-y_ledge0+3, t]);
           translate([hw-4,y_ledge0-3,H]) cube([4+t, y_lip0-y_ledge0+3, t]);
-          translate([hw-3,y_plate0-clr-t,0]) cube([3+t, plate_t+2*clr+2*t, z_roof]);
+          xz(y_plate0-clr-t, y_plate1+clr+t) polygon([[hw-4,0],[x_out,0],[x_out,z_rib],[hw,z_rib],[hw-4,z_rib-4*tan(ang)]]);
         }
         yz(0,x_out) prof_outer();
       }
     }
-    for (s=[-1,1]) mirror([s<0?1:0,0,0]) translate([x_out-groove_d, y_plate0-clr, -1]) cube([groove_d+1, plate_t+2*clr, z_roof+2]);
+    for (s=[-1,1]) mirror([s<0?1:0,0,0]) {
+      translate([x_out-groove_d, y_plate0-clr, -1]) cube([groove_d+1, plate_t+2*clr, z_groove+1]);
+      xz(y_plate0-clr, y_plate1+clr) catch(catch_clr);
+    }
   }
 }
 
@@ -124,15 +143,22 @@ module rounded_plate(w, h, r) offset(r=r) offset(delta=-r) square([w,h]);
 module bracket() {
   difference() {
     translate([-x_plate, y_plate1, z_plate0]) rotate([90,0,0]) linear_extrude(height=plate_t) rounded_plate(2*x_plate, z_plate1-z_plate0, r_edge);
-    translate([0, y_plate1+1, 0]) rotate([90,0,0]) linear_extrude(height=plate_t+2)
-      polygon([[-x_win,-0.5],[x_win,-0.5],[x_win,3.5],[x_win+100,103.5],[-x_win-100,103.5],[-x_win,3.5]]);
+    xz(y_plate0-1, y_plate1+1)
+      polygon([[-x_slit,-0.5],[x_slit,-0.5],[x_slit,z_finger],[x_slit+100,z_finger+100],[-x_slit-100,z_finger+100],[-x_slit,z_finger]]);
   }
-  translate([-x_plate, y_plate0, z_shelf1-plate_t]) cube([2*x_plate, y_shelf1-y_plate0, plate_t]);
+  for (s=[-1,1]) mirror([s<0?1:0,0,0]) xz(y_plate0, y_plate1) {
+    translate([x_win,-1]) square([finger_w, z_finger+1]);
+    catch(0);
+  }
+  yz(-x_plate, x_plate) {
+    translate([y_plate0, z_shelf1-plate_t]) square([y_shelf1-y_plate0, plate_t]);
+    polygon([[y_shelf1-plate_t-(z_shelf1-plate_t-z_arm0), z_shelf1-plate_t],[y_shelf1, z_shelf1-plate_t],[y_shelf1, z_arm0],[y_shelf1-plate_t, z_arm0]]);
+    polygon([[y_shelf1-plate_t-lip_h, z_shelf1],[y_shelf1, z_shelf1],[y_shelf1, z_shelf1+lip_h],[y_shelf1-plate_t, z_shelf1+lip_h]]);
+    translate([y_shelf1-plate_t, z_arm0]) square([perch_y-y_shelf1+plate_t, plate_t]);
+    hull() { translate([perch_y, perch_z]) circle(d=perch_d, $fn=48); translate([perch_y-perch_d/sqrt(2), perch_z]) circle(0.01, $fn=4); }
+  }
   for (s=[-1,1]) translate([s*(tray_w/2-ch+clr), y_plate0, z_shelf1]) rotate([-90,0,0]) linear_extrude(height=y_shelf1-y_plate0)
     polygon([[0,0],[s*ch,0],[s*ch,-ch]]);
-  translate([-x_plate, y_shelf1-plate_t, z_shelf1]) cube([2*x_plate, plate_t, 7]);
-  translate([-x_plate, y_shelf1-plate_t, perch_z]) cube([2*x_plate, plate_t, z_shelf1-perch_z]);
-  translate([-x_plate, perch_y, perch_z]) rotate([0,90,0]) cylinder(d=perch_d, h=2*x_plate, $fn=48);
 }
 
 module tray() {
@@ -145,7 +171,9 @@ module tray() {
     for (s=[-1,1]) translate([s>0 ? 64.5 : -tray_w/2-1, y_tray0-1, -0.5]) cube([tray_w/2+1-64.5, 8, tray_h]);
     for (s=[-1,1]) translate([s*tray_w/2, y_tray0-1, 0]) rotate([-90,0,0]) linear_extrude(height=tray_d+2)
       polygon([[0,-z0+1],[-s*(ch+1),-z0+1],[0,-z0-ch]]);
+    yz(-tray_w/2-1, tray_w/2+1) polygon([[y_tray1-lip_h-1, z0-1],[y_tray1+1, z0-1],[y_tray1+1, z0+lip_h+1]]);
   }
+  yz(-tray_w/2+6, tray_w/2-6) polygon([[y_tray1-t+1, z0+fl-1],[y_tray1-t-2, z0+fl-1],[y_tray1-t-2, z0+fl],[y_tray1-t+1, z0+fl+3]]);
   intersection() {
     translate([-tray_w/2, y_tray0, z0]) linear_extrude(height=tray_h) rounded_plate(tray_w, tray_d, 6);
     union() {
@@ -156,12 +184,20 @@ module tray() {
   }
 }
 
-module assembly() {
-  color("SteelBlue") body_R();
-  color("SteelBlue") body_L();
-  color("Orange") lid();
-  color("SeaGreen") bracket();
-  color("Gold") tray();
+module clip(box) if (is_undef(box)) children(); else render() intersection() { children(); translate(box[0]) cube(box[1]); }
+
+module assembly(box=undef) {
+  color("SteelBlue") clip(box) body_R();
+  color("SteelBlue") clip(box) body_L();
+  color("Orange") clip(box) lid();
+  color("SeaGreen") clip(box) bracket();
+  color("Gold") clip(box) tray();
+}
+
+module conure() color("Gray", 0.5) yz(-3,3) {
+  translate([perch_y-10, perch_z+8+40]) scale([22,30]) circle(1, $fn=64);
+  translate([perch_y-28, perch_z+8+84]) circle(16, $fn=48);
+  polygon([[perch_y+4,perch_z+35],[perch_y+14,perch_z+38],[perch_y+48,perch_z-40],[perch_y+38,perch_z-43]]);
 }
 
 if (part=="body_R") body_R();
@@ -171,4 +207,6 @@ if (part=="bracket") bracket();
 if (part=="tray") tray();
 if (part=="assembly") assembly();
 if (part=="seam") intersection() { union() { translate([5,0,0]) body_R(); translate([-5,0,0]) body_L(); } translate([-25,-200,50]) cube([50,400,10]); }
-if (part=="section") intersection() { assembly(); translate([-400,-200,-200]) cube([400,400,400]); }
+if (part=="section") assembly([[-400,-200,-200],[400,400,400]]);
+if (part=="perch") { assembly([[-400,-200,-200],[400,400,400]]); conure(); }
+if (part=="catch") assembly([[50,1.5,-8],[30,0.6,35]]);

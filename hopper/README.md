@@ -17,7 +17,7 @@ The same spec was handed to several models with no workflow or tools prescribed.
 
 The side-by-side table and how each model checked its own work: [comparison.md](comparison.md).
 
-[v2/](v2) evolves the fable lane: same five parts, the body seam turned into a self-locating lap ([REPORT.md](v2/REPORT.md)).
+[v2/](v2) evolves the fable lane: same five parts, the body seam turned into a self-locating lap, the bracket snapped onto the body, the perch in front of the tray ([REPORT.md](v2/REPORT.md)).
 
 ## Rendering
 

@@ -21,7 +21,7 @@ Four lanes delivered (codex, fable, opus, kimi). Kimi's own renders are matplotl
 | self-caught defects | none reported | back wall 1.6 mm mid-run, 3 clashes, U-arm ceiling redesign | orientation/split problem (35 min), 7 CGAL-manifold fixes | non-manifold tangent unions (added 1 mm overlaps), tangent perch cylinder, lid drawn flat in the first render |
 | stated gaps | no physical print/flow; supports needed; wall by calc not mesh | square-cut body/lid edges, no lid detent, butt seam | tray runs brim-full (0.6 mm discharge gap), no slicer, perch load unanalysed | no slicer; cage-bar fit unverified; open-bottom bin drains into the cage when the tray is out; tray/bin interference not found |
 
-[v2/](v2) is the fable design evolved after this comparison: the butt seam replaced by a 6 mm lap with a measured 0.2 mm gap ([REPORT.md](v2/REPORT.md)).
+[v2/](v2) is the fable design evolved after this comparison and the hands-on below: the butt seam replaced by a 6 mm lap with a measured 0.2 mm gap, the bracket snapped onto the body, the perch 40 mm in front of the tray ([REPORT.md](v2/REPORT.md)).
 
 ## How each checked its work
 
