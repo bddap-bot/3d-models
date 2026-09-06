@@ -1,0 +1,11 @@
+{
+  "source": "med-tracker.scad",
+  "parts": {
+    "assembly": [55, 0, 25],
+    "body": [55, 0, 25],
+    "am_numbers": [0, 0, 0],
+    "pm_numbers": [0, 0, 0],
+    "blue_pegs": [55, 0, 25],
+    "green_pegs": [55, 0, 25]
+  }
+}
