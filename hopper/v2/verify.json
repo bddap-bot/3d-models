@@ -315,8 +315,8 @@
   "axis_forward_of_tray_face_mm": 40.0,
   "axis_forward_of_lip_tip_mm": 48.0,
   "perch_top_below_lip_top_mm": 27.0,
-  "apex_y": 132.49,
-  "apex_forward_of_tray_face_mm": 28.69
+  "perch_leaves_arm_y": 133.68,
+  "perch_leaves_arm_forward_of_tray_face_mm": 29.88
  },
  "print_orientation": {
   "body_R": {

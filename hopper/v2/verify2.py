@@ -4,7 +4,8 @@ from shapely.ops import unary_union
 from scipy.ndimage import distance_transform_cdt
 scad = open("hopper.scad").read()
 param = lambda k: float(re.search(rf"^{k}\s*=\s*(-?[0-9.]+);", scad, re.M).group(1))
-seam_clr, seam_lap, t, H, y_back0, y_backT, y_front, catch_d, z_catch, perch_d, perch_fwd, tray_d, W_in, groove_d, plate_t, clr = (param(k) for k in ("seam_clr", "seam_lap", "t", "H", "y_back0", "y_backT", "y_front", "catch_d", "z_catch", "perch_d", "perch_fwd", "tray_d", "W_in", "groove_d", "plate_t", "clr"))
+seam_clr, seam_lap, t, H, y_back0, y_backT, y_front, bar_d, catch_d, z_catch, perch_d, perch_fwd, perch_drop, tray_d, tray_h, z_shelf1, W_in, groove_d, plate_t, clr = (param(k) for k in ("seam_clr", "seam_lap", "t", "H", "y_back0", "y_backT", "y_front", "bar_d", "catch_d", "z_catch", "perch_d", "perch_fwd", "perch_drop", "tray_d", "tray_h", "z_shelf1", "W_in", "groove_d", "plate_t", "clr"))
+perch_z = z_shelf1 + tray_h - perch_drop
 catch_clr = clr
 hw = W_in/2
 x_win = hw + t - groove_d + clr
@@ -23,7 +24,7 @@ for p in parts:
          "extents_mm": [round(float(e),2) for e in ext], "max_extent_ok_175": bool(ext.max() <= 175.0)}
     from thick import thickness
     pts, th = thickness(m)
-    thin = th < 2.39
+    thin = th < t - 0.01
     edges = m.face_adjacency_edges
     conv = m.face_adjacency_convex
     sharp = edges[conv & (m.face_adjacency_angles > np.radians(30))]
@@ -93,7 +94,7 @@ sec5 = body.section(plane_origin=[0,0,50], plane_normal=[0,0,1])
 v = sec5.vertices; ys = v[(np.abs(v[:,0]) < 60),1]
 out["cavity_depth_mm_at_z50"] = round(float(ys[ys>30].min() - ys[(ys<0)].max()), 2)
 
-lo = np.array([-500,-2.5,-500.]); hi = np.array([500,0,500.])
+lo = np.array([-500,-bar_d,-500.]); hi = np.array([500,0,500.])
 thr = body.slice_plane(lo, [0,1,0], cap=True).slice_plane(hi, [0,-1,0], cap=True)
 b = thr.bounding_box.bounds
 out["through_section_in_bar_plane_y[-2.5,0]"] = {"w": round(float(b[1][0]-b[0][0]),2), "h": round(float(b[1][2]-b[0][2]),2),
@@ -165,6 +166,7 @@ rp = float(np.sqrt(c0 + cy**2 + cz**2))
 assert abs(rp - perch_d/2) < 0.02, f"perch rim fit radius {rp} is not perch_d/2"
 rim_all = B.vertices[(B.vertices[:,1] > y_rim) & (B.vertices[:,2] < 0) & (np.abs(np.hypot(B.vertices[:,1]-cy, B.vertices[:,2]-cz) - rp) < 0.05)]
 axis = np.linalg.svd(rim_all - rim_all.mean(0))[2][0]
+y_join = float(end[np.abs(end[:,2] - (perch_z + plate_t/2)) < 1e-3][:,1].max())
 T = meshes["tray"]
 tsec = T.section(plane_origin=[30,0,0], plane_normal=[1,0,0]).vertices
 lip_top = float(tsec[:,2].max())
@@ -174,8 +176,8 @@ out["perch"] = {"axis_y": round(float(cy),2), "axis_z": round(float(cz),2), "rad
     "axis_direction": [round(float(abs(a)),3) for a in axis], "axis_deg_from_horizontal": round(float(np.degrees(np.arcsin(abs(axis[2])))),2),
     "tray_front_face_y": round(face_y,2), "lip_tip_y": round(lip_tip_y,2), "lip_top_z": round(lip_top,2),
     "axis_forward_of_tray_face_mm": round(float(cy) - face_y, 2), "axis_forward_of_lip_tip_mm": round(float(cy) - lip_tip_y, 2),
-    "perch_top_below_lip_top_mm": round(lip_top - (float(cz) + rp), 2), "apex_y": round(float(cy) - rp*np.sqrt(2), 2), "apex_forward_of_tray_face_mm": round(float(cy) - rp*np.sqrt(2) - face_y, 2)}
-assert float(cy) - rp*np.sqrt(2) > face_y, "perch under the tray"
+    "perch_top_below_lip_top_mm": round(lip_top - (float(cz) + rp), 2), "perch_leaves_arm_y": round(y_join, 2), "perch_leaves_arm_forward_of_tray_face_mm": round(y_join - face_y, 2)}
+assert y_join > face_y, "perch under the tray"
 for p in names:
     m = meshes[p]; c = m.triangles_center; nn = m.face_normals
     out[p]["internal_faces"] = int((m.contains(c+nn*0.2) & m.contains(c-nn*0.2)).sum())

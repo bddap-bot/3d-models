@@ -162,7 +162,7 @@ module bracket() {
 }
 
 module tray() {
-  fl = 2.4; z0 = z_shelf1;
+  fl = t; z0 = z_shelf1;
   yl = y_tray0 + 60;
   difference() {
     translate([-tray_w/2, y_tray0, z0]) linear_extrude(height=tray_h) rounded_plate(tray_w, tray_d, 6);
