@@ -1,29 +1,31 @@
 # Infant medicine dose dial
 
-Directive (verbatim): "That model has issues. Kill the print job. I'll clear the print bed later for a reprint. In the meantime, many of the holes are covered, they'll need some clearance to fit those syringes. Let's make those holes a little deeper too to be safe. They look shallow."
+Directive (verbatim): "This print turned out great. Two changes for next version:
+- Add am and pm labels across from eachother.
+- The numbers are offset from the holes so its unclear which number represents which hole. Shift the numbers a tad so they appear next to holes instead of between them."
 
-## Revision 3 geometry
+## Revision 4 geometry
 
-The support-free body is a 126 mm diameter disc with a flat bottom. The ring area is 14 mm thick. Its only socket ring has 24 positions at a 47 mm radius. The central bottle pad is a 77 × 41 mm stadium, 7 mm above the disc, and follows the compact rounded shape visible in the photograph. Its two 35 mm diameter wells are 5 mm deep, have 0.5 mm diametral clearance around the modeled 34.5 mm bottle bodies, and retain a 3 mm outside rim and 2 mm floor.
+The support-free body remains a 126 mm diameter disc with a flat bottom and a 14 mm thick ring area. Its single ring retains 24 positions at a 47 mm radius, with 12 mm deep self-centering sockets tapering from 8.6 mm at the surface to 4.5 mm at the floor. The 77 × 41 × 7 mm stadium pad, two 35 mm diameter by 5 mm deep wells, 2 mm socket and well floors, socket radius, numeral radius, and all frozen dimensions are unchanged from revision 3.
 
-The 126 mm diameter is set by the outside numeral band: a 47 mm socket radius, 7 mm barrel radius, 1.5 mm required gap, 3.3 mm radial numeral half-height and outline, and a small outside edge margin. The pad alone would not require a disc this large. The result remains below the 140 mm cap.
+Each blue and green numeral moved angularly by 7.5° from the gap between sockets onto the exact radial centerline of its own socket. Numeral radius, 6 mm glyph height, 0.3 mm outline, 1 mm relief, bold face, tangential orientation, and colors did not change. The source asserts that every numeral angle equals its corresponding socket angle within 0.01°.
 
-## Socket clearance proof
+## AM and PM labels
 
-Each blind socket is a 12 mm self-centering cone, 8.6 mm at the disc surface and 4.5 mm at its floor. The 14 mm disc leaves exactly 2 mm of tan below every socket. A 6 mm syringe nose enters the cone while its 14 mm barrel stands above the surface; the context model also includes the 20 mm top flange at 90 mm.
+AM is centered at 7.5°, the midpoint of the blue 1–12 run, and PM is centered at 187.5°, the midpoint of the green run. Their center angles are asserted to be diametrically opposite within 0.01°. Both labels use bold Liberation Sans at 7.3 mm text size, whose 5.02 mm cap height exceeds 5 mm. The 0.3 mm outline produces at least 1.2 mm strokes, and their 1 mm relief matches the numerals. AM is blue and PM is green.
 
-The source evaluates all 24 socket centers with OpenSCAD `assert` statements. For each position it computes planar clearance from the 14 mm barrel envelope to the exact stadium footprint, both 34.5 mm bottle envelopes, and the conservative inner edge of the complete numeral band. The minimum is 1.5 mm, occurring at the pad ends and numeral band. The nearest bottle clearance is 4.75 mm. The flange is above the 74 mm bottles and the 1 mm numerals, so it has no vertical intersection with either.
+The labels fit inside the socket ring at a 33.5 mm radius, so the numeral band and the 126 mm plate did not widen. Each label is enclosed conservatively by a 12.5 × 6.2 mm bounding box. Assertions test each box against all 24 socket openings, the exact rotated pad footprint, and both 34.5 mm bottle envelopes. Minimum clearances are 3.19 mm to a socket, 6.75 mm to the pad, and 13.81 mm to a bottle, all exceeding the required 1.5 mm.
 
-## Photo reading and labels
+## Pad rotation and loaded view
 
-The photograph shows one ring of 24 holes. The apparent second ring in revision 2 was the central pad covering those inner holes. The two syringe tips in the photograph terminate in front ring holes; their tall barrels project inward in perspective. No distinct parking sockets are visible in the pad, so this model adds none.
+The AM–PM axis is 7.5°/187.5°. The stadium's long axis is rotated to 97.5°, exactly perpendicular to that axis, placing the wells across the two 12/1 boundaries. The pad, wells, modeled bottles, and all their dimensions are otherwise unchanged. The loaded render places six syringe cylinders with flanges in the sockets nearest that long axis, at 75°, 90°, 105°, 255°, 270°, and 285°.
 
-The outside labels are blue 1–12 for AM and green 1–12 for PM. Bold Liberation Sans glyphs are 6 mm high with a 0.3 mm outline expansion, giving at least 1.2 mm strokes, and are raised 1 mm. `img_top3b.png` is a straight-down orthographic view rendered at 10 pixels per millimeter across the 126 mm body (0.1 mm per pixel). The shared `render` entry point sends the top, oblique, and loaded views through the same color-preserving `assembly()` scene, and the body keeps the disc and pad differences separate so the top view cannot lose raised detail to coplanar preview ordering.
+`img_top4.png` is the true-scale orthographic top presentation at 10 pixels per millimeter across the 126 mm body, with a slight lighting tilt that preserves the socket contours. At 1:1, all 24 sockets are visible, each numeral is unambiguously centered on its socket, and AM and PM are readable in their AMS colors. `img_oblique4.png` and `img_loaded4.png` use the same color-preserving `assembly()` scene and the same `render` entry point.
 
 ## Print plan
 
-The A1 mini plate uses the 0.20 mm standard profile, three walls, 15% sparse infill, and no supports. Logical extruder 1 is tan PLA, logical extruder 2 is blue PLA, and logical extruder 3 is green PLA; they map to AMS slots 2, 1, and 4. Slot 3 PETG is unused. The slice estimates 2 h 42 m 32 s and 71.91 g tan, 0.33 g blue, and 0.67 g green, 72.91 g total.
+The A1 mini plate uses the 0.20 mm standard profile, three walls, 15% sparse infill, and no supports. Logical extruder 1 is tan PLA, logical extruder 2 is blue PLA, and logical extruder 3 is green PLA; they map to AMS slots 2, 1, and 4. Slot 3 PETG is unused. The revision-4 slice estimates 2 h 44 m 39 s and 71.90 g tan, 0.42 g blue, and 0.77 g green, 73.09 g total.
 
 ## Changes and fit risks
 
-Revision 3 deletes the obstructed inner ring, replaces the tall rectangular platform with the minimal 7 mm stadium pad, moves the remaining sockets to a clearance-proven radius, deepens them from 8 to 12 mm, thickens the socket floor to 2 mm, and adds new revision-3 renders including six worst-axis syringe envelopes. Open fit risks are package molding and label thickness, syringe nose taper, first-layer expansion, and printer-specific XY compensation. The 0.5 mm diametral bottle clearance is intentionally close; test the exact bottles and syringes before routine use.
+Only the requested numeral alignment, AM/PM labels, and required pad assembly rotation changed from revision 3. The disc, socket count and geometry, pad and well geometry, floors, printable bottom, materials, and colors remain frozen. No diameter increase was required. Open fit risks remain package molding and label thickness, syringe nose taper, first-layer expansion, and printer-specific XY compensation. The 0.5 mm diametral bottle clearance remains intentionally close; test the exact bottles and syringes before routine use.

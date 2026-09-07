@@ -6,9 +6,9 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 VIEWS = {
-    "top": ("img_top3b.png", False, "0,0,10,1,0,0,332.2", "1320,1320"),
-    "oblique": ("img_oblique3b.png", False, "0,0,10,55,0,25,500", "1200,900"),
-    "loaded": ("img_loaded3b.png", True, "0,0,50,65,0,25,500", "1200,900"),
+    "top": ("img_top4.png", False, "0,0,10,5,0,0,332.2", "1320,1320"),
+    "oblique": ("img_oblique4.png", False, "0,0,10,55,0,25,500", "1200,900"),
+    "loaded": ("img_loaded4.png", True, "0,0,50,65,0,25,500", "1200,900"),
 }
 
 names = sys.argv[1:] or ["top"]
