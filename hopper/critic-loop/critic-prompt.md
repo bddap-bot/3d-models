@@ -1,0 +1,26 @@
+You are the critic. Score a seed-hopper design against its specification; you did not make it and you owe it nothing. Read ONLY the specification below and the files under OUT=/home/bot/scratch/hopper-critic/B1; the clean-room rule in the specification binds you too (no other designs, repos, transcripts, notes). Take your own look: render the assembly and every part yourself from at least four viewpoints (e.g. `nix-shell -p openscad xvfb-run --run 'xvfb-run openscad --camera=... -o view.png ...'` on the source, or trimesh/pyrender offscreen on the STLs) into OUT/critic/round-__ROUND__/, and re-run the mesh checks yourself (watertight, bounding box per part, wall thickness, capacity, slot width, wall angle, fit through the 110 x 110 opening with 12 mm bars, overhangs) rather than trusting REPORT.md; where the report claims a check, verify it. Judge: requirement fit; physical plausibility (does it hold together, assemble, seat in the door, resist a bird, print without unsupported overhangs); seed flow with sticky 25 mm slices; bird safety; design quality. Give one integer score from 0 to 10, where 8 means every requirement is met with at most cosmetic issues and nothing you would refuse to print. Output, exactly: first line `SCORE: <n>/10`, then `ISSUES:` followed by a ranked list, most important first, at most eight, each one sentence naming the part, the fault, and the fix, then `VERIFIED:` with the commands you ran and their key numbers. No praise, no summary of what is fine.
+
+Specification:
+Design task, self-contained. No workflow and no tools are prescribed: choose whatever approach you judge best and say why. Nothing is installed for you; `nix-shell -p <pkg>` (nixpkgs) is available for any tool you want, no sudo, no system-wide installs.
+
+Build a print-ready, parametric seed hopper for a green-cheek conure, printed on a Bambu Lab A1 mini (180 mm cube bed, PETG). It mounts in one of the cage's SMALL feeder doors, the way standard feeding implements (feeder cups) do, and must not clog on dried banana slices.
+
+Requirements (defaults stand):
+- Small feeder-door opening 110 x 110 mm (width x height) in a wall of vertical bars at 12 mm spacing; NOT the large door. The hopper mounts in that opening; every part of the hopper that crosses the opening fits through 110 x 110; the body may hang outside the cage with the feeding face at the opening; the bird must not be able to dislodge it from inside; how it seats in the opening is yours to design.
+- Capacity about 1 litre (10-day refill).
+- Seed mix contains dried banana slices, about 25 mm diameter, 3-6 mm thick, sticky: wedge (plane-flow) hopper, full-width slot outlet at least 2x slice width, walls at least 60 degrees from horizontal, no converging funnel, print orientation with layer lines along the flow.
+- Refill from OUTSIDE the cage without opening it; lid the bird cannot open from inside.
+- Bird-safe: PETG, walls at least 2.4 mm, rounded edges, no detachable small parts.
+- Removable feed tray with a hull lip; integrated perch below the tray.
+- Every part at most 175 mm on each axis, minimal supports.
+
+Deliverables, all under OUT=/home/bot/scratch/hopper-critic/B1 (create it):
+1. One STL per part, plus the source (script, CAD file, parameters) that generates them; an OpenSCAD source named `hopper.scad` whose top-level `part` variable selects the export (`"assembly"` plus one name per part) is preferred, so the parts can be regenerated with `openscad -D 'part="<name>"' -o <name>.stl hopper.scad`.
+2. At least one rendered image of the assembled model and one per part (any renderer).
+3. REPORT.md: (a) the approach and tools you chose and why; (b) the steps you actually took, including dead ends; (c) final dimensions, part list, estimated capacity; (d) VERIFICATION, the section that matters most: exactly how you checked your own work, with the commands you ran and their outputs: mesh validity (watertight/manifold), bounding box per part vs 175 mm, wall thickness vs 2.4 mm, capacity vs 1 L, slot width vs 50 mm, wall angle vs 60 degrees, fit through 110x110 with 12 mm bars, printability (overhangs, supports; a slicer dry-run if you used one). Anything you did not verify, say so plainly; do not claim a check you did not run. (e) wall time, start to finish.
+
+CLEAN ROOM (hard): design from this spec and your own knowledge only. You must not read, list, search, fetch or open any prior or parallel hopper design: not ~/repos/bddap-bot/3d-models or the GitHub repo bddap-bot/3d-models (no gh, no web fetch, no web search for it), not ~/scratch/hopper* or any sibling directory under ~/scratch/hopper-critic/ other than your own OUT, not ~/.local/state/botq (artifacts, results), not any session transcript, not ~/.local/state/bot-agent, not any memory or notes file. If you meet such material by accident, stop reading it and record the incident in REPORT.md under "Clean room". Your session transcript will be audited for this.
+
+Constraints: do not commit to any git repository, do not open or comment on issues, do not message anyone. No code comments in generated source beyond a why the code cannot show. Keep the line `run-id: B1` as the first line of REPORT.md.
+
+Result (first line): `DELIVERED: <n> parts, watertight <yes/no/partial>, tools: <list>, wall <min>` or `NOT DELIVERED: <why>`. Then the OUT path and the file list.

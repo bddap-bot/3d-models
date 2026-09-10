@@ -14,6 +14,7 @@ The same spec was handed to several models with no workflow or tools prescribed.
 | [fable/](fable) | claude-fable-5-1 | 31 min | 5 | [hopper.scad](fable/hopper.scad) | [REPORT.md](fable/REPORT.md) |
 | [opus/](opus) | claude-opus-5 | 75 min | 6 | [hopper.scad](opus/src/hopper.scad) | [REPORT.md](opus/REPORT.md) |
 | [kimi/](kimi) | kimi-k3 | 30 min | 3 | [hopper.scad](kimi/hopper.scad) | [REPORT.md](kimi/REPORT.md) |
+| [critic-loop/](critic-loop) | six-run experiment | controls plus critic caps | 18 delivered parts | [five sources](critic-loop) | [analysis](critic-loop/README.md) |
 
 The side-by-side table and how each model checked its own work: [comparison.md](comparison.md).
 
