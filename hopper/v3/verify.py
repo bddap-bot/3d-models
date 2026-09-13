@@ -16,6 +16,7 @@ CANDIDATES = {
     "candidate-a": {
         "name": "candidate_a",
         "escape": ["pull_interference", "lift_interference"],
+        "through_openings": 1,
         "capacity_range": (0.95, 1.08),
         "door_min_clearance": 2.7,
         "probes": [
@@ -27,6 +28,7 @@ CANDIDATES = {
     "candidate-b": {
         "name": "candidate_b",
         "escape": ["pull_interference"],
+        "through_openings": 1,
         "capacity_range": (0.95, 1.08),
         "door_min_clearance": 2.7,
         "probes": [
@@ -94,6 +96,8 @@ with tempfile.TemporaryDirectory(dir=SCRATCH) as tmp_name:
         assert final.is_watertight
         assert final.body_count == 1
         assert float(final.extents.max()) <= 180
+        through_openings = (2 - final.euler_number) // 2
+        assert through_openings == spec["through_openings"]
 
         capacity_path = tmp / f"{directory}-capacity.stl"
         door_path = tmp / f"{directory}-door.stl"
@@ -154,6 +158,7 @@ with tempfile.TemporaryDirectory(dir=SCRATCH) as tmp_name:
         results[directory] = {
             "watertight": final.is_watertight,
             "bodies": final.body_count,
+            "through_openings": through_openings,
             "bbox_mm": [round(float(value), 3) for value in final.extents],
             "capacity_l": round(capacity_l, 4),
             "outlet_mm": [round(outlet_width, 3), round(outlet_depth, 3)],

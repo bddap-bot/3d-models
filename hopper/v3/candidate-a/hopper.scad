@@ -26,6 +26,7 @@ hook_center = bar_spacing * 2.5;
 hook_width = min(5, bar_spacing - bar_diameter - 1.5);
 hook_depth = bar_diameter + 2.5;
 hook_throat = bar_diameter - 0.3;
+outlet_top = tray_base + tray_floor + tray_wall_height;
 
 cavity = [[-57,24],[-5,24],[-5,165],[-99,165]];
 
@@ -44,7 +45,7 @@ module reservoir_shell() {
         yz_extrude(inner_width + 2*wall) offset(r=wall) polygon(cavity);
         yz_extrude(inner_width) polygon(cavity);
         translate([-inner_width/2-2*wall,-110,164.8]) cube([inner_width+4*wall,120,20]);
-        translate([-inner_width/2-0.1,-61,18]) cube([inner_width+0.2,61,42]);
+        translate([-inner_width/2-0.1,-61,18]) cube([inner_width+0.2,61,outlet_top-18]);
     }
 }
 
@@ -53,7 +54,7 @@ module faceplate() {
         translate([0,-bar_diameter/2-0.3-plate_thickness/2,(plate_bottom+plate_top)/2])
             rotate([90,0,0]) linear_extrude(plate_thickness,center=true)
                 rounded_xz(plate_width,plate_top-plate_bottom,4);
-        translate([0,-bar_diameter/2-0.3-plate_thickness/2,30]) cube([inner_width+7,plate_thickness+2,62],center=true);
+        translate([0,-bar_diameter/2-0.3-plate_thickness/2,30]) cube([inner_width,plate_thickness+2,62],center=true);
     }
 }
 
