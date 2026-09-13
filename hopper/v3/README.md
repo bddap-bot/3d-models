@@ -7,7 +7,7 @@ Two one-piece feeders approach the same small cage door from different mechanica
 | principle | A 98 mm-wide plane-flow wedge expands from a broad outlet toward the refill mouth. Two short-flexure C saddles pass between vertical bars and snap around the top door rail; the outer collar, inner hook wall, and lower return oppose the three removal directions. | A constant 98 × 74 mm passage runs down a 70° inclined tube without changing cross-section. Two long vertical cantilevers pass through the doorway and expand behind its side bars while the outer collar and lower sill seat oppose motion. |
 | optimises for | A simple gravity path, lower material use, and a mount that references the top rail instead of the exact side-jamb width. | The largest banana clearance and plug-like flow through a non-converging passage, with two-point snap retention at the door sides. |
 | trade-off | The 52.074 mm outlet is only 2.08 times a 25 mm slice, and the hooks require bar gaps at their parameter-derived centres. | The 74.003 mm outlet is 2.96 times a slice, but the snap flange depends more directly on measured door width and requires elastic flexure. |
-| print decision | Selected for printing. | Not printed: a wall standing on the trough floor behind the magazine outlet forms a pocket at the back of the trough that holds seed for long periods instead of passing it, and the mounting mechanism is not legible from the model, so how the feeder would hang on the door cannot be judged before printing. |
+| printed | Yes. | No: a wall standing on the trough floor behind the magazine outlet forms a pocket at the back of the trough that holds seed for long periods instead of passing it, and how its cantilever mount would seat on a real door is not evident from the model, so the mount cannot be judged before printing. |
 | STL | [candidate_a.stl](candidate-a/out/candidate_a.stl) | [candidate_b.stl](candidate-b/out/candidate_b.stl) |
 | source | [hopper.scad](candidate-a/hopper.scad) | [hopper.scad](candidate-b/hopper.scad) |
 | outside | ![Candidate A outside](candidate-a/previews/outside.png) | ![Candidate B outside](candidate-b/previews/outside.png) |
@@ -22,7 +22,7 @@ Bulk-solids guidance identifies arching at an undersized outlet and ratholing wh
 
 ## Computed comparison
 
-`verify.py` regenerates capacity, outlet, door-section, cage-contact, and forced-motion solids from each source, then measures the meshes with trimesh. The through-opening count is the genus of the final shell; the outlet window into the hooded trough is the only intended one, so any new gap between reservoir and trough fails the check. The committed default results are in [verification.json](verification.json).
+`verify.py` regenerates capacity, outlet, door-section, cage-contact, and forced-motion solids from each source, then measures the meshes with trimesh. The through-opening count is the genus of the final shell, the number of independent tunnels through the solid. The refill mouth, the outlet, and the open trough form one tunnel, so the intended value is 1; a second passage from the reservoir to the outside raises it and fails the check. The committed default results are in [verification.json](verification.json).
 
 | mesh-derived result | A | B |
 |---|---:|---:|
@@ -44,7 +44,7 @@ The generated cage intersection is empty in each mounted pose, and generated pro
 
 ## Printing and use
 
-Print either STL upright on its broad trough underside with PETG, four or more perimeters, a 3 mm brim, and automatic support everywhere. The rising hood roofs are steeper than 45°, the reservoir interiors stay open, and only local bridge, rim, and mount surfaces need support. Both measured bounding boxes fit the 180 mm cube. All food-facing shell probes are at least 3.2 mm, front lips are rolled, and exposed side-wall tops are round. Layer steps on the 70–73° flow walls are shallow but still present in this upright orientation.
+Print either STL upright on its broad trough underside with PETG, four or more perimeters, a 3 mm brim, and automatic support everywhere. The rising hood roofs are steeper than 45°, the reservoir interiors stay open, and only local bridge, rim, and mount surfaces need support. The largest supported surface in A is the 98 × 5 mm underside where the front wall meets the hood roof, 34 mm above the trough floor and reachable only through the hood mouth; check under the hood for leftover support before use. Both measured bounding boxes fit the 180 mm cube. All food-facing shell probes are at least 3.2 mm, front lips are rolled, and exposed side-wall tops are round. Layer steps on the 70–73° flow walls are shallow but still present in this upright orientation.
 
 A PrusaSlicer 2.9.4 dry-run using the committed PETG profile, 0.2 mm layers, four perimeters, 20% gyroid infill, a 3 mm brim, and automatic supports exported both G-codes inside a 180 × 180 × 180 mm volume. A used 335.24 g with a 23 h 35 m normal estimate; B used 366.57 g with a 26 h 38 m estimate. These are comparative toolpath checks rather than Bambu Studio production profiles or physical prints.
 
