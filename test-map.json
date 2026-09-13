@@ -2,6 +2,17 @@
   "rules": [
     {
       "paths": [
+        "hopper/v3/**"
+      ],
+      "tests": [
+        "./build",
+        "nix-shell -p openscad 'python3.withPackages(ps: with ps; [trimesh numpy rtree networkx scipy])' --run 'python3 hopper/v3/verify.py'",
+        "nix-shell -p prusa-slicer --run 'bash hopper/v3/slice.sh'"
+      ],
+      "why": "hopper v3 adds generated fit, capacity, wall, and flow checks beyond the repository artifact build"
+    },
+    {
+      "paths": [
         "**"
       ],
       "tests": [

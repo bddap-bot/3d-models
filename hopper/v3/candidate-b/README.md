@@ -1,0 +1,5 @@
+# Candidate B — inclined magazine
+
+A constant 98 × 74 mm passage runs 138 mm down a 70° inclined tube, preserving its cross-section from refill mouth to outlet instead of converging into a funnel. Two 35 mm vertical cantilevers compress through the feeder doorway and expand behind its side bars; a broad outside collar and a lower sill seat complete the load path. The trough, rising hood, magazine, collar, sill, and flexures form one solid with no lid or removable feed vessel.
+
+The default [STL](out/candidate_b.stl) is one watertight body measuring 130 × 170.167 × 165.482 mm. Its generated cavity measures 1.0008 L, its refill mouth measures 98 × 74.02 mm, and the 74.003 mm limiting outlet dimension is 2.96 times a 25 mm banana slice; generated blockage solids are empty at both openings. Three independent mesh ray probes measure 3.2 mm through representative magazine and trough walls. Print upright on the 13,013.6 mm² trough underside with automatic local supports and a 3 mm brim; the measured downward area steeper than 45° is 1,115.2 mm², and a PrusaSlicer PETG dry-run exported at 366.57 g with a 26 h 38 m estimate.

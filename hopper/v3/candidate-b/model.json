@@ -1,0 +1,6 @@
+{
+  "source": "hopper.scad",
+  "parts": {
+    "candidate_b": [68, 0, 35]
+  }
+}

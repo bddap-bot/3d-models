@@ -6,6 +6,7 @@ OpenSCAD sources and renders. Each directory is one model with its own README, s
 |---|---|---|
 | [hopper](hopper) | Parametric seed hopper for a green-cheek conure feeder: wedge body filling a 140 × 170 mm cage door, ~1 L, refilled from outside, hull-lipped tray with perch. One spec, several models' answers. | [![hopper](hopper/codex/out/assembly.png)](hopper) |
 | [hopper critic loop](hopper/critic-loop) | Six clean-room hopper runs comparing one-shot delivery with capped independent-critic loops. | [![critic loop](hopper/critic-loop/B2/out/assembly.png)](hopper/critic-loop) |
+| [hopper v3](hopper/v3) | Two one-piece small-door conure hoppers: a rail-saddle plane-flow wedge and a snap-flange inclined magazine. | [![hopper v3](hopper/v3/candidate-a/out/candidate_a.png)](hopper/v3) |
 | [med-tracker](med-tracker) | Two-medicine infant dose dial with 24-position peg rings, bottle wells, syringe holders, and large AM/PM numerals. | [![med-tracker](med-tracker/out/assembly.png)](med-tracker) |
 
 MIT, see [LICENSE](LICENSE).

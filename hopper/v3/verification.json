@@ -1,0 +1,44 @@
+{
+  "candidate-a": {
+    "watertight": true,
+    "bodies": 1,
+    "bbox_mm": [130.0, 160.177, 162.75],
+    "capacity_l": 1.0069,
+    "outlet_mm": [98.0, 52.074],
+    "inlet_mm": [98.0, 93.866],
+    "inlet_and_outlet_blockage": "empty",
+    "hook_snap_interference_mm3": 9.796,
+    "outlet_to_25_mm_slice_ratio": 2.08,
+    "shallowest_flow_wall_deg": 73.41,
+    "door_section_width_mm": 104.4,
+    "clearance_each_side_at_110_mm": 2.8,
+    "static_cage_intersection": "empty",
+    "escape_intersection_mm3": {
+      "pull_interference": 14.118,
+      "lift_interference": 2.777
+    },
+    "wall_probe_mm": [3.2, 4.25, 3.2],
+    "overhang_area_over_45_deg_mm2": 962.2,
+    "bed_contact_area_mm2": 12596.0
+  },
+  "candidate-b": {
+    "watertight": true,
+    "bodies": 1,
+    "bbox_mm": [130.0, 170.167, 165.482],
+    "capacity_l": 1.0008,
+    "outlet_mm": [98.0, 74.003],
+    "inlet_mm": [98.0, 74.02],
+    "inlet_and_outlet_blockage": "empty",
+    "outlet_to_25_mm_slice_ratio": 2.96,
+    "shallowest_flow_wall_deg": 70.0,
+    "door_section_width_mm": 104.4,
+    "clearance_each_side_at_110_mm": 2.8,
+    "static_cage_intersection": "empty",
+    "escape_intersection_mm3": {
+      "pull_interference": 26.838
+    },
+    "wall_probe_mm": [3.2, 3.2, 3.2],
+    "overhang_area_over_45_deg_mm2": 1115.2,
+    "bed_contact_area_mm2": 13013.6
+  }
+}

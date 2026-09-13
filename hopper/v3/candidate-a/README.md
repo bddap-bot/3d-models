@@ -1,0 +1,5 @@
+# Candidate A — wide-mouth wedge
+
+A 98 mm-wide plane-flow wedge expands from its 98 × 52.074 mm outlet toward an open outside refill mouth. Two C-shaped saddles pass through parameter-derived bar gaps, flex 0.3 mm around the top door rail, and enclose it; the outside collar stops motion into the cage, the inner hook wall stops motion away from it, and the lower return stops lift. The trough, hood, reservoir, collar, and hooks are one fused solid, so no lid, seam, tray, or fastener can separate in use.
+
+The default [STL](out/candidate_a.stl) is one watertight body measuring 130 × 160.177 × 162.75 mm. Its generated cavity measures 1.0069 L, its refill mouth measures 98 × 93.866 mm, and the 52.074 mm limiting outlet dimension is 2.08 times a 25 mm banana slice; generated blockage solids are empty at both openings. Mesh ray probes measure 3.2, 4.25, and 3.2 mm through representative reservoir, collar, and trough walls. Print upright on the 12,596 mm² trough underside with automatic local supports and a 3 mm brim; the measured downward area steeper than 45° is 962.2 mm², and a PrusaSlicer PETG dry-run exported at 330.31 g with a 24 h 13 m estimate.
