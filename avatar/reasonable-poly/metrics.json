@@ -1,0 +1,59 @@
+{
+  "name": "Aster Echo",
+  "triangles": 28080,
+  "texture": {
+    "path": "textures/holo-grid.png",
+    "width": 256,
+    "height": 256
+  },
+  "clips": {
+    "sit": [
+      1,
+      36
+    ],
+    "stand_up": [
+      1,
+      36
+    ],
+    "idle_breathing": [
+      1,
+      72
+    ],
+    "listen": [
+      1,
+      48
+    ],
+    "talk_beats": [
+      1,
+      60
+    ],
+    "nod": [
+      1,
+      42
+    ],
+    "shrug": [
+      1,
+      48
+    ],
+    "think": [
+      1,
+      60
+    ],
+    "rest": [
+      1,
+      72
+    ]
+  },
+  "shape_keys": [
+    "aa",
+    "ih",
+    "ou",
+    "ee",
+    "oh",
+    "blink",
+    "neutral",
+    "amused",
+    "puzzled"
+  ],
+  "humanoid_bones": 55
+}

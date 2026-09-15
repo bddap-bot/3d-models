@@ -1,0 +1,9 @@
+{
+  "name": "aster-echo-verifier",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@pixiv/three-vrm": "3.5.5",
+    "three": "0.186.0"
+  }
+}

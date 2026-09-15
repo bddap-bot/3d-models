@@ -1,5 +1,7 @@
 .blender/
 .tooling/
 avatar/low-poly/node_modules/
+avatar/reasonable-poly/node_modules/
+avatar/reasonable-poly/.proof-frames/
 build-avatar.log
 review-*.txt

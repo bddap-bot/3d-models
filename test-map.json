@@ -2,6 +2,15 @@
   "rules": [
     {
       "paths": [
+        "avatar/reasonable-poly/**"
+      ],
+      "tests": [
+        "./avatar/reasonable-poly/build.sh"
+      ],
+      "why": "the reasonable-poly avatar build regenerates Blender, VRM, GLB, texture and proof artifacts, then validates runtime motion and metadata"
+    },
+    {
+      "paths": [
         "avatar/low-poly/**"
       ],
       "tests": [
