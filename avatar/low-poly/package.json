@@ -1,0 +1,12 @@
+{
+  "name": "lumen-relay-verifier",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@pixiv/three-vrm": "3.4.2",
+    "three": "0.180.0"
+  },
+  "optionalDependencies": {
+    "gl": "8.1.6"
+  }
+}

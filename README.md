@@ -8,5 +8,6 @@ OpenSCAD sources and renders. Each directory is one model with its own README, s
 | [hopper critic loop](hopper/critic-loop) | Six clean-room hopper runs comparing one-shot delivery with capped independent-critic loops. | [![critic loop](hopper/critic-loop/B2/out/assembly.png)](hopper/critic-loop) |
 | [hopper v3](hopper/v3) | Two one-piece small-door conure hoppers: a rail-saddle plane-flow wedge and a snap-flange inclined magazine. | [![hopper v3](hopper/v3/candidate-a/out/candidate_a.png)](hopper/v3) |
 | [med-tracker](med-tracker) | Two-medicine infant dose dial with 24-position peg rings, bottle wells, syringe holders, and large AM/PM numerals. | [![med-tracker](med-tracker/out/assembly.png)](med-tracker) |
+| [Lumen Relay low-poly avatar](avatar/low-poly) | Original 520-triangle translucent VRM 1.0 humanoid with nine voice-state clips and nine facial shapes. | [![Lumen Relay](avatar/low-poly/proof/idle_breathing.png)](avatar/low-poly) |
 
 MIT, see [LICENSE](LICENSE).

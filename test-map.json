@@ -2,6 +2,15 @@
   "rules": [
     {
       "paths": [
+        "avatar/low-poly/**"
+      ],
+      "tests": [
+        "./avatar/low-poly/build.sh"
+      ],
+      "why": "the avatar build regenerates Blender, VRM, GLB and proof artifacts, then validates runtime motion and metadata"
+    },
+    {
+      "paths": [
         "hopper/v3/**"
       ],
       "tests": [

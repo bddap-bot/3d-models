@@ -1,0 +1,5 @@
+.blender/
+.tooling/
+avatar/low-poly/node_modules/
+build-avatar.log
+review-*.txt
