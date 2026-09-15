@@ -1,0 +1,8 @@
+{
+  "source": "skyrim-horn.scad",
+  "parts": {
+    "assembly": [68, 0, 32],
+    "horn": [68, 0, 32],
+    "mount": [68, 0, 32]
+  }
+}
