@@ -28,9 +28,9 @@ Aster Echo is an original translucent humanoid built for a phone-sized voice int
 | triangles, VRM and GLB | 28,080 |
 | humanoid bone mappings | 55 |
 | `textures/holo-grid.png` | 256 × 256 px, 2,168 bytes |
-| `aster-echo.blend` | 571,501 bytes |
-| `aster-echo.vrm` | 1,238,220 bytes |
-| `aster-echo.glb` | 1,355,948 bytes |
+| `aster-echo.blend` | 578,549 bytes |
+| `aster-echo.vrm` | 1,234,668 bytes |
+| `aster-echo.glb` | 1,352,392 bytes |
 | `proof/turntable.gif` | 549,925 bytes |
 
 The geometry starts from self-authored anatomical proportion stations. Each station scales an original, clean fixed-topology UV-sphere base cage; lower-density cages form the signal crest and controlled torus topology forms the orbits. Those base cages are the final retopology, keeping the result inside the 20,000–50,000 triangle budget without a hidden sculpt. The only texture is a generated 256 px scan grid, below the 2048 px limit.
