@@ -6,6 +6,7 @@ frames="$dir/turntable-frames"
 mkdir -p "$frames"
 
 xvfb-run -a openscad -q --viewall --autocenter --projection=p --imgsize=1200,900 --camera=0,0,0,72,0,28,520 -D 'part="assembly"' -D 'show_candle=true' -o "$dir/still.png" "$dir/skyrim-horn.scad"
+xvfb-run -a openscad -q --viewall --autocenter --projection=p --imgsize=1200,900 --camera=0,0,0,0,0,0,520 -D 'part="assembly"' -D 'show_candle=true' -o "$dir/above.png" "$dir/skyrim-horn.scad"
 
 for angle in $(seq 0 10 350); do
   frame=$(printf '%03d' "$((angle / 10))")

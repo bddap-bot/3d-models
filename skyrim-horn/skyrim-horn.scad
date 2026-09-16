@@ -4,6 +4,7 @@ show_candle = false;
 
 horn_points = [[55, 0, 55], [58, 0, 38], [64, 0, 21], [75, 0, 5], [90, 0, -8], [108, 0, -17], [126, 0, -20], [138, 0, -17]];
 horn_radii = [24.5, 22, 19, 15.5, 11.5, 8, 4.5, 1.4];
+horn_substeps = 6;
 
 plaque_r = 52;
 plaque_t = 8;
@@ -13,11 +14,34 @@ ring_x = 86;
 ring_z = 55;
 horn_dx = ring_x - 55;
 
+function catmull_rom(p0, p1, p2, p3, t) =
+    ((2 * p1) + (-p0 + p2) * t + (2 * p0 - 5 * p1 + 4 * p2 - p3) * t * t + (-p0 + 3 * p1 - 3 * p2 + p3) * t * t * t) / 2;
+
+function horn_sample(sample) =
+    let(
+        segment = min(floor(sample / horn_substeps), len(horn_points) - 2),
+        t = (sample - segment * horn_substeps) / horn_substeps,
+        p0 = horn_points[max(segment - 1, 0)],
+        p1 = horn_points[segment],
+        p2 = horn_points[segment + 1],
+        p3 = horn_points[min(segment + 2, len(horn_points) - 1)]
+    ) catmull_rom(p0, p1, p2, p3, t);
+
+function horn_radius(sample) =
+    let(
+        segment = min(floor(sample / horn_substeps), len(horn_radii) - 2),
+        t = (sample - segment * horn_substeps) / horn_substeps,
+        r0 = horn_radii[max(segment - 1, 0)],
+        r1 = horn_radii[segment],
+        r2 = horn_radii[segment + 1],
+        r3 = horn_radii[min(segment + 2, len(horn_radii) - 1)]
+    ) catmull_rom(r0, r1, r2, r3, t);
+
 module horn_curve() {
-    for (i = [0 : len(horn_points) - 2])
+    for (i = [0 : (len(horn_points) - 1) * horn_substeps - 1])
         hull() {
-            translate(horn_points[i]) sphere(r = horn_radii[i]);
-            translate(horn_points[i + 1]) sphere(r = horn_radii[i + 1]);
+            translate(horn_sample(i)) sphere(r = horn_radius(i));
+            translate(horn_sample(i + 1)) sphere(r = horn_radius(i + 1));
         }
 }
 
