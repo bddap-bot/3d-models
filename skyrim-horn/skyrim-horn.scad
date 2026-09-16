@@ -105,7 +105,13 @@ if (part == "horn") horn();
 if (part == "mount") mount();
 if (part == "assembly") assembly();
 if (part == "horn_print") rotate([180, 0, 0]) horn();
-if (part == "mount_print") rotate([0, -90, 0]) mount();
+if (part == "mount_print") {
+    union() {
+        rotate([0, -90, 0]) mount();
+        for (p = [[-52, 0], [-26, 45], [26, 45], [52, 0], [26, -45], [-26, -45]])
+            translate([p[0], p[1], 0]) cylinder(r = 8, h = 0.2);
+    }
+}
 if (part == "plate_print") {
     translate([-18, 30, 84]) rotate([180, 0, 0]) horn();
     translate([65, 120, 0]) rotate([0, -90, 0]) mount();

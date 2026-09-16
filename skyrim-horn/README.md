@@ -14,7 +14,7 @@ Print the horn upright with its mouth on the build plate and supports under the 
 
 `./render.sh` creates an LED-tea-light-loaded still and a 36-frame turntable GIF. `./slice.sh` creates an editable combined 3MF and independent PrusaSlicer estimates. `./slice-a1-mini.sh`, run with OpenSCAD, jq, OrcaSlicer, and xvfb available, creates separate native A1 mini `.gcode.3mf` files for the horn and mount, each with normal auto supports.
 
-The horn plate uses tan PLA from the external spool and estimates 2 h 26 m 48 s model time, 2 h 32 m 22 s total, and 60.67 g. The mount plate uses black PLA from one AMS slot and estimates 2 h 18 m 53 s model time, 2 h 24 m 26 s total, and 47.63 g. The editable 3MF retains both correctly oriented parts for inspection, while the printer-ready packages separate the two colors.
+The horn plate uses tan PLA from the external spool and estimates 2 h 26 m 48 s model time, 2 h 32 m 22 s total, and 60.67 g. The mount plate uses black PLA from one AMS slot and estimates 2 h 31 m 58 s model time, 2 h 38 m 3 s total, and 48.45 g. The editable 3MF retains both correctly oriented parts for inspection, while the printer-ready packages separate the two colors.
 
 ## Critic review
 
