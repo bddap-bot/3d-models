@@ -18,7 +18,7 @@ jq -s 'add | del(.inherits) | .layer_change_gcode = ("G92 E0\n" + .layer_change_
     "$profiles/machine/fdm_machine_common.json" \
     "$profiles/machine/fdm_bbl_3dp_001_common.json" \
     "$profiles/machine/Bambu Lab A1 mini 0.4 nozzle.json" > "$scratch/machine.json"
-jq -s 'add | del(.inherits) | .filament_colour = ["#000000"] | .filament_settings_id = ["Generic PLA @BBL A1M"] | .textured_plate_temp = ["65"] | .textured_plate_temp_initial_layer = ["65"] | .hot_plate_temp = ["65"] | .hot_plate_temp_initial_layer = ["65"] | .close_fan_the_first_x_layers = ["5"] | .notes = "black PLA; external spool"' \
+jq -s 'add | del(.inherits) | .filament_colour = ["#D3B7A7"] | .filament_settings_id = ["Generic PLA @BBL A1M"] | .textured_plate_temp = ["65"] | .textured_plate_temp_initial_layer = ["65"] | .hot_plate_temp = ["65"] | .hot_plate_temp_initial_layer = ["65"] | .close_fan_the_first_x_layers = ["5"] | .notes = "dun PLA #D3B7A7; Little external spool"' \
     "$profiles/filament/fdm_filament_common.json" \
     "$profiles/filament/fdm_filament_pla.json" \
     "$profiles/filament/Generic PLA @base.json" \
