@@ -2,6 +2,17 @@
   "rules": [
     {
       "paths": [
+        "batarang/**"
+      ],
+      "tests": [
+        "./build",
+        "nix-shell -p 'python3.withPackages(ps: with ps; [trimesh numpy scipy shapely networkx])' --run 'python3 batarang/verify.py'",
+        "bash -n batarang/render.sh batarang/slice-a1-mini.sh"
+      ],
+      "why": "verify the batarang solid, symmetry, first-layer area and packaged A1 mini slicing settings"
+    },
+    {
+      "paths": [
         "avatar/reasonable-poly/**"
       ],
       "tests": [
