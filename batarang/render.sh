@@ -15,6 +15,3 @@ for angle in $(seq 0 10 350); do
 done
 
 ffmpeg -y -framerate 12 -i "$frames/%03d.png" -vf "fps=12,scale=800:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=128[p];[s1][p]paletteuse=dither=bayer" "$dir/turntable.gif"
-
-printf 'color([0.82,0.82,0.80]) translate([-90,-90,-1]) cube([180,180,1]);\ncolor([0.16,0.18,0.22]) import("%s/out/plate.stl");\n' "$dir" > "$frames/plate.scad"
-xvfb-run -a openscad -q --viewall --autocenter --projection=o --imgsize=1200,1200 --camera=0,0,0,0,0,0,400 -o "$dir/plate.png" "$frames/plate.scad"
