@@ -26,3 +26,7 @@ Any other key or type, a duplicate or empty part, or two parts with the same geo
 OpenSCAD triangulates coplanar faces differently from run to run, so a fresh STL replaces the committed one only when its volume, surface area, bounding box or centroid moves by more than 1e-3 or 1e-6 relative, whichever is larger; a missing one is written. The preview is rendered from the committed STL with software GL and is byte-stable across machines.
 
 CI runs `./build` on every push and pull request and fails if the tree is not clean afterwards.
+
+## Boundaries
+
+This 3d-models repository names only its own components. Name another project only as a declared, versioned dependency, never through its internals. Give a needed shared service a neutral name owned by this project. Do not import the environment of machines running agents: hostnames, addresses, paths outside the repository, service or queue names, credentials, camera frames, or renders of private places. No person's name, schedule or presence enters the repository. Before landing, grep the diff for other projects' names and host details. Remove host details and undeclared project references; dependency declarations expose only the dependency's name and version.
