@@ -1,3 +1,6 @@
+part = "batarang";
+bed = 180;
+layout = [[39,25,330],[107,25,330],[141,49,150],[51,77,270],[127,87,180],[27,113,240],[103,117,210],[119,153,180]];
 $fn = 48;
 function bezier(a,b,c,d,t) = pow(1-t,3)*a + 3*pow(1-t,2)*t*b + 3*(1-t)*t*t*c + t*t*t*d;
 function curve(a,b,c,d) = [for (i=[1:16]) bezier(a,b,c,d,i/16)];
@@ -15,8 +18,14 @@ module bevel() {
     cylinder(h=1,r1=0,r2=1);
     translate([0,0,1]) cylinder(h=1,r1=1,r2=0);
 }
-color([0.16,0.18,0.22])
-minkowski() {
-    linear_extrude(height=2) outline();
-    bevel();
+module batarang() {
+    color([0.16,0.18,0.22])
+    minkowski() {
+        linear_extrude(height=2) outline();
+        bevel();
+    }
 }
+if (part == "plate")
+    for (p = layout) translate([p[0]-bed/2, p[1]-bed/2, 0]) rotate(p[2]) batarang();
+else
+    batarang();
