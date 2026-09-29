@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -e
-cd /home/bot/.cache/botq-wt/3279
-OUT="$BOTQ_ARTIFACTS_DIR"
+cd "$(dirname "$0")"
+OUT="${1:?usage: $0 OUTPUT_DIR}"
+mkdir -p "$OUT"
 openscad -o "$OUT/assembly.png" --render -D 'part="assembly"' \
   --camera=180,-40,60,55,0,25,420 --imgsize=1200,900 --colorscheme=Tomorrow hopper.scad 2>&1 | tail -2
 for p in body lid tray; do

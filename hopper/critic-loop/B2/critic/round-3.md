@@ -23,5 +23,5 @@ VERIFIED:
 - Print poses: first-layer slice areas via trimesh sections in the report's chosen rotX 180 — body 1602/1624 mm² at z=0.10/0.20, tray 900/1288 mm², lid 15 239 mm² flat; flat-ceiling area body 3042 mm² (1673 at the z=80 skirt ledge, 846 at the rail top), tray 13 134 mm² (13 061 of it the pan floor), lid 51 mm².
 - PrusaSlicer 2.x, 0.4 nozzle / 0.2 layer / 3 perimeters / 15% infill / 180 bed / 45° support threshold, extrusion summed by `;TYPE:` role: body180 total 279.91 cm³ support 48.61 (17.4%), tray180 100.21 / 23.14 (23.1%), tray0 101.64 / 24.39 (24.0%), lid180 55.52 / 1.44 (2.6%); "filament used [cm3]" 229.58 / 238.65 / 91.41 / 92.12 / 51.60 reproduces the report's 229.85 / 239.01 / 91.73 / 92.64 / 52.43 to ~1%.
 - Flow-wall-down check, trimesh rotation about X: rotX -62 bbox 136.0 × 220.8 × 160.2 (report said 212), and no Z-rotation at ±28/±62/±118 fits 180 × 180 × 180 — the report's "geometrically unavailable" holds for this body shape.
-- Renders: `xvfb-run openscad --render` of assembly, body, tray and lid at iso/front/left/back/top/under, plus an x=0 section and an inside-the-cage orthographic view, in /home/bot/scratch/hopper-critic/B2/critic/round-3/.
-- Clean room kept: I opened only /home/bot/scratch/hopper-critic/B2 and the spec.
+- Renders: `xvfb-run openscad --render` of assembly, body, tray and lid at iso/front/left/back/top/under, plus an x=0 section and an inside-the-cage orthographic view, in `B2/critic/round-3/`.
+- Clean room kept: I opened only the B2 run directory and the spec.

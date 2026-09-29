@@ -300,8 +300,8 @@ verification and report work itself was roughly two hours of continuous activity
 ## Clean room
 
 No prior or parallel hopper design was read, listed, searched or fetched. Nothing
-under `~/repos/bddap-bot/3d-models`, `~/scratch/hopper*` outside this directory,
-`~/.local/state/botq`, `~/.local/state/bot-agent`, any transcript, or any memory or
+in any copy of this repository, any other run directory, any job or agent state,
+any transcript, or any memory or
 notes file was opened. No web search or fetch was made. No such material was
 encountered by accident.
 

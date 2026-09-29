@@ -1,6 +1,6 @@
 # Critic-loop experiment
 
-Six clean-room seed-hopper runs tested whether an independent critic loop improved a first-pass design. A1 and A2 were controls with one delivery and no critic. B1 and B2 allowed at most three rounds; C1 and C2 allowed at most sixteen. After each round below 8/10, the maker was to address the ranked issues and submit the whole design to a new critic. A score of 8 ended the loop. The [critic prompt](critic-prompt.md) is preserved verbatim.
+Six clean-room seed-hopper runs tested whether an independent critic loop improved a first-pass design. A1 and A2 were controls with one delivery and no critic. B1 and B2 allowed at most three rounds; C1 and C2 allowed at most sixteen. After each round below 8/10, the maker was to address the ranked issues and submit the whole design to a new critic. A score of 8 ended the loop. The [critic prompt](critic-prompt.md) is preserved verbatim except that run-directory and environment paths are generalized.
 
 Only five designs exist: B1 and C1 were truncated after an out-of-memory failure, and C2 was censored before its first delivery. “Rounds” counts completed critic responses.
 
@@ -24,10 +24,10 @@ The experiment cannot establish that a 16-round cap improves quality. C1 stopped
 ## Clean-room audit
 
 - **A1 — CLEAN.** The design transcript (01:16–10:19Z) contains no tool call outside A1’s directory or allowed tool environments.
-- **A2 — LEAK.** At 01:49:34Z its first Bash call included `ls /home/bot/scratch/ 2>/dev/null | head -1 >/dev/null`; this touched the forbidden hopper parent even though output was discarded. No sibling design content was observed.
+- **A2 — LEAK.** At 01:49:34Z its first shell call listed the parent of the run directories with output discarded; this touched the forbidden parent even though output was discarded. No sibling design content was observed.
 - **B1 — CLEAN, PROMPT-INTACT, TRUNCATED.** Its one round-1 spawn exactly matches the prompt with `__ROUND__=1` and used a new sub. It produced a round directory but returned no score before the OOM, so no revision can be credited.
 - **B2 — CLEAN, PROMPT-INTACT.** Four fresh critic subs were spawned: round 1 was retried once, then rounds 2 and 3. Every prompt differs from the preserved prompt only by round and run path; durable scores were 3, 5, 5.
 - **C1 — CLEAN, PROMPT-INTACT, TRUNCATED.** Round 1 was retried after interruptions, always as a fresh sub with the same intact prompt. Its durable response scored 3; the maker began but did not finish revision 1 before OOM.
 - **C2 — CENSORED.** No report, source, mesh, critic spawn, or design outcome exists; six identical output-cap errors followed the initial design attempt, so it is not scored or audited as a design.
 
-Transcript wall-clock spans were A1 9h03m, A2 10h02m, B1 14h29m, B2 17h04m, C1 17h48m, and C2 21h49m, including queue suspensions. Available transcript usage counters are not comparable per round because cache/resume accounting is incomplete; job totals were B1 1.50M, C1 1.37M, and C2 2.11M tokens. B2’s report estimates about four active hours across design, three critiques, and two revisions.
+Transcript wall-clock spans were A1 9h03m, A2 10h02m, B1 14h29m, B2 17h04m, C1 17h48m, and C2 21h49m, including suspensions. Available transcript usage counters are not comparable per round because cache/resume accounting is incomplete; run totals were B1 1.50M, C1 1.37M, and C2 2.11M tokens. B2’s report estimates about four active hours across design, three critiques, and two revisions.

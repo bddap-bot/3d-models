@@ -461,8 +461,7 @@ intruding further into the cage.
 ## Clean room
 
 No prior or parallel hopper design was read, listed, searched for or opened. Nothing in
-`~/repos/bddap-bot/3d-models`, the `bddap-bot/3d-models` repository, any sibling
-directory under `~/scratch/hopper-critic/`, `~/.local/state/botq`, `~/.local/state/bot-agent`,
+any copy of this repository, any sibling run directory, any job or agent state,
 any transcript or any notes or memory file was accessed. No incident to record. The
 design comes from this specification and my own knowledge of gravity feeders, plane-flow
 hoppers and FDM printing.

@@ -376,9 +376,8 @@ three revisions.
 ## Clean room
 
 No prior or parallel hopper design was read, listed, searched, fetched or opened. I did
-not touch `~/repos/bddap-bot/3d-models`, the GitHub repo of that name, any sibling
-directory under `~/scratch/hopper-critic/`, `~/.local/state/botq`,
-`~/.local/state/bot-agent`, any transcript, or any memory or notes file. Everything under
+not touch any copy of this repository, any sibling run directory, any job or agent
+state, any transcript, or any memory or notes file. Everything under
 OUT was created by this run. No incident to record.
 
 ## Critic loop

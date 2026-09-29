@@ -359,12 +359,12 @@ sphere-hulled at r = 1.2-2.0 mm.
 ## Clean room
 
 Designed from this brief alone. I did not read, list, search or fetch any prior or parallel
-hopper design, any sibling directory under `~/scratch/hopper-critic/`, `~/repos/bddap-bot/3d-models`,
-the GitHub repo, `~/.local/state/botq`, `~/.local/state/bot-agent`, or any notes or memory file.
+hopper design, any sibling run directory, any copy of this repository, any job or agent state, or any
+notes or memory file.
 
-One incident to record: the session harness injected a memory index into my context
+One incident to record: the session environment injected unrelated context
 unbidden at session start, one line of which referenced perch ergonomics on bird feeders. I did
-not open that file or act on it, and the perch here is placed below the tray because this brief
+not act on it, and the perch here is placed below the tray because this brief
 says "integrated perch below the tray".
 
 ## (e) Wall time
