@@ -1,34 +1,23 @@
-# Contract
+# Working on models
 
 Edit by subtraction: resolve a problem by deleting code; a tactical patch over a symptom is not accepted. One implementation per thing, never two alive.
 
-Every `model.json` names a `.scad` under its directory and ships the STL and preview PNG of each of its parts under `out/`, written by `./build` and gated by CI.
+Delete code comments; keep only a why the code cannot show.
 
-## Manifest
+Each `model.json` names a `.scad` in its directory and lists exported parts with
+preview rotations. Use an existing manifest as the format reference.
 
-```json
-{
-  "source": "hopper.scad",
-  "parts": {
-    "assembly": [65, 0, 35],
-    "lid": [55, 0, 25]
-  }
-}
-```
+Run `./build`, commit the generated STL and PNG for each part under `out/`, and add
+new models to the [README catalog](README.md). The build validates manifests and
+rejects duplicate geometry; CI reruns it and rejects a dirty tree.
 
-- `source`: the `.scad`, relative to the manifest, under its directory and outside `out/`.
-- `parts`: one entry per exported part, keyed by name (`[A-Za-z0-9_]+`, exported with `-Dpart="<name>"`), valued by the preview's view rotation `[rotx, roty, rotz]` in degrees; the view is auto-centred and fitted.
-
-Any other key or type, a duplicate or empty part, or two parts with the same geometry fails the build.
-
-## Gate
-
-`./build` runs every manifest through OpenSCAD 2021.01 from the nixpkgs revision pinned in `shell.nix` (the shebang enters that shell), writes `out/<part>.stl` and `out/<part>.png`, and deletes anything else in `out/`. Commit what it writes, and add a new model to the root `README.md` catalog.
-
-OpenSCAD triangulates coplanar faces differently from run to run, so a fresh STL replaces the committed one only when its volume, surface area, bounding box or centroid moves by more than 1e-3 or 1e-6 relative, whichever is larger; a missing one is written. The preview is rendered from the committed STL with software GL and is byte-stable across machines.
-
-CI runs `./build` on every push and pull request and fails if the tree is not clean afterwards.
+The build preserves geometrically equivalent committed STLs and renders previews
+from those STLs. Let it decide whether an output needs replacing.
 
 ## Boundaries
 
-This 3d-models repository names only its own components. Name another project only as a declared, versioned dependency, never through its internals. Give a needed shared service a neutral name owned by this project. Do not import the environment of machines running agents: hostnames, addresses, paths outside the repository, service or queue names, credentials, camera frames, or renders of private places. No person's name, schedule or presence enters the repository. Before landing, grep the diff for other projects' names and host details. Remove host details and undeclared project references; dependency declarations expose only the dependency's name and version.
+Keep this project independent. Reference other projects only as declared, versioned
+dependencies, exposing names and versions rather than internals. Give shared services
+neutral project-owned names. Exclude deployment-specific paths, addresses, service
+or queue names, credentials, camera frames and private renders. Before landing,
+inspect the diff for undeclared project references and deployment details.
