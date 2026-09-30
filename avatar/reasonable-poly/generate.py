@@ -14,6 +14,11 @@ FPS = 24
 
 
 def clean_scene():
+    for screen in bpy.data.screens:
+        for area in screen.areas:
+            for space in area.spaces:
+                if space.type == "FILE_BROWSER" and space.params:
+                    space.params.directory = b"//"
     bpy.ops.object.select_all(action="SELECT")
     bpy.ops.object.delete(use_global=False)
     for obj in list(bpy.data.objects):
@@ -42,6 +47,9 @@ def make_grid_texture():
     image.file_format = "PNG"
     image.save()
     image.pack()
+    image.filepath_raw = "//textures/holo-grid.png"
+    for packed in image.packed_files:
+        packed.filepath = image.filepath_raw
     return image
 
 
@@ -462,6 +470,7 @@ def create_actions(armature):
 def setup_render():
     scene = bpy.context.scene
     scene.render.engine = "BLENDER_EEVEE"
+    scene.render.use_stamp_filename = False
     scene.render.image_settings.file_format = "PNG"
     scene.render.image_settings.color_mode = "RGBA"
     scene.render.film_transparent = False
@@ -572,7 +581,7 @@ def render_proofs(armature, actions, face, camera):
         aim(camera, (0, 0, 1.52))
         scene.render.resolution_x = 384
         scene.render.resolution_y = 512
-        scene.render.filepath = str(PROOF / f"{name}.png")
+        scene.render.filepath = bpy.path.relpath(str(PROOF / f"{name}.png"))
         bpy.ops.render.render(write_still=True)
 
     bpy.ops.wm.open_mainfile(filepath=str(HERE / "aster-echo.blend"))
@@ -594,7 +603,7 @@ def render_proofs(armature, actions, face, camera):
         angle = math.tau * index / 18
         camera.location = (6.5 * math.sin(angle), -6.5 * math.cos(angle), 2.75)
         aim(camera, (0, 0, 1.48))
-        scene.render.filepath = str(FRAMES / f"frame_{index:02d}.png")
+        scene.render.filepath = bpy.path.relpath(str(FRAMES / f"frame_{index:02d}.png"))
         bpy.ops.render.render(write_still=True)
 
     armature.animation_data.action = bpy.data.actions["idle_breathing"]
@@ -609,7 +618,7 @@ def render_proofs(armature, actions, face, camera):
     for index, name in enumerate(("aa", "ih", "ou", "ee", "oh")):
         face.data.shape_keys.key_blocks[name].value = 1.0
         scene.render.resolution_x = 256
-        scene.render.filepath = str(FRAMES / f"viseme_{index}.png")
+        scene.render.filepath = bpy.path.relpath(str(FRAMES / f"viseme_{index}.png"))
         bpy.ops.render.render(write_still=True)
         face.data.shape_keys.key_blocks[name].value = 0.0
     camera.data.lens = 62

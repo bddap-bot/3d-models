@@ -11,6 +11,11 @@ PROOF.mkdir(parents=True, exist_ok=True)
 
 
 def clean_scene():
+    for screen in bpy.data.screens:
+        for area in screen.areas:
+            for space in area.spaces:
+                if space.type == "FILE_BROWSER" and space.params:
+                    space.params.directory = b"//"
     bpy.ops.object.select_all(action="SELECT")
     bpy.ops.object.delete(use_global=False)
     for datablocks in (bpy.data.meshes, bpy.data.materials, bpy.data.cameras, bpy.data.lights):
@@ -290,6 +295,7 @@ def look_at(obj, point):
 def render_setup():
     scene = bpy.context.scene
     scene.render.engine = "BLENDER_EEVEE"
+    scene.render.use_stamp_filename = False
     scene.render.resolution_x = 360
     scene.render.resolution_y = 640
     scene.render.resolution_percentage = 100
@@ -343,7 +349,7 @@ def render_proofs(armature, face, actions, camera):
         else:
             camera.location = (0.0, -4.05, 1.08)
         look_at(camera, (0.0, 0.0, 0.91))
-        scene.render.filepath = str(PROOF / f"{name}.png")
+        scene.render.filepath = bpy.path.relpath(str(PROOF / f"{name}.png"))
         bpy.ops.render.render(write_still=True)
     armature.animation_data.action = actions["idle_breathing"]
     scene.frame_set(18)
@@ -353,7 +359,7 @@ def render_proofs(armature, face, actions, camera):
         angle = 2.0 * math.pi * index / 12.0
         camera.location = (3.65 * math.sin(angle), -3.65 * math.cos(angle), 1.08)
         look_at(camera, (0.0, 0.0, 0.91))
-        scene.render.filepath = str(PROOF / f"turntable-{index:02d}.png")
+        scene.render.filepath = bpy.path.relpath(str(PROOF / f"turntable-{index:02d}.png"))
         bpy.ops.render.render(write_still=True)
     armature.animation_data.action = actions["rest"]
     scene.frame_set(18)
@@ -364,7 +370,7 @@ def render_proofs(armature, face, actions, camera):
     for shape in ("neutral", "aa", "ih", "ou", "ee", "oh", "blink", "amused", "puzzled"):
         clear_shapes(face)
         face.data.shape_keys.key_blocks[shape].value = 1.0
-        scene.render.filepath = str(PROOF / f"expression-{shape}.png")
+        scene.render.filepath = bpy.path.relpath(str(PROOF / f"expression-{shape}.png"))
         bpy.ops.render.render(write_still=True)
     scene.render.resolution_x = 360
     scene.render.resolution_y = 640
