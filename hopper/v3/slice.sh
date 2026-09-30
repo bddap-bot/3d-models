@@ -2,7 +2,7 @@
 set -euo pipefail
 
 root=$(cd "$(dirname "$0")/../.." && pwd)
-output=${BOTQ_JOB_DIR:-$root/hopper/v3}/slices
+output=${SCRATCH_DIR:-$root/hopper/v3}/slices
 mkdir -p "$output"
 
 for candidate in a b; do

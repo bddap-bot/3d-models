@@ -293,11 +293,8 @@ encountered accidentally.
 
 ## (e) Wall time
 
-Start 2026-09-08 18:16 -0700, finish 2026-09-09 05:0x -0700. The elapsed clock is about
-10 h 45 m, but that is not working time: this worker session was suspended and resumed
-several times, and long stretches of that span had no work in progress. Actual work is
-roughly 2 h of modelling, verification and rendering, dominated by nix-shell environment
-builds and the two rounds of rework in step 5 and step 6 above.
+Modelling, verification and rendering took roughly 2 h, dominated by nix-shell
+environment builds and the two rounds of rework in step 5 and step 6 above.
 
 ## Files
 

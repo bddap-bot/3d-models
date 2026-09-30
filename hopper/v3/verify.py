@@ -10,7 +10,7 @@ import trimesh
 
 ROOT = Path(__file__).resolve().parents[2]
 V3 = ROOT / "hopper" / "v3"
-SCRATCH = Path(os.environ.get("BOTQ_JOB_DIR", V3))
+SCRATCH = Path(os.environ.get("SCRATCH_DIR", V3))
 
 CANDIDATES = {
     "candidate-a": {

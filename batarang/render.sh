@@ -2,7 +2,7 @@
 set -euo pipefail
 
 dir=$(cd "$(dirname "$0")" && pwd)
-frames="${BOTQ_JOB_DIR:-$dir}/batarang-frames"
+frames="${SCRATCH_DIR:-$dir}/batarang-frames"
 mkdir -p "$frames"
 printf 'color([0.16,0.18,0.22]) import("%s/out/batarang.stl");\n' "$dir" > "$frames/scene.scad"
 

@@ -2,7 +2,7 @@
 set -euo pipefail
 
 dir=$(cd "$(dirname "$0")" && pwd)
-work=${BOTQ_JOB_DIR:-$dir}
+work=${SCRATCH_DIR:-$dir}
 mkdir -p "$work/slice"
 
 openscad -q -o "$work/slice/horn-print.stl" -D 'part="horn_print"' "$dir/skyrim-horn.scad"

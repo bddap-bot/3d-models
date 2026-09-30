@@ -2,7 +2,7 @@
 set -euo pipefail
 
 dir=$(cd "$(dirname "$0")" && pwd)
-work=${BOTQ_JOB_DIR:-$dir}
+work=${SCRATCH_DIR:-$dir}
 scratch="$work/horn-candle-slice"
 mkdir -p "$scratch"
 

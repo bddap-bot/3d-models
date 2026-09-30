@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 dir=$(cd "$(dirname "$0")" && pwd)
-scratch="${BOTQ_JOB_DIR:-$dir}/batarang-slice"
+scratch="${SCRATCH_DIR:-$dir}/batarang-slice"
 mkdir -p "$scratch"
 exe=$(readlink -f "$(command -v orca-slicer)")
 profiles=${exe%%/bin/*}/share/OrcaSlicer/profiles/BBL

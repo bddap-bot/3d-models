@@ -292,10 +292,7 @@ costs, and I did not try to hide it.
 
 ## (e) Wall time
 
-Job started 2026-09-08 18:49 local, finished 2026-09-09 04:50 local: **10 h 01 m of
-wall clock**. That figure is not working time. The session was suspended and
-restarted several times by the queue during the run, with long idle gaps; the design,
-verification and report work itself was roughly two hours of continuous activity.
+Design, verification and report work took roughly two hours of continuous activity.
 
 ## Clean room
 
