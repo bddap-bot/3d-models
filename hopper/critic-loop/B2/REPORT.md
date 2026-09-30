@@ -368,9 +368,7 @@ a ledge. That is the trade, and it is a deviation from the spec.
 
 ## (e) Wall time
 
-First command 2026-09-08 20:46:34 -07:00; last verification 2026-09-09 11:2x -07:00. The
-session was suspended and resumed inside that window, so the elapsed clock overstates the
-work: active time was roughly 5 hours across geometry, verification, three critic rounds and
+Active time was roughly 5 hours across geometry, verification, three critic rounds and
 three revisions.
 
 ## Clean room

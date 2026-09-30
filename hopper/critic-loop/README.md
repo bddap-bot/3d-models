@@ -30,4 +30,4 @@ The experiment cannot establish that a 16-round cap improves quality. C1 stopped
 - **C1 — CLEAN, PROMPT-INTACT, TRUNCATED.** Round 1 was retried after interruptions, always as a fresh sub with the same intact prompt. Its durable response scored 3; the maker began but did not finish revision 1 before OOM.
 - **C2 — CENSORED.** No report, source, mesh, critic spawn, or design outcome exists; six identical output-cap errors followed the initial design attempt, so it is not scored or audited as a design.
 
-Transcript wall-clock spans were A1 9h03m, A2 10h02m, B1 14h29m, B2 17h04m, C1 17h48m, and C2 21h49m, including suspensions. Available transcript usage counters are not comparable per round because cache/resume accounting is incomplete; run totals were B1 1.50M, C1 1.37M, and C2 2.11M tokens. B2’s report estimates about four active hours across design, three critiques, and two revisions.
+B2’s report estimates about five active hours across geometry, verification, three critic rounds and three revisions.
