@@ -1,0 +1,7 @@
+{
+  "source": "cable-spool.scad",
+  "parts": {
+    "spool": [0, 0, 0],
+    "section": [70, 0, 20]
+  }
+}
