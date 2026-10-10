@@ -1,0 +1,65 @@
+{
+  "scale": 1.0088887854300854,
+  "xy_center": [
+    0.4368667324086175,
+    -1.0906870422871222
+  ],
+  "flowers": [
+    [
+      "Back",
+      [
+        6,
+        17
+      ],
+      25.3,
+      14,
+      7.0
+    ],
+    [
+      "Left",
+      [
+        -19,
+        -13
+      ],
+      25.5,
+      42,
+      8.1
+    ],
+    [
+      "Front",
+      [
+        10,
+        -18
+      ],
+      28.5,
+      5,
+      10.6
+    ]
+  ],
+  "source_parts": [
+    "Leaf_01_crown",
+    "Leaf_02_upper_left",
+    "Leaf_03_right",
+    "Leaf_04_lower_right",
+    "Leaf_05_lower",
+    "Leaf_06_lower_left",
+    "Flower_Back_Petal_1",
+    "Flower_Back_Petal_2",
+    "Flower_Back_Petal_3",
+    "Flower_Back_Petal_4",
+    "Flower_Back_Petal_5",
+    "Flower_Back_Throat",
+    "Flower_Left_Petal_1",
+    "Flower_Left_Petal_2",
+    "Flower_Left_Petal_3",
+    "Flower_Left_Petal_4",
+    "Flower_Left_Petal_5",
+    "Flower_Left_Throat",
+    "Flower_Front_Petal_1",
+    "Flower_Front_Petal_2",
+    "Flower_Front_Petal_3",
+    "Flower_Front_Petal_4",
+    "Flower_Front_Petal_5",
+    "Flower_Front_Throat"
+  ]
+}

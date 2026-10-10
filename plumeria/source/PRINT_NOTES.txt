@@ -1,0 +1,56 @@
+PLUMERIA CLUSTER - SINGLE-PIECE PRINTABLE RELIEF
+
+Based on the supplied reference: three overlapping five-petal plumeria flowers,
+with six curved, pointed and veined leaves. No pot, separate stems, assembly,
+pegs, or featureless backing disk. The backside is deliberately flat and the
+petal undersides are filled in, so this is a sculptural decorative relief.
+
+PRINT FILE
+Plumeria_Single_Piece_165mm.stl
+Units: millimeters. Size: 165.0 x 159.83 x 17.35 mm.
+Place the broad flat back on the build plate, detailed face upward. The file
+already has the flat back at Z=0. Fits a 180 x 180 mm bed at 100% scale.
+The mesh is one connected, closed solid. No assembly or gluing required.
+
+STARTING SETTINGS FOR A 0.4 MM NOZZLE
+- PLA or matte PLA; choose filament according to the intended environment.
+- 0.16 mm layers for the veins and curved flower faces; 0.12 mm for finer detail.
+- 3 walls, 5 top and 4 bottom layers, around 15% gyroid infill.
+- Supports OFF as a starting point. Every shape is supported by its own solid
+  underside; there are no hanging petal sheets, bridges, or floating bodies.
+- A 3 mm brim is optional if leaf tips lift. At full size, this still fits within
+  a 180 mm square bed, but confirm the usable bed area in your printer profile.
+- Use the normal temperature and cooling profile for your actual filament.
+- Do not use vase/spiral mode. Print the entire object together.
+- Do not scale down aggressively: leaf outline thickness is designed around
+  2 mm and the clipped tip width around 1.7 mm at the original design size.
+
+Before printing, open the STL in Bambu Studio or your slicer. Confirm dimensions,
+orientation, bed clearance and continuous layers. Inspect the fine veins and
+flower-center toolpaths. No physical test print or printer-specific slicing has
+been performed; geometry validation is not a guarantee of print success.
+The overall solid volume is 94.006 cm3; actual filament use depends on slicing.
+
+PAINTING
+Use a light primer in thin coats so the leaf veins remain visible. Suggested
+reference-inspired colors: green leaves, ivory petals, golden-yellow centers,
+and pale blush-pink at selected petal rims. Let the print cool before removal;
+handle the leaf tips gently. Finish one side at a time if applying a clear coat.
+
+EDITABLE SOURCE
+Plumeria_Single_Piece_Editable.blend contains the actual optimized final mesh,
+plus a hidden collection of individually named source petals, flower centers
+and veined leaves. Studio floor, camera and lights are not printable.
+Scene units are millimeters using metric scale_length 0.001.
+The build_relief.py procedural source recreates the original high-resolution
+union and source pieces. render_relief.py then optimizes, saves and renders it.
+Run build_relief.py BEFORE render_relief.py; otherwise rerunning the rendering
+script alone would simplify the already-optimized STL again.
+Python dependencies: numpy, scipy, trimesh, manifold3d, networkx.
+Rendering/editing: Blender 4.3 or newer.
+
+CHECKS
+See validation.json for final STL dimensions, topology, positive volume,
+representative closed layer sections, and overhang-normal checks.
+Preview images render the exact final printable mesh; they are not AI concept
+images and do not include printed paint colors or unmodeled textures.
