@@ -1,12 +1,19 @@
 part = "spool";
 
-R      = 65;
-core_r = 21;
-bore_r = 15;
-gap    = 30;
-base_t = 3;
-cone_t = 2.6;
-slots  = [2, 3, 4.5, 6, 8, 10];
+sizes = [
+    [65, 21, 15, 30, 3, 2.6, [2, 3, 4.5, 6, 8, 10]],
+    [41, 13.5, 9.5, 19, 2.4, 2, [2, 2.5, 3, 4, 5, 6]],
+    [20.5, 6.75, 4.5, 9.5, 1.6, 1.6, [2, 2.5, 3, 4]],
+];
+size = sizes[part == "spool_tiny" ? 2 : part == "spool_small" ? 1 : 0];
+
+R      = size[0];
+core_r = size[1];
+bore_r = size[2];
+gap    = size[3];
+base_t = size[4];
+cone_t = size[5];
+slots  = size[6];
 lip    = 4;
 clear  = 0.25;
 $fn    = 160;
@@ -48,11 +55,11 @@ module body() {
             cylinder(r1 = core_r, r2 = R + cone_v + 1, h = cone_dz + cone_v + 1);
         translate([0, 0, -1]) cylinder(r = bore_r, h = top_z + 2);
         translate([0, 0, -1]) linear_extrude(base_t + 2) slot_ring(0);
-        translate([0, 0, cone_z0 + 1]) linear_extrude(cone_dz + cone_v + 1) slot_ring(30);
+        translate([0, 0, cone_z0 + 1]) linear_extrude(cone_dz + cone_v + 1) slot_ring(180 / len(slots));
     }
 }
 
-if (part == "spool") body();
+if (part != "section") body();
 if (part == "section") difference() {
     body();
     translate([-R - 5, -2 * R, -1]) cube([2 * R + 10, 2 * R, top_z + 2]);
