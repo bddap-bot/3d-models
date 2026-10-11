@@ -6,7 +6,7 @@ import os,sys,math,json
 sys.path.insert(0,'/tmp/modeldeps')
 import numpy as np,trimesh
 from scipy.spatial.transform import Rotation
-OUT=os.path.dirname(os.path.abspath(__file__));os.makedirs(OUT+'/source_parts',exist_ok=True)
+OUT=os.path.dirname(os.path.abspath(__file__))
 
 def solid(fn,nu=110,nv=60):
  vs=[]
@@ -62,12 +62,14 @@ for k,(name,center,r,phase,base) in enumerate(flowers):
   fs.extend([[0,a,b],[1,bb,aa],[a,aa,bb],[a,bb,b]])
  m=trimesh.Trimesh(vertices=vs,faces=fs);m.fix_normals();parts.append(m);labels.append('Flower_'+name+'_Throat')
 # Use exact solid union. The hidden source meshes remain individually editable.
-for name,m in zip(labels,parts):m.export(OUT+'/source_parts/'+name+'.stl')
-print('Union',len(parts),'sculpted solids',flush=True)
-mesh=trimesh.boolean.union(parts,engine='manifold');mesh.merge_vertices();mesh.remove_unreferenced_vertices();mesh.fix_normals()
-scale=165/max(mesh.extents[:2]);mesh.apply_scale(scale)
-xy=(mesh.bounds[0,:2]+mesh.bounds[1,:2])/2;mesh.apply_translation([-xy[0],-xy[1],0])
-mesh.export(OUT+'/Plumeria_Single_Piece_165mm.stl')
-json.dump({'scale':scale,'xy_center':xy.tolist(),'flowers':flowers,'source_parts':labels},open(OUT+'/model_parameters.json','w'),indent=2)
-val={'dimensions_mm':mesh.extents.tolist(),'bounds_mm':mesh.bounds.tolist(),'watertight':bool(mesh.is_watertight),'winding_consistent':bool(mesh.is_winding_consistent),'connected_components':len(mesh.split()),'positive_volume_mm3':float(mesh.volume),'faces':len(mesh.faces),'bed_fit_180mm':bool(max(mesh.extents)<180),'construction':'Union of flat-bottom sculpted height solids. Every XY column in each source is filled down to Z=0. No floating bodies or bottom-facing overhangs outside the flat bed surface.'}
-json.dump(val,open(OUT+'/validation.json','w'),indent=2);print(json.dumps(val,indent=2),flush=True)
+if __name__=='__main__':
+ os.makedirs(OUT+'/source_parts',exist_ok=True)
+ for name,m in zip(labels,parts):m.export(OUT+'/source_parts/'+name+'.stl')
+ print('Union',len(parts),'sculpted solids',flush=True)
+ mesh=trimesh.boolean.union(parts,engine='manifold');mesh.merge_vertices();mesh.remove_unreferenced_vertices();mesh.fix_normals()
+ scale=165/max(mesh.extents[:2]);mesh.apply_scale(scale)
+ xy=(mesh.bounds[0,:2]+mesh.bounds[1,:2])/2;mesh.apply_translation([-xy[0],-xy[1],0])
+ mesh.export(OUT+'/Plumeria_Single_Piece_165mm.stl')
+ json.dump({'scale':scale,'xy_center':xy.tolist(),'flowers':flowers,'source_parts':labels},open(OUT+'/model_parameters.json','w'),indent=2)
+ val={'dimensions_mm':mesh.extents.tolist(),'bounds_mm':mesh.bounds.tolist(),'watertight':bool(mesh.is_watertight),'winding_consistent':bool(mesh.is_winding_consistent),'connected_components':len(mesh.split()),'positive_volume_mm3':float(mesh.volume),'faces':len(mesh.faces),'bed_fit_180mm':bool(max(mesh.extents)<180),'construction':'Union of flat-bottom sculpted height solids. Every XY column in each source is filled down to Z=0. No floating bodies or bottom-facing overhangs outside the flat bed surface.'}
+ json.dump(val,open(OUT+'/validation.json','w'),indent=2);print(json.dumps(val,indent=2),flush=True)
