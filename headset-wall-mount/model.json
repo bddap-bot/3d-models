@@ -1,0 +1,6 @@
+{
+  "source": "headset-wall-mount.scad",
+  "parts": {
+    "mount": [55, 0, 25]
+  }
+}
