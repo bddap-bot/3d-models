@@ -2,6 +2,16 @@
   "rules": [
     {
       "paths": [
+        "cable-spool/**"
+      ],
+      "tests": [
+        "./build",
+        "nix-shell shell.nix --run 'python3 cable-spool/verify.py'"
+      ],
+      "why": "reject flat top-edge facets from coincident cone booleans in committed and fresh small-spool meshes"
+    },
+    {
+      "paths": [
         "batarang/**"
       ],
       "tests": [

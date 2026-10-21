@@ -19,3 +19,13 @@ The smaller sizes scale the radii and gap but keep the walls thicker than a stra
 [cable-spool.gcode.3mf](cable-spool.gcode.3mf) is sliced for a Bambu Lab A1 mini (0.4 mm nozzle, 0.20 mm Standard, PLA, 3 walls, 15% infill, supports off): 94 g, 2 h 42 min. The slice contains no support and no overhang wall; every wall and surface rests on the line below it apart from sub-millimetre slot corners, and the only bridges are internal skins over sparse infill.
 
 [cable-spool-tiny-x8.gcode.3mf](cable-spool-tiny-x8.gcode.3mf) is eight `spool_tiny` on one A1 mini plate, 51 mm apart in a 3 × 3 grid without its centre, with the same settings and no brim: 49 g, 1 h 59 min, no support.
+
+The conical wall is a revolved cross-section. Subtracting a cone from a clipped
+cone made their surfaces coincide at the top rim. OpenSCAD 2021.01 exported
+spurious horizontal triangles there, whose triangulation varied across runs.
+On the small spool, eight changed triangles accounted for a 0.093731215 mm²
+surface-area difference, enough to replace the committed STL and change its
+preview despite matching volume, bounds and centroid. Revolving the wall removes
+that degenerate rim without relaxing the build's geometry comparison.
+Run `nix-shell shell.nix --run 'python3 cable-spool/verify.py'` to check that both
+the committed small spool and three fresh exports have no flat top-edge facets.

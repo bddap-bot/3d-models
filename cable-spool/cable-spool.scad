@@ -45,14 +45,13 @@ module body() {
         union() {
             cylinder(r = R, h = base_t);
             cylinder(r = core_r, h = cone_z0 + cone_v);
-            intersection() {
-                translate([0, 0, cone_z0])
-                    cylinder(r1 = core_r, r2 = R + cone_v, h = cone_dz + cone_v);
-                cylinder(r = R, h = top_z);
-            }
+            rotate_extrude() polygon([
+                [core_r, cone_z0],
+                [R, cone_z0 + cone_dz],
+                [R, top_z],
+                [core_r, cone_z0 + cone_v],
+            ]);
         }
-        translate([0, 0, cone_z0 + cone_v])
-            cylinder(r1 = core_r, r2 = R + cone_v + 1, h = cone_dz + cone_v + 1);
         translate([0, 0, -1]) cylinder(r = bore_r, h = top_z + 2);
         translate([0, 0, -1]) linear_extrude(base_t + 2) slot_ring(0);
         translate([0, 0, cone_z0 + 1]) linear_extrude(cone_dz + cone_v + 1) slot_ring(180 / len(slots));
