@@ -15,6 +15,7 @@ OpenSCAD sources and renders. Each directory is one model with its own README, s
 | [horn candle](horn-candle) | Two printer-ready A1 mini plates for the horn candle table decoration. | [![horn candle](horn-candle/horn-candle-plate-1.png)](horn-candle) |
 | [Lumen Relay low-poly avatar](avatar/low-poly) | Original 520-triangle translucent VRM 1.0 humanoid with nine voice-state clips and nine facial shapes. | [![Lumen Relay](avatar/low-poly/proof/idle_breathing.png)](avatar/low-poly) |
 | [Aster Echo reasonable-poly avatar](avatar/reasonable-poly) | Original 28,080-triangle translucent VRM 1.0 humanoid with 55 mapped bones, nine voice-state clips and nine facial shapes. | [![Aster Echo](avatar/reasonable-poly/proof/idle_breathing.png)](avatar/reasonable-poly) |
+| [spice rack](spice-rack) | Parametric four-row tiered spice rack, 381 × 276.9 mm with the back row 152.4 mm up: closed-tube back step with thin-wall Γ tiers hooked onto it, 10 supportless pieces on two A1 mini plates. | [![spice rack](spice-rack/out/assembly.png)](spice-rack) |
 | [headset wall mount](headset-wall-mount) | One-piece supportless wall mount for a VR headset and two controllers: a continuous curved strap holder with an end lip, two capped controller pegs, two countersunk screws reachable straight on. | [![headset wall mount](headset-wall-mount/out/mount.png)](headset-wall-mount) |
 
 MIT, see [LICENSE](LICENSE).
