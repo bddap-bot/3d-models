@@ -1,0 +1,11 @@
+{
+  "source": "gothic-window.scad",
+  "parts": {
+    "pane": [0, 0, 0],
+    "rim": [0, 0, 0],
+    "tracery_a": [0, 0, 0],
+    "tracery_b": [0, 0, 0],
+    "leading_a": [0, 0, 0],
+    "leading_b": [0, 0, 0]
+  }
+}
