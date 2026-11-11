@@ -71,6 +71,6 @@ To slice a plate yourself, load `out/pane.stl`, `out/rim.stl` and `out/tracery_a
 
 ### Sampler plate
 
-[demo/demo.scad](demo/demo.scad) sets `height` to 56 and puts all sixteen windows on one plate, each pattern plain and then leaded: three rows of six, six and four, 3 mm from the bed's front and back edges and 8.6 mm from its sides. Its parts are in `demo/out/` and its plate is [demo/gothic-window-demo.gcode.3mf](demo/gothic-window-demo.gcode.3mf): 9.74 g pane filament, 14.98 g frame filament, 1 h 27 min, the same settings as above. The pane is 0.4 mm, the cames 0.8 mm and the tracery bars 0.84 mm. At this size the `min_cell` rule fills two small slivers beside window 1's roundels and two cusp cells of window 7's sunburst; every line is kept.
+[demo/demo.scad](demo/demo.scad) sets `height` to 56 and puts all sixteen windows on one plate, each pattern plain and then leaded: three rows of six, six and four, 162.8 × 174 mm. Its parts are in `demo/out/` and its plate is [demo/gothic-window-demo.gcode.3mf](demo/gothic-window-demo.gcode.3mf): 9.74 g pane filament, 14.98 g frame filament, 1 h 27 min, the same settings as above. The pane is 0.4 mm thick, the cames 0.8 mm wide and the tracery bars 0.84 mm wide. At this size the `min_cell` rule fills two small openings of window 1 and two cells of window 7's sunburst; no bar or came is dropped.
 
 `./render.sh` (needs Nix) regenerates the three pictures with OpenSCAD and Blender.
