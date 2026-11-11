@@ -9,6 +9,7 @@ min_cell = height / 40;
 bed = 180;
 gap = 3;
 plates = [[0, 1, 2, 3], [4, 5, 6, 7]];
+plain = [];
 part = "leading_a";
 
 $fa = 4;
@@ -32,6 +33,7 @@ far = 4 * height;
 assert(bar >= 2 * nozzle, "tracery bars thinner than two nozzle lines");
 assert(len([for (p = plates) if (len(p) != len(plates[0])) p]) == 0, "plates hold different numbers of windows");
 assert(len([for (p = plates, w = p) if (!is_num(w) || w != floor(w) || w < 0 || w > 7) w]) == 0, "windows are numbered 0 to 7");
+assert(len([for (j = plain) if (!is_num(j) || j != floor(j) || j < 0 || j >= len(plates[0])) j]) == 0, "plain lists positions on a plate");
 
 module lancet(w, h, k = 1) {
     r = k * w;
@@ -283,11 +285,16 @@ module cells(window) cleaned() difference() {
 
 module place(list) {
     n = min(len(list), floor((bed + gap) / (width + gap)));
+    rows = ceil(len(list) / n);
+    grid = rows * height + (rows - 1) * gap <= bed;
     assert(len(list) > 0, "empty plate");
-    assert(max(n * width + (n - 1) * gap, len(list) > n ? height : 0) <= bed && height + (len(list) - n) * (width + gap) <= bed, "plate overflows the bed");
+    assert(n * width + (n - 1) * gap <= bed && (grid || height + (len(list) - n) * (width + gap) <= bed), "plate overflows the bed");
     for (j = [0 : len(list) - 1]) {
         $window = list[j];
-        if (j < n) translate([(j - (n - 1) / 2) * (width + gap), rim_width]) children();
+        $plain = len(search(j, plain)) > 0;
+        row = floor(j / n);
+        if (grid) translate([(j % n - (min(n, len(list) - row * n) - 1) / 2) * (width + gap), ((rows - 1) / 2 - row) * (height + gap) - height / 2 + rim_width]) children();
+        else if (j < n) translate([(j - (n - 1) / 2) * (width + gap), rim_width]) children();
         else translate([rim_width - height / 2, height + (j - n + 1) * (width + gap) - width / 2]) rotate(-90) children();
     }
 }
@@ -305,9 +312,9 @@ for (p = [0 : len(plates) - 1]) {
         outline();
         glass($window);
     }
-    if (part == str("leading_", letter)) slab(pane_z, came_z) place(plates[p]) difference() {
+    if (part == str("leading_", letter)) slab(pane_z, came_z) place(plates[p]) if (!$plain) difference() {
         outline();
         cells($window);
     }
-    if (part == str("cells_", letter)) slab(pane_z, came_z) place(plates[p]) cells($window);
+    if (part == str("cells_", letter)) slab(pane_z, came_z) place(plates[p]) if (!$plain) cells($window);
 }
