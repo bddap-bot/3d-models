@@ -6,11 +6,11 @@ Tiered spice rack for a shelf space 381 mm wide and 276.9 mm deep. Four rows of 
 |---|---|---|
 | ![assembly](out/assembly.png) | ![plate 1](out/plate_1.png) | ![plate 2](out/plate_2.png) |
 
-The rack is built from thin walls, every one standing on the shelf. The back step is a closed rectangular tube: front wall, back wall, floor, and a tread with a 5 mm curb along its back edge. It stands on its own. The two lower steps are Γ sections: a 0.84 mm wall rising from the shelf, topped by a 1.2 mm tread that runs back to the step behind. A tab at the back of each tread drops into a catch on the front wall of that step: a channel 0.25 mm wider than the tab on each side, with the tab bottom resting on the channel floor. Nothing is glued.
+The rack is built from thin walls, every one standing on the shelf. The back step is a closed rectangular tube: front wall, back wall, floor, and a tread with a 5 mm curb along its back edge. It is freestanding. The two lower steps are Γ sections: a 0.84 mm wall rising from the shelf, topped by a 1.2 mm tread that runs back to the step behind. A tab at the back of each tread drops into a catch on the front wall of that step: a channel 0.25 mm wider than the tab on each side, with the tab bottom resting on the channel floor. The parts are joined without glue.
 
-To assemble, stand the back tubes, then drop each lower tier's tabs into the catches behind it. Across the width the pieces simply butt together. Tier 2 is cut half a segment off the other tiers, so each of its joints spans a seam in the row behind and in the row in front.
+To assemble, stand the back tubes, then drop each lower tier's tabs into the catches behind it. Across the width the pieces butt together. Tier 2 is cut half a segment off the other tiers, so each of its joints spans a seam in the row behind and in the row in front.
 
-Every part is a straight extrusion of its section, printed standing on its cut end with no supports, bridges or overhangs. The A1 mini's 180 mm height limits a piece to 126.75 mm long, so each 381 mm row is three pieces, or two plus two half-length end pieces for tier 2. Tier 1 pieces print inside the back tubes, and the tier 2 sections nest diagonally.
+Every part is a straight extrusion of its section and prints standing on its cut end with no supports, bridges or overhangs. The A1 mini's 180 mm height limits a piece to 126.75 mm long, so each 381 mm row is three pieces, or two plus two half-length end pieces for tier 2. Tier 1 pieces print inside the back tubes, and the tier 2 sections nest diagonally.
 
 | part | section (mm) | count |
 |---|---|---|
@@ -27,22 +27,12 @@ Every part is a straight extrusion of its section, printed standing on its cut e
 
 [spice-rack-plate-1.gcode.3mf](spice-rack-plate-1.gcode.3mf) and [spice-rack-plate-2.gcode.3mf](spice-rack-plate-2.gcode.3mf) are sliced for a Bambu Lab A1 mini (0.4 mm nozzle, 0.20 mm Standard, PLA, textured PEI, Arachne walls, supports off). They have a 3 mm outer brim because the walls touch the plate only along lines.
 
-| plate | pieces | filament | time |
+| plate | pieces | estimated filament | estimated time |
 |---|---|---|---|
 | 1 | 2 × `tier3`, 2 × `tier1` | 150.4 g | 3 h 58 min |
 | 2 | 1 × `tier3`, 2 × `tier2`, 2 × `tier2_end`, 1 × `tier1` | 150.9 g | 4 h 18 min |
 
-Earlier versions, sliced with the same settings but classic walls; their plates are not kept here:
-
-| structure | filament | print time | plates |
-|---|---|---|---|
-| open-back version (Γ top step and a separate footed back wall) | 286.1 g | 8 h 11 min | 2 |
-| that version with 1.2 mm walls and 1.6 mm treads | 413.8 g | 12 h 29 min | 2 |
-| solid steps, each section filled at 15% infill | 2179 g | 64 h | 4 |
-
-The open-back version was 15 g lighter, but its free-standing back wall tipped easily during assembly.
-
 Strength:
-- A 2.5 N jar at mid-span bends a 1.2 mm tread about 0.7 mm.
+- A 2.5 N jar at mid-span bends a 1.2 mm tread about 0.7 mm, by calculation.
 - The tallest Γ wall is tier 2's, 101.6 mm, braced at 46 mm by the catch that holds tier 1.
-- The back step's walls are closed into a box.
+- The back step is a closed box.
